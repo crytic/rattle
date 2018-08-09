@@ -178,7 +178,10 @@ class InternalRecover(object):
                 elif not isinstance(target, PlaceholderStackValue) and \
                         target.writer is not None:
 
-                    def handle_writers(writer) -> bool:
+                    def handle_writers(writer, depth) -> bool:
+                        if depth == 0:
+                            return False
+
                         dirty = False
                         if writer.insn.is_push:
                             value = cast(ConcreteStackValue, writer.arguments[0])
@@ -188,11 +191,11 @@ class InternalRecover(object):
                                 if arg.writer is None:
                                     continue
 
-                                dirty |= handle_writers(arg.writer)
+                                dirty |= handle_writers(arg.writer, depth-1)
 
                         return dirty
 
-                    dirty |= handle_writers(target.writer)
+                    dirty |= handle_writers(target.writer, 5)
 
         return dirty
 
