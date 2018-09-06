@@ -46,6 +46,10 @@ SyntaxError: invalid syntax
 ```
 You likely ran rattle with python2 instead of python3.
 
+# Presentation
+
+For more details on the Rattle design and features, see my reCON Montreal presentation, which is annotated [here](https://www.trailofbits.com/presentations/rattle/).
+
 # License
 
 Rattle is licensed and distributed under the AGPLv3 license. [Contact us](mailto:opensource@trailofbits.com) if you're looking for an exception to the terms.
