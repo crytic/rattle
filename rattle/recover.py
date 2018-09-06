@@ -23,8 +23,16 @@ class InternalRecover(object):
 
         # Remove swarm hash if its there
         filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
-        if 'ebzzr0' in filestring:
-            self.filedata = self.filedata[:filestring.rfind('ebzzr0')]
+        while True:
+            if 'ebzzr0' in filestring:
+                # replace the swarm hash with stops
+                offset = filestring.find('ebzzr0')
+                self.filedata = self.filedata[:offset]
+                self.filedata.extend([b'\x00', ] * 42)
+                self.filedata.extend(self.filedata[offset + 42:])
+                filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
+            else:
+                break
 
         dispatch = SSAFunction(0)
         self.functions = [dispatch, ]
