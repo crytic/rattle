@@ -47,6 +47,30 @@ class InternalRecover(object):
 
         self.guarenteed_optimizations()
 
+        # Remove stop-only blocks from dispatch
+        blocks_to_remove = []
+        for block in dispatch:
+            if len(block.insns) != 1:
+                continue
+
+            insn = block.insns[0]
+            if insn.insn.name != 'STOP':
+                continue
+
+            if len(block.in_edges) != 0:
+                continue
+
+            if block.fallthrough_edge:
+                continue
+
+            if len(block.jump_edges) != 0:
+                continue
+
+            blocks_to_remove.append(block)
+
+        dispatch.remove_blocks(blocks_to_remove)
+
+
     def recover(self, function: SSAFunction) -> None:
         self.identify_blocks(function)
 
