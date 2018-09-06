@@ -118,7 +118,11 @@ def main() -> None: # run me with python3, fool
     print("[+] Contract calls:")
     for call in ssa.calls():
         print(f"\t{call}")
-        gas, to, value, in_offset, in_size, out_offset, out_size = call.arguments
+        if call.insn.name == 'DELEGATECALL':
+            gas, to, in_offset, in_size, out_offset, out_size = call.arguments
+            value = None
+        else:
+            gas, to, value, in_offset, in_size, out_offset, out_size = call.arguments
 
         print(f"\t\tGas: {gas}", end='')
         if gas.writer:
@@ -132,11 +136,12 @@ def main() -> None: # run me with python3, fool
         else:
             print("\n", end='')
 
-        print(f"\t\tValue: {value}", end='')
-        if value.writer:
-            print(f'\t\t\t{value.writer}')
-        else:
-            print("\n", end='')
+        if value:
+            print(f"\t\tValue: {value}", end='')
+            if value.writer:
+                print(f'\t\t\t{value.writer}')
+            else:
+                print("\n", end='')
 
         print(f"\t\tIn Data Offset: {in_offset}", end='')
         if in_offset.writer:

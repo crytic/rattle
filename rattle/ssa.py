@@ -688,7 +688,7 @@ class SSAFunction(object):
                 if insn.insn.name == 'SELFDESTRUCT':
                     insns_that_send.append(insn)
                     rv = True
-                elif insn.insn.name in ('CALL', 'CALLCODE', 'DELEGATECALL'):
+                elif insn.insn.name in ('CALL', 'CALLCODE'):
                     gas, to, value, in_offset, in_size, out_offset, out_size = insn.arguments
 
                     if not isinstance(value, ConcreteStackValue):
