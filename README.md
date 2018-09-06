@@ -15,6 +15,21 @@ Would produce a register machine output like this:
 
 Functions are recovered and split off. Additionally function arguments, memory locations, and storage locations are recovered.
 
+## Usage
+
+Rattle runs on the runtime contract bytes, not the hex string. To convert to bytes, use xxd:
+
+```console
+$ head contract.bin
+608060405260043610610083576000357c01000000000000000000000...
+$ cat contract.bin | xxd -r -ps > contract.bytecode
+```
+
+If you're running rattle on a contract you can compile with solidity, use the `--bin-runtime` option and strip off the header:
+```console
+$ solc --bin-runtime KingOfTheEtherThrone.sol 2>/dev/null | tail -n1 | xxd -r -ps > contract.bytecode
+```
+
 ## Troubleshooting
 
 If you get a syntax error like this:
