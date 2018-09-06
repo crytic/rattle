@@ -24,12 +24,12 @@ class InternalRecover(object):
         # Remove swarm hash if its there
         filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
         while True:
-            if 'ebzzr0' in filestring:
+            if '\xa1ebzzr0' in filestring:
                 # replace the swarm hash with stops
-                offset = filestring.find('ebzzr0')
+                offset = filestring.find('\xa1ebzzr0')
                 self.filedata = self.filedata[:offset]
-                self.filedata.extend([b'\x00', ] * 42)
-                self.filedata.extend(self.filedata[offset + 42:])
+                self.filedata.extend([b'\x00', ] * 43)
+                self.filedata.extend(self.filedata[offset + 43:])
                 filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
             else:
                 break
