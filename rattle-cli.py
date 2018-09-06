@@ -178,10 +178,14 @@ def main() -> None: # run me with python3, fool
 
         out_file = f'output/{function.desc()}.png'
 
-        subprocess.call(['/usr/local/bin/dot', '-Tpng', f'-o{out_file}', t.name])
+        subprocess.call(['dot', '-Tpng', f'-o{out_file}', t.name])
         print(f'[+] Wrote {function.desc()} to {out_file}')
 
-        subprocess.call(['open', out_file])
+        try:
+            # This is mac specific
+            subprocess.call(['open', out_file])
+        except OSError as e:
+            pass
 
     # Maybe a way to query the current value of a storage location out of some api (can infra do that?)
     # print(loc0.value.top())
