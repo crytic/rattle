@@ -30,6 +30,11 @@ If you're running rattle on a contract you can compile with solidity, use the `-
 $ solc --bin-runtime KingOfTheEtherThrone.sol 2>/dev/null | tail -n1 | xxd -r -ps > contract.bytecode
 ```
 
+## Dependencies
+
+* python3
+* graphviz
+
 ## Troubleshooting
 
 If you get a syntax error like this:
