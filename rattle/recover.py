@@ -688,7 +688,8 @@ class InternalRecover(object):
 
                         if block in edge.jump_edges:
                             edge.jump_edges.remove(block)
-                            edge.jump_edges.add(block.fallthrough_edge)
+                            if block.fallthrough_edge:
+                                edge.jump_edges.add(block.fallthrough_edge)
 
                             try:
                                 edge.in_edges.remove(block)
