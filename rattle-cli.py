@@ -104,11 +104,14 @@ def main() -> None: # run me with python3, fool
                     value = insn.arguments[2]
                     print(f'\t\t\tTo:\t{address.writer}')
 
-                    if value.writer:
-                        print(f'\t\t\tValue:\t{value.writer}')
-                    else:
-                        value_in_eth = int(value) * 1.0 / 10 ** 18
-                        print(f'\t\t\tValue:\t{value} {value_in_eth}ETH')
+                    try:
+                        if value.writer:
+                            print(f'\t\t\tValue:\t{value.writer}')
+                        else:
+                            value_in_eth = int(value) * 1.0 / 10 ** 18
+                            print(f'\t\t\tValue:\t{value} {value_in_eth}ETH')
+                    except Exception as e:
+                        print(e)
 
                 print("")
     else:

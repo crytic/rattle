@@ -86,7 +86,7 @@ class StackValue(object):
 
 class ConcreteStackValue(StackValue):
     def __init__(self, value: int) -> None:
-        self.concrete_value = value
+        self.concrete_value = int(value)
         super().__init__(-1)
 
         concrete_values.append(self)
