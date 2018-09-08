@@ -355,7 +355,8 @@ class InternalRecover(object):
                         # hash -> jumpi target
 
                         assert(isinstance(jump.arguments[0], ConcreteStackValue))
-                        jump_target = jump.arguments[0].concrete_value
+                        jump_target_block = list(jump.parent_block.jump_edges)[0]
+                        jump_target = jump_target_block.offset
 
                         logger.debug(f"Method identified with hash {hash:#x} starting at block {jump_target:#x}")
 
