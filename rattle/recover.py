@@ -168,7 +168,7 @@ class InternalRecover(object):
             if i + 1 < len(blocks_list):
                 end = blocks_list[i + 1]
             else:
-                end = len(self.insns)
+                end = max_pc
 
             for idx in [x.offset for x in insns if x.offset >= start and x.offset < end]:
                 block.insns.append(SSAInstruction(self.insns[idx], block))
