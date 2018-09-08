@@ -120,6 +120,7 @@ class ControlFlowGraph(object):
         for block in self.function:
             block_id = f'block_{block.offset}'
             block_body = '\\l'.join([f'{insn.offset:#x}: {insn}' for insn in block])
+            block_body = block_body.replace('<', '\\<').replace('>', '\\>')
             block_dot = f'{block_id} [label="{block_body}\\l", shape="record"];'
 
             fallthrough_label = ''
