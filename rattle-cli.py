@@ -11,6 +11,8 @@ import subprocess
 import shutil
 import tempfile
 
+from detectors import Upgradeable
+
 # This might not be true, but I have a habit of running the wrong python version and this is to save me frustration
 assert (sys.version_info.major >= 3 and sys.version_info.minor >= 6)
 
@@ -48,6 +50,14 @@ def main() -> None: # run me with python3, fool
     ssa = rattle.Recover(args.input.read(), edges=edges, optimize=args.optimize)
 
     print(ssa)
+
+    up = Upgradeable(ssa)
+    print(up.check())
+
+    print(up.results)
+
+    #sys.exit(0)
+
 
     print("Identified Functions:")
     for function in ssa.functions:
