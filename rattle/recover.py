@@ -43,9 +43,9 @@ class InternalRecover(object):
         if optimize:
             self.optimize()
 
-        self.split_functions(dispatch)
-
         self.guarenteed_optimizations()
+
+        self.split_functions(dispatch)
 
         # Remove stop-only blocks from dispatch
         blocks_to_remove = []
@@ -623,88 +623,85 @@ class InternalRecover(object):
                     reader.replace_uses_with(item)
                     worklist.append(item)
 
-
-        # Remove single jump blocks
         for function in self.functions:
             for block in list(function):
-                if len(block) == 1:
-                    insn = block.insns[0]
-                    if insn.insn.name != 'JUMP':
-                        continue
+                # Only one insn JUMP blocks
+                if len(block) != 1:
+                    continue
 
-                    if len(block.jump_edges) != 1:
-                        continue
+                insn = block.insns[0]
+                if insn.insn.name != 'JUMP':
+                    continue
 
-                    jump_edge = list(block.jump_edges)[0]
+                # Block should have in edges
+                if len(block.in_edges) == 0:
+                    continue
 
-                    for edge in list(block.in_edges):
-                        edge : SSABasicBlock
+                # Should not have a fallthrough edge
+                if block.fallthrough_edge:
+                    continue
 
-                        if edge.fallthrough_edge == block:
-                            edge.fallthrough_edge = jump_edge
+                # Empty jump block should only have outgoing edges
+                if len(block.jump_edges) == 0:
+                    continue
 
-                            try:
-                                jump_edge.in_edges.remove(block)
-                            except:
-                                pass
-                            jump_edge.in_edges.add(edge)
+                for next_block in block.jump_edges:
 
-                        if block in edge.jump_edges:
-                            edge.jump_edges.remove(block)
-                            edge.jump_edges.add(jump_edge)
+                    for prev_block in block.in_edges:
 
-                            try:
-                                jump_edge.in_edges.remove(block)
-                            except:
-                                pass
-                            jump_edge.in_edges.add(edge)
+                        # Prev block must refer to block in either its fallthrough or its jump edges
+                        if prev_block.fallthrough_edge == block:
+                            # Unlink block
+                            prev_block.fallthrough_edge = next_block
+                        elif block in prev_block.jump_edges:
+                            prev_block.jump_edges.remove(block)
+                            prev_block.jump_edges.add(next_block)
 
-                    block.fallthrough_edge = None
-                    block.jump_edges.clear()
-                    block.in_edges.clear()
-                    function.blocks.remove(block)
+                        next_block.in_edges.add(prev_block)
 
+                    next_block.in_edges.remove(block)
+                    
+                block.fallthrough_edge = None
+                block.jump_edges.clear()
+                block.in_edges.clear()
+                function.blocks.remove(block)
 
-
-        # Remove empty blocks
         for function in self.functions:
             for block in list(function):
-                if len(block) == 0:
-                    if len(block.jump_edges) != 0:
-                        continue
+                # Only remove empty blocks
+                if len(block) != 0:
+                    continue
 
-                    for edge in list(block.in_edges):
-                        edge : SSABasicBlock
+                # Block should have in edges
+                if len(block.in_edges) == 0:
+                    continue
 
-                        if edge.fallthrough_edge == block:
-                            edge.fallthrough_edge = block.fallthrough_edge
+                # Empty block should only have one outgoing edge (and it should be the fallthrough)
+                if len(block.jump_edges) != 0:
+                    continue
 
-                            if edge.fallthrough_edge:
-                                try:
-                                    edge.fallthrough_edge.in_edges.remove(block)
-                                except:
-                                    pass
-                                edge.fallthrough_edge.in_edges.add(edge)
+                next_block = block.fallthrough_edge
+                if next_block is None:
+                    print("Trying to remove block with None fallthrough! {}".format(block))
+                    continue
 
-                        if block in edge.jump_edges:
-                            edge.jump_edges.remove(block)
-                            if block.fallthrough_edge:
-                                edge.jump_edges.add(block.fallthrough_edge)
+                for prev_block in block.in_edges:
 
-                            try:
-                                edge.in_edges.remove(block)
-                            except:
-                                pass
-                            edge.in_edges.add(edge)
+                    # Prev block must refer to block in either its fallthrough or its jump edges
+                    if prev_block.fallthrough_edge == block:
+                        # Unlink block
+                        prev_block.fallthrough_edge = next_block
+                    elif block in prev_block.jump_edges:
+                        prev_block.jump_edges.remove(block)
+                        prev_block.jump_edges.add(next_block)
 
+                    next_block.in_edges.add(prev_block)
 
-
-                    block.fallthrough_edge = None
-                    block.jump_edges.clear()
-                    block.in_edges.clear()
-                    function.blocks.remove(block)
-
-
+                next_block.in_edges.remove(block)
+                block.fallthrough_edge = None
+                block.jump_edges.clear()
+                block.in_edges.clear()
+                function.blocks.remove(block)
 
 class Recover(object):
     internal : InternalRecover
