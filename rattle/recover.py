@@ -402,7 +402,8 @@ class InternalRecover(object):
                         if not isinstance(jump.arguments[0], ConcreteStackValue):
                             continue
 
-                        jump_target: int = jump.arguments[0].concrete_value
+                        jump_target_block = jump.parent_block.fallthrough_edge
+                        jump_target: int = jump_target_block.offset
                         logger.debug(f"_fallthrough function at {jump_target:#x}")
 
                         fallthrough = self.extract_method(function, jump_target)
