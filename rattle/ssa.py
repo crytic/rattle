@@ -1,40 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import functools
+import logging
+from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable
+
 from rattle.evmasm import EVMAsm
 from .hashes import hashes
-import logging
-
-import functools
-
-from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable
 
 logger = logging.getLogger(__name__)
 
-concrete_values : List['ConcreteStackValue'] = []
+concrete_values: List['ConcreteStackValue'] = []
+
 
 class NewEdgeException(Exception):
     pass
 
+
 class PHIRemovalException(Exception):
     pass
 
-class PHIInstruction(EVMAsm.Instruction):
-    original : 'PlaceholderStackValue'
 
-    def __init__(self, args: int, original : 'PlaceholderStackValue', offset: int = 0) -> None:
+class PHIInstruction(EVMAsm.EVMInstruction):
+    original: 'PlaceholderStackValue'
+
+    def __init__(self, args: int, original: 'PlaceholderStackValue', offset: int = 0) -> None:
         super().__init__(0x100, "PHI", 0, args, 1, 0, "SSA PHI Node", 0, offset)
         self.original = original
 
-class MethodDispatch(EVMAsm.Instruction):
-    target : 'SSAFunction'
+
+class MethodDispatch(EVMAsm.EVMInstruction):
+    target: 'SSAFunction'
+
     def __init__(self, target: 'SSAFunction', args: int, offset: int = 0) -> None:
         self.target = target
         super().__init__(0x101, "CONDICALL", 0, args, 1, 0, "Conditional Internal Call", 0, offset)
 
-class InternalCallOp(EVMAsm.Instruction):
+
+class InternalCallOp(EVMAsm.EVMInstruction):
     def __init__(self, args: int, offset: int = 0) -> None:
         super().__init__(0x102, "ICALL", 0, args, 1, 0, "Conditional Internal Call", 0, offset)
+
 
 class StackValue(object):
     _writer: Optional['SSAInstruction'] = None
@@ -68,11 +74,11 @@ class StackValue(object):
         except:
             pass
 
-    def resolve(self)-> Tuple['StackValue', bool]:
+    def resolve(self) -> Tuple['StackValue', bool]:
         return (self, False)
 
-    def filtered_readers(self, filt : Callable[['SSAInstruction'], bool]) -> Set['SSAInstruction']:
-        rv : Set['SSAInstruction'] = set()
+    def filtered_readers(self, filt: Callable[['SSAInstruction'], bool]) -> Set['SSAInstruction']:
+        rv: Set['SSAInstruction'] = set()
         for reader in self.readers():
             if not filt(reader) and reader.return_value:
                 rv |= reader.return_value.filtered_readers(filt)
@@ -83,6 +89,7 @@ class StackValue(object):
 
     def __int__(self):
         raise Exception("Could not convert non-concrete value to integer")
+
 
 class ConcreteStackValue(StackValue):
     def __init__(self, value: int) -> None:
@@ -110,10 +117,11 @@ class ConcreteStackValue(StackValue):
     def __int__(self):
         return self.concrete_value
 
+
 class PlaceholderStackValue(StackValue):
-    sp : int
-    block : 'SSABasicBlock'
-    resolving : bool = False
+    sp: int
+    block: 'SSABasicBlock'
+    resolving: bool = False
 
     def __init__(self, sp: int, block: 'SSABasicBlock') -> None:
         self.sp = sp
@@ -133,7 +141,7 @@ class PlaceholderStackValue(StackValue):
 
     def resolve(self) -> Tuple[StackValue, bool]:
         # Resolve!
-        #print(f"Resolving placeholder {self}")
+        # print(f"Resolving placeholder {self}")
 
         if self.resolving:
             self.resolving = False
@@ -151,11 +159,11 @@ class PlaceholderStackValue(StackValue):
             return self, False
 
         if len(self.block.in_edges) == 1:
-            parent : SSABasicBlock = list(self.block.in_edges)[0]
-            parent_stack : List[StackValue] = parent.stack
+            parent: SSABasicBlock = list(self.block.in_edges)[0]
+            parent_stack: List[StackValue] = parent.stack
 
             try:
-                new_slot : StackValue = parent_stack[self.sp]
+                new_slot: StackValue = parent_stack[self.sp]
             except IndexError:
                 self.resolving = False
                 return self, False
@@ -183,10 +191,9 @@ class PlaceholderStackValue(StackValue):
                 self.resolving = False
                 return self.block.function.phis[self].return_value, True
 
-
             args = set()
             for edge in self.block.in_edges:
-                edge_stack : List[StackValue] = edge.stack
+                edge_stack: List[StackValue] = edge.stack
                 try:
                     new_slot = edge_stack[self.sp]
                     new_slot, _ = new_slot.resolve()  # Resolve it as far as you can
@@ -196,7 +203,6 @@ class PlaceholderStackValue(StackValue):
                     but I don't do that here.
                     '''
                     new_slot = PlaceholderStackValue(self.sp + len(edge_stack), list(self.block.in_edges)[0])
-
 
                 if not isinstance(new_slot, PlaceholderStackValue):
                     args.add(new_slot)
@@ -225,19 +231,20 @@ class PlaceholderStackValue(StackValue):
         self.resolving = False
         return self, False
 
+
 class SSAInstruction(object):
-    insn : EVMAsm.Instruction
-    offset : int
+    insn: EVMAsm.EVMInstruction
+    offset: int
     arguments: List[StackValue]
     parent_block: 'SSABasicBlock'
     _return_value: Optional[StackValue]
     comment = None
 
-    def __init__(self, evminsn: EVMAsm.Instruction, parent_block: 'SSABasicBlock') -> None:
+    def __init__(self, evminsn: EVMAsm.EVMInstruction, parent_block: 'SSABasicBlock') -> None:
         self.insn = evminsn
         self.arguments = []
         self._return_value = None
-        self.offset = evminsn.offset
+        self.offset = evminsn.pc
         self.parent_block = parent_block
 
     def __repr__(self) -> str:
@@ -258,16 +265,16 @@ class SSAInstruction(object):
         for arg in self.arguments:
             yield arg
 
-    def append_argument(self, v : StackValue) -> None:
-        assert(self.insn.pops > len(self.arguments) or \
-               self.insn.is_push or \
-               isinstance(self.insn, PHIInstruction))
+    def append_argument(self, v: StackValue) -> None:
+        assert (self.insn.pops > len(self.arguments) or \
+                self.insn.is_push or \
+                isinstance(self.insn, PHIInstruction))
         self.arguments.append(v)
         v.add_reader(self)
 
     def clear_arguments(self) -> None:
         for arg in self.arguments:
-             arg.remove_reader(self)
+            arg.remove_reader(self)
 
         self.arguments.clear()
 
@@ -277,23 +284,23 @@ class SSAInstruction(object):
                 self.arguments[i] = new
                 new.add_reader(self)
 
-        assert(self.insn.pops == len(self.arguments) or \
-               self.insn.is_push or \
-               isinstance(self.insn, PHIInstruction))
+        assert (self.insn.pops == len(self.arguments) or
+                self.insn.is_push or
+                isinstance(self.insn, PHIInstruction))
 
     def remove_argument(self, old: StackValue) -> None:
-        #print(f"Removing argument {old} from {self}")
+        # print(f"Removing argument {old} from {self}")
         if self.insn.is_branch:
             return
 
         if not isinstance(self.insn, PHIInstruction):
             return
-            #raise Exception(f"Can't remove argument from non-PHI: {old} from {self}")
+            # raise Exception(f"Can't remove argument from non-PHI: {old} from {self}")
 
         new_args = [x for x in self.arguments if x != old]
         old.remove_reader(self)
 
-        new_phi = PHIInstruction(len(new_args), self.insn.original, self.insn.offset)
+        new_phi = PHIInstruction(len(new_args), self.insn.original, self.insn.pc)
         self.clear_arguments()
 
         self.insn = new_phi
@@ -305,7 +312,7 @@ class SSAInstruction(object):
         return self._return_value
 
     @return_value.setter
-    def return_value(self, v : StackValue) -> None:
+    def return_value(self, v: StackValue) -> None:
         self._return_value = v
 
         if v is not None:
@@ -323,7 +330,7 @@ class SSAInstruction(object):
             a, update = arg.resolve()
             if update:
                 dirty = True
-                #print(f"Replacing argument: {arg} with {a}")
+                # print(f"Replacing argument: {arg} with {a}")
                 self.replace_argument(arg, a)
 
         return dirty
@@ -378,20 +385,21 @@ class SSAInstruction(object):
         except:
             pass
 
-    def add_comment(self, comment : str) -> None:
+    def add_comment(self, comment: str) -> None:
         self.comment = comment
+
 
 class SSABasicBlock(object):
     function: 'SSAFunction'
     offset: int
-    insns : List[SSAInstruction]
-    end : int
+    insns: List[SSAInstruction]
+    end: int
 
-    in_edges : Set['SSABasicBlock']
-    fallthrough_edge : Optional['SSABasicBlock']
-    jump_edges : Set['SSABasicBlock']
+    in_edges: Set['SSABasicBlock']
+    fallthrough_edge: Optional['SSABasicBlock']
+    jump_edges: Set['SSABasicBlock']
 
-    stack : List[StackValue]
+    stack: List[StackValue]
 
     def __init__(self, offset: int, function: 'SSAFunction') -> None:
         self.offset = offset
@@ -415,25 +423,25 @@ class SSABasicBlock(object):
             insn_str = '\n' + insn_str + '\n'
 
         if self.fallthrough_edge:
-            out_block : SSABasicBlock = cast(SSABasicBlock, self.fallthrough_edge)
-            out0 : str = f"{out_block.offset:#x}"
+            out_block: SSABasicBlock = cast(SSABasicBlock, self.fallthrough_edge)
+            out0: str = f"{out_block.offset:#x}"
         else:
             out0 = "None"
 
         if len(self.jump_edges) > 0:
             jump_targets = [f"{x.offset:#x}" for x in self.jump_edges]
-            out1 : str = "[" + ','.join(jump_targets) + "]"
+            out1: str = "[" + ','.join(jump_targets) + "]"
         else:
             out1 = "None"
 
         in_edges = ','.join([f"{x.offset:#x}" for x in self.in_edges])
 
-        return f"<SSABasicBlock offset:{self.offset:#x} "\
-                f"num_insns:{len(self.insns)} " \
-                f"in: [{in_edges}] " \
-                f"insns:[{insn_str}] "\
-                f"fallthrough:{out0} "\
-                f"jumps:{out1}>"
+        return f"<SSABasicBlock offset:{self.offset:#x} " \
+               f"num_insns:{len(self.insns)} " \
+               f"in: [{in_edges}] " \
+               f"insns:[{insn_str}] " \
+               f"fallthrough:{out0} " \
+               f"jumps:{out1}>"
 
     def __iter__(self) -> Iterator[SSAInstruction]:
         for insn in self.insns:
@@ -450,7 +458,7 @@ class SSABasicBlock(object):
 
     def add_jump_target(self, offset: int) -> bool:
 
-        target_block : SSABasicBlock = self.function.blockmap.get(offset, None)
+        target_block: SSABasicBlock = self.function.blockmap.get(offset, None)
         if target_block is None:
             # Likely a jump to an invalid instruction
             target_block = self.invalid_jumpdest(offset)
@@ -464,9 +472,9 @@ class SSABasicBlock(object):
 
         return before_len != len(self.jump_edges)
 
-    def invalid_jumpdest(self, offset : int) -> 'SSABasicBlock':
+    def invalid_jumpdest(self, offset: int) -> 'SSABasicBlock':
         new_block = SSABasicBlock(offset, self.function)
-        insn = EVMAsm.disassemble_one(iter('\xfe'), offset)
+        insn = EVMAsm.disassemble_one('\xfe', offset)
         invalid_insn = SSAInstruction(insn, new_block)
         new_block.insns.append(invalid_insn)
 
@@ -475,7 +483,7 @@ class SSABasicBlock(object):
         return new_block
 
     def set_fallthrough_target(self, other: int) -> None:
-        target_block : SSABasicBlock = self.function.blockmap[other]
+        target_block: SSABasicBlock = self.function.blockmap[other]
 
         self.fallthrough_edge = target_block
         target_block.in_edges.add(self)
@@ -498,18 +506,17 @@ class SSABasicBlock(object):
                 break
 
 
-
 class SSAFunction(object):
     blocks: List[SSABasicBlock]
     blockmap: Dict[int, SSABasicBlock]
-    name : str
-    _hash : int
+    name: str
+    _hash: int
     offset: int
-    phis : Dict[StackValue, SSAInstruction]
+    phis: Dict[StackValue, SSAInstruction]
 
-    num_values : int = 0
+    num_values: int = 0
 
-    def __init__(self, offset: int, name : str = "_dispatch", hash : int = 0) -> None:
+    def __init__(self, offset: int, name: str = "_dispatch", hash: int = 0) -> None:
         self.name = name
         self.hash = hash
         self.offset = offset
@@ -520,11 +527,11 @@ class SSAFunction(object):
 
     def __repr__(self) -> str:
         blocks = '\n'.join([f'{x}' for x in self.blocks])
-        return f"<SSAFunction name:{self.name} "\
-                f"hash:{self.hash:#x} "\
-                f"offset:{self.offset:#x} "\
-                f"num_blocks:{len(self.blocks)} "\
-                f"blocks:{blocks}>"
+        return f"<SSAFunction name:{self.name} " \
+               f"hash:{self.hash:#x} " \
+               f"offset:{self.offset:#x} " \
+               f"num_blocks:{len(self.blocks)} " \
+               f"blocks:{blocks}>"
 
     def __iter__(self) -> Iterator[SSABasicBlock]:
         for block in self.blocks:
@@ -538,7 +545,7 @@ class SSAFunction(object):
         return self._hash
 
     @hash.setter
-    def hash(self, v : int) -> None:
+    def hash(self, v: int) -> None:
         self._hash = v
         if v != 0:
             self.name = hashes.get(v, '')
@@ -554,7 +561,7 @@ class SSAFunction(object):
         if self.blockmap.get(block.offset):
             return
 
-        #print(f"New block: {block.offset:#x}")
+        # print(f"New block: {block.offset:#x}")
 
         self.blocks.append(block)
         self.blockmap[block.offset] = block
@@ -571,7 +578,6 @@ class SSAFunction(object):
         self.phis = {}
         self.num_values = 0
 
-
     def optimize(self) -> None:
         for block in self:
             for insn in block:
@@ -581,7 +587,7 @@ class SSAFunction(object):
                         logger.debug(f"Replacing {reader} arg with {arg}")
                         reader.replace_argument(insn.return_value, arg)
 
-    def trace_blocks(self, start : SSABasicBlock, extracted : Optional[Set[SSABasicBlock]] = None) -> List[SSABasicBlock]:
+    def trace_blocks(self, start: SSABasicBlock, extracted: Optional[Set[SSABasicBlock]] = None) -> List[SSABasicBlock]:
         if extracted is None:
             extracted = set()
 
@@ -597,7 +603,7 @@ class SSAFunction(object):
 
         return extracted
 
-    def remove_blocks(self, blocks : List[SSABasicBlock]) -> None:
+    def remove_blocks(self, blocks: List[SSABasicBlock]) -> None:
         for block in blocks:
             self.blocks.remove(block)
 
@@ -618,7 +624,7 @@ class SSAFunction(object):
 
         return list(locations)
 
-    def storage_at(self, offset : int) -> Iterable[SSAInstruction]:
+    def storage_at(self, offset: int) -> Iterable[SSAInstruction]:
         for block in self:
             for insn in block:
                 if insn.insn.name not in ('SSTORE', 'SLOAD'):
@@ -663,7 +669,7 @@ class SSAFunction(object):
                     # handle sha3
                     (start, end) = insn.arguments[:2]
                     if not isinstance(start, ConcreteStackValue) or \
-                        not isinstance(end, ConcreteStackValue):
+                            not isinstance(end, ConcreteStackValue):
                         continue
 
                     if offset >= start.concrete_value and offset < end.concrete_value:
@@ -704,7 +710,6 @@ class SSAFunction(object):
 
         return rv, insns_that_send
 
-
     @functools.lru_cache(maxsize=16)
     def calls(self) -> List[SSAInstruction]:
         rv = []
@@ -714,7 +719,6 @@ class SSAFunction(object):
                     rv.append(insn)
 
         return rv
-
 
     @functools.lru_cache(maxsize=16)
     def arguments(self) -> List[Tuple[int, int]]:
@@ -745,9 +749,9 @@ class SSAFunction(object):
         return sorted(list(args), key=lambda x: x[0])
 
 
-
 class InternalCall(SSAInstruction):
-    target : SSAFunction
+    target: SSAFunction
+
     def __init__(self, target: SSAFunction, args: int, offset: int, parent_block: 'SSABasicBlock') -> None:
         super().__init__(InternalCallOp(args, offset), parent_block)
         self.target = target
@@ -766,8 +770,10 @@ class InternalCall(SSAInstruction):
 
         return rv
 
+
 class ConditionalInternalCall(SSAInstruction):
-    target : SSAFunction
+    target: SSAFunction
+
     def __init__(self, target: SSAFunction, args: int, offset: int, parent_block: 'SSABasicBlock') -> None:
         super().__init__(MethodDispatch(args, offset), parent_block)
         self.target = target
