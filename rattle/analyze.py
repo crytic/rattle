@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from .recover import *
-from typing import List, Dict, Tuple, Optional, Set, cast
 
 logger = logging.getLogger(__name__)
 
+
 class UseDefGraph(object):
-    value : StackValue
-    def __init__(self, value : StackValue) -> None:
+    value: StackValue
+
+    def __init__(self, value: StackValue) -> None:
         self.value = value
 
     def dot(self) -> str:
@@ -48,12 +49,14 @@ class UseDefGraph(object):
 
         return rv
 
+
 class DefUseGraph(object):
-    value : StackValue
-    def __init__(self, value : StackValue) -> None:
+    value: StackValue
+
+    def __init__(self, value: StackValue) -> None:
         self.value = value
 
-    def dot(self, filt = None) -> str:
+    def dot(self, filt=None) -> str:
         if filt is None:
             filt = lambda x: True
 
@@ -92,8 +95,9 @@ class DefUseGraph(object):
 
         return rv
 
+
 class ControlFlowGraph(object):
-    def __init__(self, function : SSAFunction) -> None:
+    def __init__(self, function: SSAFunction) -> None:
         self.function = function
 
     def dot(self) -> str:
@@ -108,10 +112,9 @@ class ControlFlowGraph(object):
         offset = f'Start: {self.function.offset:#x}'
         arguments = f'Arguments: {self.function.arguments()}'
         storage = f'Storage: {self.function.storage}'
-        #memory = f'Memory: {self.function.memory}'
+        # memory = f'Memory: {self.function.memory}'
 
         function_desc = [name, hash, offset, arguments, storage]
-
 
         rv += f'ff [label="{{' + '\\l'.join(function_desc) + '\\l}}", shape="record" ];'
 

@@ -353,9 +353,20 @@ class SSAInstruction(object):
             if len(self.return_value.readers()) == 0:
                 self.remove_from_parent()
 
-        elif len(self.arguments) == 1:
-            arg = self.arguments[0]
+        else:
+            # Maybe we can remove args from phi function that has a CALLDATALOAD(0) user/reader as arg
+            # Remove duplicates
+            self.arguments = list(set(self.arguments))
 
+            # Try to remove phi function if all its arguments are the same
+            self.remove_phi_function()
+
+        return
+
+    def remove_phi_function(self):
+        """Returns True if its remove phi function, otherwise returns False"""
+        if all(self.arguments[0] == rest for rest in self.arguments):
+            arg = self.arguments[0]
             self.remove_from_parent()
             self.clear_arguments()
 
@@ -363,19 +374,24 @@ class SSAInstruction(object):
                 reader.replace_argument(self.return_value, arg)
                 reader.canonicalize()
 
-        else:
-            # TODO: collapse phis that reference other phis
-            pass
+            return True
 
-        return
+        return False
 
     def replace_uses_with(self, sv: StackValue) -> None:
 
         if self.return_value is None:
             return
 
-        for reader in (self.return_value.readers()):
-            reader.replace_argument(self.return_value, sv)
+        for reader in (self.return_value.readers()).copy():
+            # Remove duplicates concrete values in phis functions. Ex: phi(#0, %332, #0) became phi(#0, %332)
+            if reader.insn.name == 'PHI' and isinstance(sv, ConcreteStackValue):
+                if sv not in reader.arguments:
+                    reader.replace_argument(self.return_value, sv)
+                else:
+                    reader.remove_argument(self.return_value)
+            else:
+                reader.replace_argument(self.return_value, sv)
 
         self.clear_arguments()
 
@@ -457,11 +473,14 @@ class SSABasicBlock(object):
         self.stack.append(item)
 
     def add_jump_target(self, offset: int) -> bool:
-
+        # We do not support jumps to the beginning of the contract
+        if offset == 0:
+            return False
         target_block: SSABasicBlock = self.function.blockmap.get(offset, None)
         if target_block is None:
             # Likely a jump to an invalid instruction
-            target_block = self.invalid_jumpdest(offset)
+            # target_block = self.invalid_jumpdest(offset)
+            return False
 
         if self.fallthrough_edge == target_block:
             return False
@@ -605,7 +624,10 @@ class SSAFunction(object):
 
     def remove_blocks(self, blocks: List[SSABasicBlock]) -> None:
         for block in blocks:
-            self.blocks.remove(block)
+            try:
+                self.blocks.remove(block)
+            except:
+                pass
 
     @property
     @functools.lru_cache(maxsize=16)
@@ -672,7 +694,7 @@ class SSAFunction(object):
                             not isinstance(end, ConcreteStackValue):
                         continue
 
-                    if offset >= start.concrete_value and offset < end.concrete_value:
+                    if start.concrete_value <= offset < end.concrete_value:
                         yield insn
 
                 elif insn.insn.name not in ('MSTORE', 'MLOAD'):

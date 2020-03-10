@@ -273,20 +273,18 @@ class InternalRecover(object):
 
         method_blocks = function.trace_blocks(start_block)
 
-        # Make sure the fallthrough blocks are self contained and not inlined from somewhere else
-        block_starts: Set[int] = set()
-        method_in_edges: Set[int] = set()
-        for block in method_blocks:
-            block_starts.add(block.offset)
-            method_in_edges |= set([x.offset for x in block.in_edges])
+        to_remove = len(method_blocks)
+        blocks_to_remove = list(method_blocks)
+        for func in self.functions:
+            prev_len = len(func.blocks)
+            func.remove_blocks(blocks_to_remove)
+            if to_remove != 0:
+                to_remove -= prev_len - len(func.blocks)
 
-        all_in_edges = method_in_edges.difference(block_starts)
-        if all_in_edges != set([x.offset for x in start_block.in_edges]):
+        if to_remove != 0:
             logger.warning(
-                f"Identified a method we couldn't extract. In edges were not complete: got {[x.offset for x in list(start_block.in_edges)]} needed {list(all_in_edges)}")
+                f"Were not possible to remove blocks from another functions to include in function that start at offset: {method_start}")
             return None
-
-        function.remove_blocks(list(method_blocks))
 
         new_method = SSAFunction(offset=method_start)
         for block in sorted(method_blocks, key=lambda x: x.offset):
@@ -294,12 +292,35 @@ class InternalRecover(object):
 
         # Unlink blocks and inject calls
         edge: SSABasicBlock
-        for edge in start_block.in_edges:
+        for edge in start_block.in_edges.copy():
             pc = edge.offset
             last_insn = None
             if len(edge.insns) > 0:
                 last_insn = edge.insns[-1]
                 pc = last_insn.offset
+
+            if start_block in edge.jump_edges:
+                if last_insn is None:
+                    continue
+
+                if not last_insn.insn.is_branch:
+                    continue
+
+                if last_insn.insn.name not in {'JUMP', 'JUMPI'}:
+                    logger.warning(f"Unknown branch instruction. Instruction name is {last_insn.insn.name}")
+                    continue
+
+                edge.jump_edges.remove(start_block)
+                last_insn.remove_from_parent()
+
+                if last_insn.insn.name == 'JUMP':
+                    call = InternalCall(new_method, 0, pc, edge)
+                else:
+                    call = ConditionalInternalCall(new_method, 1, pc, edge)
+                    call.append_argument(last_insn.arguments[1])
+
+                last_insn.clear_arguments()
+                edge.insns.append(call)
 
             if edge.fallthrough_edge == start_block:
                 edge.fallthrough_edge = None
@@ -307,22 +328,7 @@ class InternalRecover(object):
                 icall = InternalCall(new_method, 0, pc, edge)
                 edge.insns.append(icall)
 
-            if start_block in edge.jump_edges:
-                edge.jump_edges.remove(start_block)
-
-                if last_insn is None:
-                    continue
-
-                if last_insn.insn.name != 'JUMPI':
-                    continue
-
-                last_insn.remove_from_parent()
-
-                icondcall = ConditionalInternalCall(new_method, 1, pc, edge)
-                icondcall.append_argument(last_insn.arguments[1])
-                edge.insns.append(icondcall)
-
-        start_block.in_edges = set()
+            start_block.in_edges.remove(edge)
 
         return new_method
 
@@ -364,13 +370,25 @@ class InternalRecover(object):
 
                     eq_readers = list(user.return_value.readers())
                     for jump in eq_readers:
+                        if isinstance(jump, ConditionalInternalCall) or isinstance(jump, InternalCall):
+                            if jump.target.hash != hash:
+                                method = SSAFunction(offset=jump.target.offset, name='', hash=hash)
+                                for b in jump.target.blocks:
+                                    method.add_block(b)
+                                self.functions.append(method)
+                                jump.target = method
+                            continue
                         if jump.insn.name != "JUMPI":
                             continue
 
                         # hash -> jumpi target
 
                         assert (isinstance(jump.arguments[0], ConcreteStackValue))
-                        jump_target_block = list(jump.parent_block.jump_edges)[0]
+                        jump_target_block = list(jump.parent_block.jump_edges)
+                        if len(jump_target_block) <= 0:  # This block has no block to jump
+                            logger.warning(f"Block at offset {jump.parent_block.offset} has no block to jump")
+                            continue
+                        jump_target_block = jump_target_block[0]
                         jump_target = jump_target_block.offset
 
                         logger.debug(f"Method identified with hash {hash:#x} starting at block {jump_target:#x}")
@@ -413,7 +431,8 @@ class InternalRecover(object):
 
                     jumps = comp.return_value.readers()
                     for jump in list(jumps):
-                        if not isinstance(jump.arguments[0], ConcreteStackValue):
+                        if not (isinstance(jump, ConditionalInternalCall) or isinstance(jump.arguments[0],
+                                                                                        ConcreteStackValue)):
                             continue
 
                         jump_target_block = jump.parent_block.fallthrough_edge
@@ -437,7 +456,13 @@ class InternalRecover(object):
                 if not insn.insn.is_branch:
                     continue
 
+                if len(insn.arguments) < 1:
+                    continue
+
                 writer = cast(SSAInstruction, insn.arguments[0].writer)
+
+                if writer is None:
+                    continue
 
                 if not isinstance(writer.insn, PHIInstruction):
                     continue
@@ -641,6 +666,10 @@ class InternalRecover(object):
 
                 insn = block.insns[0]
                 if insn.insn.name != 'JUMP':
+                    continue
+
+                # Remove jump block only if its argument is concrete value
+                if len(insn.arguments) <= 0 or not isinstance(insn.arguments[0], ConcreteStackValue):
                     continue
 
                 # Block should have in edges
