@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 import argparse
-import logging
-import rattle
 import json
+import logging
+import os
 import subprocess
-import shutil
+import sys
 import tempfile
+
+import rattle
 
 # This might not be true, but I have a habit of running the wrong python version and this is to save me frustration
 assert (sys.version_info.major >= 3 and sys.version_info.minor >= 6)
@@ -17,11 +17,12 @@ assert (sys.version_info.major >= 3 and sys.version_info.minor >= 6)
 logger = logging.getLogger(__name__)
 
 
-def main() -> None: # run me with python3, fool
+def main() -> None:  # run me with python3, fool
     parser = argparse.ArgumentParser(
         description='rattle ethereum evm binary analysis')
     parser.add_argument('--input', '-i', type=argparse.FileType('rb'), help='input evm file')
     parser.add_argument('--optimize', '-O', action='store_true', help='optimize resulting SSA form')
+    parser.add_argument('--no-split-functions', '-nsf', action='store_false', help='split functions')
     parser.add_argument('--log', type=argparse.FileType('w'), default=sys.stdout,
                         help='log output file (default stdout)')
     parser.add_argument('--verbosity', '-v', type=str, default="None",
@@ -45,7 +46,8 @@ def main() -> None: # run me with python3, fool
     logging.basicConfig(stream=args.log, level=loglevel)
     logger.info(f"Rattle running on input: {args.input.name}")
 
-    ssa = rattle.Recover(args.input.read(), edges=edges, optimize=args.optimize)
+    ssa = rattle.Recover(args.input.read(), edges=edges, optimize=args.optimize,
+                         split_functions=args.no_split_functions)
 
     print(ssa)
 
@@ -54,7 +56,6 @@ def main() -> None: # run me with python3, fool
         print(f'\t{function.desc()} argument offsets:{function.arguments()}')
 
     print("")
-
 
     print("Storage Locations: " + repr(ssa.storage))
     print("Memory Locations: " + repr(ssa.memory))
@@ -72,7 +73,6 @@ def main() -> None: # run me with python3, fool
             for insn in ssa.storage_at(location):
                 print(f'\t\t{insn.offset:#x}: {insn}')
             print('\n')
-
 
     '''
     print("Tracing SLOAD(0) (ignoring ANDs)")
@@ -116,7 +116,6 @@ def main() -> None: # run me with python3, fool
                 print("")
     else:
         print("[+] Contract can not send ether.")
-
 
     print("[+] Contract calls:")
     for call in ssa.calls():
@@ -172,7 +171,6 @@ def main() -> None: # run me with python3, fool
 
         print("")
 
-
     for function in ssa.functions:
         g = rattle.ControlFlowGraph(function)
         t = tempfile.NamedTemporaryFile(suffix='.dot', mode='w')
@@ -198,6 +196,7 @@ def main() -> None: # run me with python3, fool
     # Maybe a way to query the current value of a storage location out of some api (can infra do that?)
     # print(loc0.value.top())
     # print(loc0.value.attx(012323213))
+
 
 if __name__ == '__main__':
     main()

@@ -17,7 +17,7 @@ class InternalRecover(object):
     edges: List[Tuple[int, int]]
     insns: Dict[int, EVMAsm.EVMInstruction]
 
-    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False) -> None:
+    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False, split_functions=True) -> None:
         logger.debug(f'{len(filedata)} bytes of input data')
 
         # Remove swarm hash if its there
@@ -34,7 +34,8 @@ class InternalRecover(object):
 
         self.guarenteed_optimizations()
 
-        self.split_functions(dispatch)
+        if split_functions:
+            self.split_functions(dispatch)
 
         # Remove stop-only blocks from dispatch
         blocks_to_remove = []
@@ -746,8 +747,8 @@ class InternalRecover(object):
 class Recover(object):
     internal: InternalRecover
 
-    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False) -> None:
-        self.internal = InternalRecover(filedata, edges, optimize)
+    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False, split_functions=True) -> None:
+        self.internal = InternalRecover(filedata, edges, optimize, split_functions)
 
     @property
     def functions(self) -> List[SSAFunction]:

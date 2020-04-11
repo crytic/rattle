@@ -8,7 +8,7 @@ Rattle is an EVM binary static analysis framework designed to work on deployed s
 ## Example
 
 ```bash
-$ python3 rattle-cli.py --input inputs/kingofether/KingOfTheEtherThrone.bin -O
+$ python3 rattle-cli.py --input inputs/kingofether/KingOfTheEtherThrone.bin -O -SP
 ```
 
 Would produce a register machine output like this:
