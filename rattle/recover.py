@@ -4,7 +4,7 @@
 import binascii
 import copy
 
-import cbor
+import cbor2
 
 from .ssa import *
 
@@ -81,7 +81,7 @@ class InternalRecover(object):
 
         # Parse it to see if it is indeed valid metadata
         try:
-            cbor.loads(binascii.unhexlify(metadata))
+            cbor2.loads(binascii.unhexlify(metadata))
         except:
             logger.warning('Error parsing contract metadata. Ignoring.')
             return bytecode
