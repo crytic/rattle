@@ -29,6 +29,15 @@ $ solc --bin-runtime KingOfTheEtherThrone.sol 2>/dev/null | tail -n1 > contract.
 
 * python3
 * graphviz
+* cbor2
+* pyevmasm
+
+To install the python dependencies, run these commands:
+```console
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+```
 
 ## Troubleshooting
 
