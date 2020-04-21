@@ -1,38 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from rattle.evmasm import EVMAsm
-from .ssa import *
-import logging
-import struct
+import binascii
 import copy
 
-from typing import List, Dict, Tuple, Optional, Set, cast, Iterable
+import cbor2
+
+from .ssa import *
 
 logger = logging.getLogger(__name__)
 
+
 class InternalRecover(object):
-    filedata: List[bytes]
+    filedata: bytes
     functions: List[SSAFunction]
     edges: List[Tuple[int, int]]
-    insns: Dict[int, EVMAsm.Instruction]
+    insns: Dict[int, EVMAsm.EVMInstruction]
 
-    def __init__(self, filedata: List[bytes], edges: List[Tuple[int,int]], optimize=False) -> None:
+    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False, split_functions=True) -> None:
         logger.debug(f'{len(filedata)} bytes of input data')
-        self.filedata = list(map(lambda x: struct.pack("B", x), filedata))
 
         # Remove swarm hash if its there
-        filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
-        while True:
-            if '\xa1ebzzr0' in filestring:
-                # replace the swarm hash with stops
-                offset = filestring.find('\xa1ebzzr0')
-                self.filedata = self.filedata[:offset]
-                self.filedata.extend([b'\x00', ] * 43)
-                self.filedata.extend(self.filedata[offset + 43:])
-                filestring = ''.join([chr(int.from_bytes(x, byteorder='little')) for x in self.filedata])
-            else:
-                break
+        self.filedata = self.remove_metadata(filedata)
 
         dispatch = SSAFunction(0)
         self.functions = [dispatch, ]
@@ -45,7 +34,8 @@ class InternalRecover(object):
 
         self.guarenteed_optimizations()
 
-        self.split_functions(dispatch)
+        if split_functions:
+            self.split_functions(dispatch)
 
         # Remove stop-only blocks from dispatch
         blocks_to_remove = []
@@ -70,6 +60,34 @@ class InternalRecover(object):
 
         dispatch.remove_blocks(blocks_to_remove)
 
+    @staticmethod
+    def remove_metadata(bytecode: bytes):
+        bytecode = bytecode.decode().rstrip()
+        # Bail on empty bytecode
+        if not bytecode or len(bytecode) <= 2:
+            return bytecode
+
+        # Gather length of CBOR metadata from the end of the file
+        raw_length = bytecode[-4:]
+        length = int(raw_length, base=16)
+
+        # Bail on unreasonable values for length (meaning we read something else other than metadata length)
+        if length * 2 > len(bytecode) - 4:
+            return bytecode
+
+        # Gather what we assume is the CBOR encoded metadata, and try to parse it
+        metadata_start = len(bytecode) - length * 2 - 4
+        metadata = bytecode[metadata_start: len(bytecode) - 4]
+
+        # Parse it to see if it is indeed valid metadata
+        try:
+            cbor2.loads(binascii.unhexlify(metadata))
+        except:
+            logger.warning('Error parsing contract metadata. Ignoring.')
+            return bytecode
+
+        # Return bytecode without it
+        return bytecode[0:metadata_start].encode()
 
     def recover(self, function: SSAFunction) -> None:
         self.identify_blocks(function)
@@ -89,13 +107,12 @@ class InternalRecover(object):
             except NewEdgeException as e:
                 continue
 
-
     def recover_loop(self, function: SSAFunction) -> None:
         function.clear()
         self.repopulate_blocks(function)
 
         for block in function:
-            for insn in list(block.insns): # make a new list because we modify it during iterating
+            for insn in list(block.insns):  # make a new list because we modify it during iterating
 
                 if insn.insn.is_push:
                     # Push is special, we keep it around so we know where constants are declared
@@ -145,21 +162,21 @@ class InternalRecover(object):
     def identify_blocks(self, function: SSAFunction) -> None:
         # Initial function that identifies and populate blocks
 
-        insns = list(EVMAsm.disassemble_all(self.filedata, 0))
-        self.insns = {x.offset : x for x in insns}
+        insns = list(EVMAsm.disassemble_all(binascii.unhexlify(self.filedata), 0))
+        self.insns = {x.pc: x for x in insns}
 
         blocks_set: Set[int] = set()
         blocks_set.add(0)  # First insn starts a block
 
-        max_pc : int = max([x.offset + x.size for x in insns])
+        max_pc: int = max([x.pc + x.size for x in insns])
 
-        for offset, insn in self.insns.items():
+        for pc, insn in self.insns.items():
             if insn.name == "JUMPDEST":
-                blocks_set.add(offset)
+                blocks_set.add(pc)
             elif insn.is_terminator and \
-                    (insn.offset + insn.size) < max_pc:
+                    (insn.pc + insn.size) < max_pc:
                 # insn after a terminator is always a new block
-                blocks_set.add(offset + 1)
+                blocks_set.add(pc + 1)
 
         blocks_list = list(sorted(blocks_set))
 
@@ -170,7 +187,7 @@ class InternalRecover(object):
             else:
                 end = max_pc
 
-            for idx in [x.offset for x in insns if x.offset >= start and x.offset < end]:
+            for idx in [x.pc for x in insns if start <= x.pc < end]:
                 block.insns.append(SSAInstruction(self.insns[idx], block))
 
             block.end = end
@@ -189,8 +206,7 @@ class InternalRecover(object):
             start = block.offset
             end = block.end
 
-            for insn in [insn for offset, insn in self.insns.items() \
-                         if offset >= start and offset < end]:
+            for insn in [insn for pc, insn in self.insns.items() if start <= pc < end]:
                 block.insns.append(SSAInstruction(insn, block))
 
     def resolve_xrefs(self, function: SSAFunction) -> bool:
@@ -200,10 +216,10 @@ class InternalRecover(object):
             if len(block.insns) == 0:
                 continue
 
-            terminator : SSAInstruction = block.insns[-1]
+            terminator: SSAInstruction = block.insns[-1]
 
             if terminator.insn.name in ("JUMP", "JUMPI"):
-                target : StackValue = terminator.arguments[0]
+                target: StackValue = terminator.arguments[0]
 
                 if isinstance(target, ConcreteStackValue):
                     dirty |= block.add_jump_target(target.concrete_value)
@@ -223,7 +239,7 @@ class InternalRecover(object):
                                 if arg.writer is None:
                                     continue
 
-                                dirty |= handle_writers(arg.writer, depth-1)
+                                dirty |= handle_writers(arg.writer, depth - 1)
 
                         return dirty
 
@@ -245,47 +261,67 @@ class InternalRecover(object):
 
         return dirty
 
-    def _resolve_unresolved_stack(self, slot : StackValue) -> Tuple[StackValue, bool]:
+    def _resolve_unresolved_stack(self, slot: StackValue) -> Tuple[StackValue, bool]:
         return slot, False
 
+    def split_functions(self, function: SSAFunction) -> List[SSAFunction]:
+        self.split_dispatched_methods(function)
 
-    def split_functions(self, function : SSAFunction) -> List[SSAFunction]:
-        functions = self.split_dispatched_methods(function)
+        return self.functions
 
-        return functions
-
-    def extract_method(self, function: SSAFunction, method_start : int) -> Optional[SSAFunction]:
+    def extract_method(self, function: SSAFunction, method_start: int) -> Optional[SSAFunction]:
         start_block = function.blockmap[method_start]
 
         method_blocks = function.trace_blocks(start_block)
 
-        # Make sure the fallthrough blocks are self contained and not inlined from somewhere else
-        block_starts: Set[int] = set()
-        method_in_edges: Set[int] = set()
-        for block in method_blocks:
-            block_starts.add(block.offset)
-            method_in_edges |= set([x.offset for x in block.in_edges])
+        to_remove = len(method_blocks)
+        blocks_to_remove = list(method_blocks)
+        for func in self.functions:
+            prev_len = len(func.blocks)
+            func.remove_blocks(blocks_to_remove)
+            if to_remove != 0:
+                to_remove -= prev_len - len(func.blocks)
 
-        all_in_edges = method_in_edges.difference(block_starts)
-        if all_in_edges != set([x.offset for x in start_block.in_edges]):
+        if to_remove != 0:
             logger.warning(
-                f"Identified a method we couldn't extract. In edges were not complete: got {[x.offset for x in list(start_block.in_edges)]} needed {list(all_in_edges)}")
+                f"Were not possible to remove blocks from another functions to include in function that start at offset: {method_start}")
             return None
-
-        function.remove_blocks(list(method_blocks))
 
         new_method = SSAFunction(offset=method_start)
         for block in sorted(method_blocks, key=lambda x: x.offset):
             new_method.add_block(block)
 
         # Unlink blocks and inject calls
-        edge : SSABasicBlock
-        for edge in start_block.in_edges:
+        edge: SSABasicBlock
+        for edge in start_block.in_edges.copy():
             pc = edge.offset
             last_insn = None
             if len(edge.insns) > 0:
                 last_insn = edge.insns[-1]
                 pc = last_insn.offset
+
+            if start_block in edge.jump_edges:
+                if last_insn is None:
+                    continue
+
+                if not last_insn.insn.is_branch:
+                    continue
+
+                if last_insn.insn.name not in {'JUMP', 'JUMPI'}:
+                    logger.warning(f"Unknown branch instruction. Instruction name is {last_insn.insn.name}")
+                    continue
+
+                edge.jump_edges.remove(start_block)
+                last_insn.remove_from_parent()
+
+                if last_insn.insn.name == 'JUMP':
+                    call = InternalCall(new_method, 0, pc, edge)
+                else:
+                    call = ConditionalInternalCall(new_method, 1, pc, edge)
+                    call.append_argument(last_insn.arguments[1])
+
+                last_insn.clear_arguments()
+                edge.insns.append(call)
 
             if edge.fallthrough_edge == start_block:
                 edge.fallthrough_edge = None
@@ -293,26 +329,11 @@ class InternalRecover(object):
                 icall = InternalCall(new_method, 0, pc, edge)
                 edge.insns.append(icall)
 
-            if start_block in edge.jump_edges:
-                edge.jump_edges.remove(start_block)
-
-                if last_insn is None:
-                    continue
-
-                if last_insn.insn.name != 'JUMPI':
-                    continue
-
-                last_insn.remove_from_parent()
-
-                icondcall = ConditionalInternalCall(new_method, 1, pc, edge)
-                icondcall.append_argument(last_insn.arguments[1])
-                edge.insns.append(icondcall)
-
-        start_block.in_edges = set()
+            start_block.in_edges.remove(edge)
 
         return new_method
 
-    def split_dispatched_methods(self, function : SSAFunction) -> None:
+    def split_dispatched_methods(self, function: SSAFunction) -> None:
         # Trace reads from calldataload(0)
         for block in function:
             for insn in block:
@@ -332,7 +353,8 @@ class InternalRecover(object):
 
                 logger.debug(f"Found calldataload(0) at {insn.offset:#x} {insn}")
                 # Find all the users of calldataload(0) while striping out div/and/etc. Users should be all EQ insns
-                users = insn.return_value.filtered_readers(lambda x: not (x.insn.is_arithmetic or x.insn.is_boolean_logic))
+                users = insn.return_value.filtered_readers(
+                    lambda x: not (x.insn.is_arithmetic or x.insn.is_boolean_logic))
 
                 for user in users:
                     if user.insn.name != 'EQ':
@@ -349,13 +371,25 @@ class InternalRecover(object):
 
                     eq_readers = list(user.return_value.readers())
                     for jump in eq_readers:
+                        if isinstance(jump, ConditionalInternalCall) or isinstance(jump, InternalCall):
+                            if jump.target.hash != hash:
+                                method = SSAFunction(offset=jump.target.offset, name='', hash=hash)
+                                for b in jump.target.blocks:
+                                    method.add_block(b)
+                                self.functions.append(method)
+                                jump.target = method
+                            continue
                         if jump.insn.name != "JUMPI":
                             continue
 
                         # hash -> jumpi target
 
-                        assert(isinstance(jump.arguments[0], ConcreteStackValue))
-                        jump_target_block = list(jump.parent_block.jump_edges)[0]
+                        assert (isinstance(jump.arguments[0], ConcreteStackValue))
+                        jump_target_block = list(jump.parent_block.jump_edges)
+                        if len(jump_target_block) <= 0:  # This block has no block to jump
+                            logger.warning(f"Block at offset {jump.parent_block.offset} has no block to jump")
+                            continue
+                        jump_target_block = jump_target_block[0]
                         jump_target = jump_target_block.offset
 
                         logger.debug(f"Method identified with hash {hash:#x} starting at block {jump_target:#x}")
@@ -368,7 +402,6 @@ class InternalRecover(object):
                         method.hash = hash
 
                         self.functions.append(method)
-
 
         # Trace reads from calldatasize() and compares against zero
         for block in function:
@@ -399,7 +432,8 @@ class InternalRecover(object):
 
                     jumps = comp.return_value.readers()
                     for jump in list(jumps):
-                        if not isinstance(jump.arguments[0], ConcreteStackValue):
+                        if not (isinstance(jump, ConditionalInternalCall) or isinstance(jump.arguments[0],
+                                                                                        ConcreteStackValue)):
                             continue
 
                         jump_target_block = jump.parent_block.fallthrough_edge
@@ -413,9 +447,7 @@ class InternalRecover(object):
                         fallthrough.name = '_fallthrough'
                         self.functions.append(fallthrough)
 
-
-
-    def split_inline_functions(self, function : SSAFunction) -> List[SSAFunction]:
+    def split_inline_functions(self, function: SSAFunction) -> List[SSAFunction]:
         # Find inline function calls
         for block in function:
             for insn in block:
@@ -425,7 +457,13 @@ class InternalRecover(object):
                 if not insn.insn.is_branch:
                     continue
 
+                if len(insn.arguments) < 1:
+                    continue
+
                 writer = cast(SSAInstruction, insn.arguments[0].writer)
+
+                if writer is None:
+                    continue
 
                 if not isinstance(writer.insn, PHIInstruction):
                     continue
@@ -464,7 +502,6 @@ class InternalRecover(object):
                 print(list([f"{x.offset:#x}" for x in blocks]))
                 print("\n\n")
 
-
     def optimize(self) -> None:
         logger.debug(f"Running optimizer!")
         self.constant_folder()
@@ -483,21 +520,21 @@ class InternalRecover(object):
                         dirty |= update
 
     def constant_folder(self) -> None:
-        worklist : List[ConcreteStackValue] = copy.copy(concrete_values)
+        worklist: List[ConcreteStackValue] = copy.copy(concrete_values)
 
         two_concrete_arguments = {
-            'EXP' : lambda x, y : x ** y,
-            'ADD' : lambda x, y : x + y,
-            'SUB' : lambda x, y : x - y,
-            'DIV' : lambda x, y : x / y,
-            'MUL' : lambda x, y : x * y,
-            'AND' : lambda x, y : x & y,
-            'XOR' : lambda x, y : x ^ y,
-            'OR'  : lambda x, y : x | y,
+            'EXP': lambda x, y: x ** y,
+            'ADD': lambda x, y: x + y,
+            'SUB': lambda x, y: x - y,
+            'DIV': lambda x, y: x / y,
+            'MUL': lambda x, y: x * y,
+            'AND': lambda x, y: x & y,
+            'XOR': lambda x, y: x ^ y,
+            'OR': lambda x, y: x | y,
         }
 
         while len(worklist) > 0:
-            item : ConcreteStackValue = worklist.pop()
+            item: ConcreteStackValue = worklist.pop()
 
             for reader in list(item.readers()):
 
@@ -519,7 +556,7 @@ class InternalRecover(object):
                             do_replace(ConcreteStackValue(op(x, y)))
                     else:
 
-                        def one_concrete_argument(symbolic_idx : int, concrete_idx : int) -> None:
+                        def one_concrete_argument(symbolic_idx: int, concrete_idx: int) -> None:
                             symbolic_arg: StackValue = reader.arguments[symbolic_idx]
                             y: int = cast(ConcreteStackValue, reader.arguments[concrete_idx]).concrete_value
 
@@ -539,17 +576,16 @@ class InternalRecover(object):
                             # Only second argument is concrete
                             one_concrete_argument(0, 1)
 
-
                 if reader.insn.name == 'NOT' and isinstance(reader.arguments[0], ConcreteStackValue):
                     x: int = cast(ConcreteStackValue, reader.arguments[0]).concrete_value
-                    do_replace(ConcreteStackValue(~x & (0x10000000000000000000000000000000000000000000000000000000000000000 - 1)))
+                    do_replace(ConcreteStackValue(
+                        ~x & (0x10000000000000000000000000000000000000000000000000000000000000000 - 1)))
 
                 if reader.insn.is_push:
                     reader.replace_uses_with(item)
                     worklist.append(item)
 
-
-    def peephole_optimizer(self, ssainsn : SSAInstruction) -> bool:
+    def peephole_optimizer(self, ssainsn: SSAInstruction) -> bool:
         # Peephole optimizer!
 
         '''
@@ -573,7 +609,8 @@ class InternalRecover(object):
                     sub_readers = list(reader.return_value.readers())
                     for sub_reader in sub_readers:
                         if sub_reader.insn.name == 'ISZERO' and sub_reader.return_value is not None:
-                            logger.debug(f"Removing redundant ISZERO(ISZERO(CMP)) instructions {ssainsn} {reader} {sub_reader}")
+                            logger.debug(
+                                f"Removing redundant ISZERO(ISZERO(CMP)) instructions {ssainsn} {reader} {sub_reader}")
                             sub_reader.replace_uses_with(ssainsn.return_value)
                             return True
 
@@ -591,9 +628,6 @@ class InternalRecover(object):
                         ssainsn.add_comment("ADDRESS")
                         reader.replace_uses_with(ssainsn.return_value)
                         return True
-
-
-
 
         '''
         Remove all operations with unused results (assuming no side-effects)
@@ -618,7 +652,7 @@ class InternalRecover(object):
         # PUSHES are lowered
         worklist: List[ConcreteStackValue] = copy.copy(concrete_values)
         while len(worklist) > 0:
-            item : ConcreteStackValue = worklist.pop()
+            item: ConcreteStackValue = worklist.pop()
 
             for reader in list(item.readers()):
                 if reader.insn.is_push:
@@ -633,6 +667,10 @@ class InternalRecover(object):
 
                 insn = block.insns[0]
                 if insn.insn.name != 'JUMP':
+                    continue
+
+                # Remove jump block only if its argument is concrete value
+                if len(insn.arguments) <= 0 or not isinstance(insn.arguments[0], ConcreteStackValue):
                     continue
 
                 # Block should have in edges
@@ -662,7 +700,7 @@ class InternalRecover(object):
                         next_block.in_edges.add(prev_block)
 
                     next_block.in_edges.remove(block)
-                    
+
                 block.fallthrough_edge = None
                 block.jump_edges.clear()
                 block.in_edges.clear()
@@ -705,11 +743,12 @@ class InternalRecover(object):
                 block.in_edges.clear()
                 function.blocks.remove(block)
 
-class Recover(object):
-    internal : InternalRecover
 
-    def __init__(self, filedata: List[bytes], edges: List[Tuple[int,int]], optimize=False) -> None:
-        self.internal = InternalRecover(filedata, edges, optimize)
+class Recover(object):
+    internal: InternalRecover
+
+    def __init__(self, filedata: bytes, edges: List[Tuple[int, int]], optimize=False, split_functions=True) -> None:
+        self.internal = InternalRecover(filedata, edges, optimize, split_functions)
 
     @property
     def functions(self) -> List[SSAFunction]:
@@ -731,7 +770,7 @@ class Recover(object):
 
         return list(locations)
 
-    def storage_at(self, offset : int) -> Iterable[SSAInstruction]:
+    def storage_at(self, offset: int) -> Iterable[SSAInstruction]:
         for function in self.internal.functions:
             for insn in function.storage_at(offset):
                 yield insn
@@ -768,4 +807,3 @@ class Recover(object):
             function_calls = function.calls()
             for call in function_calls:
                 yield call
-
