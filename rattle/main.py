@@ -58,7 +58,7 @@ def main(argv: Sequence[str] = tuple(sys.argv)) -> None:  # run me with python3,
     print(ssa)
 
     print("Identified Functions:")
-    for function in ssa.functions:
+    for function in sorted(ssa.functions, key=lambda f: f.offset):
         print(f'\t{function.desc()} argument offsets:{function.arguments()}')
 
     print("")

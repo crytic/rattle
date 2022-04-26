@@ -14,6 +14,7 @@ import rattle
 
 logger = logging.getLogger(__name__)
 
+
 class TestInputRegression(unittest.TestCase):
     INPUTS_DIR_RELATIVE_TO_THIS = '../inputs'
     EXPECTED_DIR_RELATIVE_TO_THIS = 'expected'
@@ -54,7 +55,7 @@ class TestInputRegression(unittest.TestCase):
         if not expected_file.exists():
             with expected_file.open('wt') as f:
                 f.writelines(actual_lines)
-            logger.warning(f"Expected ssa file .../{self.EXPECTED_DIR_RELATIVE_TO_THIS}{expected_file.name} "
+            logger.warning(f"Expected ssa file .../{self.EXPECTED_DIR_RELATIVE_TO_THIS}/{expected_file.name} "
                            f"does not exist, created!")
 
         # read expected file
