@@ -28,6 +28,7 @@ def main() -> None:  # run me with python3, fool
     parser.add_argument('--verbosity', '-v', type=str, default="None",
                         help='log output verbosity (None,  Critical, Error, Warning, Info, Debug)')
     parser.add_argument('--supplemental_cfg_file', type=argparse.FileType('rb'), default=None, help='optional cfg file')
+    parser.add_argument('--stdout_to', type=argparse.FileType('wt'), default=None, help='redirect stdout to file')
     args = parser.parse_args()
 
     if args.input is None:
