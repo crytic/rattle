@@ -29,8 +29,8 @@
 	<0x4b: %30 = SUB(%27, %29)>
 	<0x4d: RETURN(%29, %30)>
 ] fallthrough:None jumps:None>
-<SSABasicBlock offset:0x53 num_insns:5 in: [0xba,0x94] insns:[
-	<0x53: %67 = PHI(%66, #0)>
+<SSABasicBlock offset:0x53 num_insns:5 in: [0x94,0xba] insns:[
+	<0x53: %67 = PHI(#0, %66)>
 	<0x53: %65 = PHI(#0, %64)>
 	<0x56: %32 = LT(%65, %50)>
 	<0x57: %33 = ISZERO(%32)>
@@ -42,7 +42,7 @@
 	<0x61: JUMPI(#68, %36)>
 ] fallthrough:0x6d jumps:[0x6d]>
 <SSABasicBlock offset:0x6d num_insns:2 in: [0x5b] insns:[
-	<0x6d: %66 = PHI(%65, #3)>
+	<0x6d: %66 = PHI(#3, %65)>
 	<0x74: JUMP(#9b)>
 ] fallthrough:None jumps:[0x9b]>
 <SSABasicBlock offset:0x83 num_insns:4 in: [0x2d] insns:[
@@ -105,5 +105,5 @@ Function _fallthrough storage:
 [+] Contract can not send ether.
 [+] Contract calls:
 [+] Wrote _dispatch to output/_dispatch.png
-[+] Wrote _unknown_0x4cd13d28() to output/_unknown_0x4cd13d28().png
 [+] Wrote _fallthrough to output/_fallthrough.png
+[+] Wrote _unknown_0x4cd13d28() to output/_unknown_0x4cd13d28().png

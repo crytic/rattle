@@ -2,26 +2,47 @@
     - expected output in rattle/tests/expected/...
     - expects current directory to be rattle/tests
 """
+import logging
 import shutil
 import sys
 import unittest
 from pathlib import Path
 from tempfile import mkdtemp
-from typing import List
+from typing import List, Callable
 
 import rattle
 
+logger = logging.getLogger(__name__)
 
 class TestInputRegression(unittest.TestCase):
+    INPUTS_DIR_RELATIVE_TO_THIS = '../inputs'
+    EXPECTED_DIR_RELATIVE_TO_THIS = 'expected'
 
     def setUp(self):
         # get the used directories
         self.tests_path = Path(__file__).parent
-        self.inputs_path = self.tests_path / '../inputs'
-        self.expected_path = self.tests_path / 'expected'
+        self.inputs_path = self.tests_path / self.INPUTS_DIR_RELATIVE_TO_THIS
+        self.expected_path = self.tests_path / self.EXPECTED_DIR_RELATIVE_TO_THIS
+        self.maxDiff = 10000
 
-    def test_something(self):
-        self._single_test(self.inputs_path / 'slither_ssa_examples/free_looping.bin')
+    # limited test cases for debugging
+    # def test_examples_subset(self):
+    #     test_files = ['C.bin' ]#, 'free_looping.bin']
+    #
+    #     def path_filter(path):
+    #         return any(t == path.name for t in test_files)
+    #     # <def
+    #
+    #     self._test_example_group(file_path_filter=path_filter)
+
+    def test_all_examples_in_inputs(self):
+        self._test_example_group(file_path_filter=lambda _: True)
+
+    def _test_example_group(self, file_path_filter: Callable):
+        for bin_file in self.inputs_path.glob('*/*.bin'):
+            if file_path_filter(bin_file):
+                with self.subTest(bin_file.name):
+                    self._single_test(bin_file)
 
     def _single_test(self, bin_file: Path):
         """ run rattle on given file and compare stdout output (ssa listing) with expected output
@@ -31,12 +52,19 @@ class TestInputRegression(unittest.TestCase):
 
         # no expected file, create it
         if not expected_file.exists():
-            with expected_file.open("wt") as f:
+            with expected_file.open('wt') as f:
                 f.writelines(actual_lines)
+            logger.warning(f"Expected ssa file .../{self.EXPECTED_DIR_RELATIVE_TO_THIS}{expected_file.name} "
+                           f"does not exist, created!")
 
         # read expected file
-        with expected_file.open("rt") as f:
+        with expected_file.open('rt') as f:
             expected_lines = f.readlines()
+
+        # write actual lines for debugging
+        # actual_file = (self.expected_path / bin_file.stem).with_suffix('.actual-ssa.lst')
+        # with actual_file.open('wt') as f:
+        #     f.writelines(actual_lines)
 
         self.assertListEqual(expected_lines, actual_lines,
                              "\nExpected ssa (first line) and actual ssa differs (second line)")
