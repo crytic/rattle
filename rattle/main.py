@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 import tempfile
+from typing import Sequence
 
 import rattle
 
@@ -17,7 +18,7 @@ assert (sys.version_info.major >= 3 and sys.version_info.minor >= 6)
 logger = logging.getLogger(__name__)
 
 
-def main() -> None:  # run me with python3, fool
+def main(argv: Sequence[str] = tuple(sys.argv)) -> None:  # run me with python3, fool
     parser = argparse.ArgumentParser(
         description='rattle ethereum evm binary analysis')
     parser.add_argument('--input', '-i', type=argparse.FileType('rb'), help='input evm file')
@@ -29,12 +30,13 @@ def main() -> None:  # run me with python3, fool
                         help='log output verbosity (None,  Critical, Error, Warning, Info, Debug)')
     parser.add_argument('--supplemental_cfg_file', type=argparse.FileType('rb'), default=None, help='optional cfg file')
     parser.add_argument('--stdout_to', type=argparse.FileType('wt'), default=None, help='redirect stdout to file')
-    args = parser.parse_args()
+    args = parser.parse_args(argv[1:])
 
     if args.input is None:
         parser.print_usage()
         sys.exit(1)
 
+    orig_stdout = sys.stdout
     if args.stdout_to:
         sys.stdout = args.stdout_to
 
@@ -200,3 +202,10 @@ def main() -> None:  # run me with python3, fool
     # Maybe a way to query the current value of a storage location out of some api (can infra do that?)
     # print(loc0.value.top())
     # print(loc0.value.attx(012323213))
+
+    if args.stdout_to:
+        sys.stdout = orig_stdout
+        args.stdout_to.close()
+
+    if args.input:
+        args.input.close()
