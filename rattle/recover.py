@@ -756,7 +756,7 @@ class Recover(object):
 
     def __str__(self) -> str:
         rv = ''
-        for function in self.internal.functions:
+        for function in sorted(self.internal.functions, key=lambda f: f.offset):
             rv += str(function) + "\n\n"
         return rv
 

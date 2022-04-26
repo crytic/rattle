@@ -11,15 +11,15 @@
 	<0x17: STOP()>
 ] fallthrough:None jumps:None>
 <SSABasicBlock offset:0x24 num_insns:1 in: [0x24,0x2e] insns:[
-	<0x25: JUMP(%15)>
+	<0x25: JUMP(%14)>
 ] fallthrough:None jumps:[0x16,0x24]>
 <SSABasicBlock offset:0x26 num_insns:3 in: [0x0,0x26] insns:[
-	<0x26: %15 = PHI(#24, #16)>
-	<0x26: %46 = PHI(#2e, #1e)>
+	<0x26: %14 = PHI(#16, #24)>
+	<0x26: %46 = PHI(#1e, #2e)>
 	<0x27: JUMP(%46)>
 ] fallthrough:None jumps:[0x26,0x2e]>
 <SSABasicBlock offset:0x2e num_insns:1 in: [0x26] insns:[
-	<0x2f: JUMP(%15)>
+	<0x2f: JUMP(%14)>
 ] fallthrough:None jumps:[0x16,0x24]>>
 
 

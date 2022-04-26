@@ -17,6 +17,16 @@
 	<0xc1: INVALID()>
 ] fallthrough:None jumps:None>>
 
+<SSAFunction name:_fallthrough hash:0x0 offset:0x18 num_blocks:2 blocks:<SSABasicBlock offset:0x18 num_insns:4 in: [] insns:[
+	<0x1a: %11 = CALLDATALOAD(#0)>
+	<0x1d: %13 = SHR(#e0, %11)>
+	<0x24: %15 = EQ(#4cd13d28, %13)>
+	<0x0: ICONDCALL(_unknown_0x4cd13d28(), %15)>
+] fallthrough:0x28 jumps:None>
+<SSABasicBlock offset:0x28 num_insns:1 in: [0xf,0x18] insns:[
+	<0x2c: REVERT(#0, #0)>
+] fallthrough:None jumps:None>>
+
 <SSAFunction name: hash:0x4cd13d28 offset:0x2d num_blocks:11 blocks:<SSABasicBlock offset:0x2d num_insns:2 in: [] insns:[
 	<0x32: %20 = CALLDATASIZE()>
 	<0x37: JUMP(#83)>
@@ -73,21 +83,11 @@
 	<0xc0: JUMP(#75)>
 ] fallthrough:None jumps:[0x53]>>
 
-<SSAFunction name:_fallthrough hash:0x0 offset:0x18 num_blocks:2 blocks:<SSABasicBlock offset:0x18 num_insns:4 in: [] insns:[
-	<0x1a: %11 = CALLDATALOAD(#0)>
-	<0x1d: %13 = SHR(#e0, %11)>
-	<0x24: %15 = EQ(#4cd13d28, %13)>
-	<0x0: ICONDCALL(_unknown_0x4cd13d28(), %15)>
-] fallthrough:0x28 jumps:None>
-<SSABasicBlock offset:0x28 num_insns:1 in: [0xf,0x18] insns:[
-	<0x2c: REVERT(#0, #0)>
-] fallthrough:None jumps:None>>
-
 
 Identified Functions:
 	_dispatch argument offsets:[]
-	_unknown_0x4cd13d28() argument offsets:[(4, 36)]
 	_fallthrough argument offsets:[(0, 32)]
+	_unknown_0x4cd13d28() argument offsets:[(4, 36)]
 
 Storage Locations: []
 Memory Locations: [64, 0, 4]
@@ -100,8 +100,8 @@ Analyzing Memory Location: 64
 
 
 Function _dispatch storage:
-Function _unknown_0x4cd13d28() storage:
 Function _fallthrough storage:
+Function _unknown_0x4cd13d28() storage:
 [+] Contract can not send ether.
 [+] Contract calls:
 [+] Wrote _dispatch to output/_dispatch.png

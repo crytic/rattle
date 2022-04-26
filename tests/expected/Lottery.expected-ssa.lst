@@ -6,6 +6,82 @@
 	<0xc: ICALL(_fallthrough)>
 ] fallthrough:None jumps:[0x62]>>
 
+<SSAFunction name:_fallthrough hash:0x0 offset:0xd num_blocks:8 blocks:<SSABasicBlock offset:0xd num_insns:5 in: [] insns:[
+	<0xf: %7 = CALLDATALOAD(#0)>
+	<0x2f: %9 = DIV(%7, #100000000000000000000000000000000000000000000000000000000)>
+	<0x35: %11 = AND(#ffffffff, %9)>
+	<0x3c: %13 = EQ(#37354a68, %11)>
+	<0x0: ICONDCALL(luckyNumberOfAddress(address), %13)>
+] fallthrough:0x41 jumps:None>
+<SSABasicBlock offset:0x41 num_insns:2 in: [0xd] insns:[
+	<0x47: %16 = EQ(#41c0e1b5, %11)>
+	<0x0: ICONDCALL(kill(), %16)>
+] fallthrough:0x4c jumps:None>
+<SSABasicBlock offset:0x4c num_insns:2 in: [0x41] insns:[
+	<0x52: %19 = EQ(#80ca7aec, %11)>
+	<0x0: ICONDCALL(forceReseed(), %19)>
+] fallthrough:0x57 jumps:None>
+<SSABasicBlock offset:0x57 num_insns:2 in: [0x4c] insns:[
+	<0x5d: %22 = EQ(#d11711a2, %11)>
+	<0x0: ICONDCALL(participate(), %22)>
+] fallthrough:0x62 jumps:None>
+<SSABasicBlock offset:0x62 num_insns:4 in: [0x0,0x57] insns:[
+	<0x6c: %25 = CALLVALUE()>
+	<0x6d: %26 = LT(%25, #16345785d8a0000)>
+	<0x6e: %27 = ISZERO(%26)>
+	<0x74: JUMPI(#c7, %26)>
+] fallthrough:0x75 jumps:[0xc7]>
+<SSABasicBlock offset:0x75 num_insns:4 in: [0x62] insns:[
+	<0x7a: %31 = SLOAD(#0)    // ADDRESS>
+	<0xae: %39 = CALLER()    // ADDRESS>
+	<0xc5: %42 = EQ(%39, %31)>
+	<0xc6: %43 = ISZERO(%42)>
+] fallthrough:0xc7 jumps:None>
+<SSABasicBlock offset:0xc7 num_insns:4 in: [0x62,0x75] insns:[
+	<0xc7: %366 = PHI(%27, %43)>
+	<0xc8: %44 = ISZERO(%366)>
+	<0xcc: JUMPI(#d5, %44)>
+	<0xcc: ICALL(participate())>
+] fallthrough:None jumps:[0xd5]>
+<SSABasicBlock offset:0xd5 num_insns:1 in: [0xc7,0x31e,0x52b] insns:[
+	<0xd6: STOP()>
+] fallthrough:None jumps:None>>
+
+<SSAFunction name:luckyNumberOfAddress(address) hash:0x37354a68 offset:0xd7 num_blocks:3 blocks:<SSABasicBlock offset:0xd7 num_insns:3 in: [] insns:[
+	<0xd8: %48 = CALLVALUE()>
+	<0xda: %49 = ISZERO(%48)>
+	<0xde: JUMPI(#e3, %49)>
+] fallthrough:0xdf jumps:[0xe3]>
+<SSABasicBlock offset:0xdf num_insns:1 in: [0xd7] insns:[
+	<0xe2: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xe3 num_insns:2 in: [0xd7] insns:[
+	<0xf2: %57 = CALLDATALOAD(#4)    // ADDRESS>
+	<0x117: JUMP(#321)>
+] fallthrough:None jumps:[0x321]>>
+
+<SSAFunction name:kill() hash:0x41c0e1b5 offset:0x12e num_blocks:5 blocks:<SSABasicBlock offset:0x12e num_insns:3 in: [] insns:[
+	<0x12f: %70 = CALLVALUE()>
+	<0x131: %71 = ISZERO(%70)>
+	<0x135: JUMPI(#13a, %71)>
+] fallthrough:0x136 jumps:[0x3c0]>
+<SSABasicBlock offset:0x136 num_insns:1 in: [0x12e] insns:[
+	<0x139: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x3c0 num_insns:4 in: [0x12e] insns:[
+	<0x3c5: %248 = SLOAD(#0)    // ADDRESS>
+	<0x3f9: %256 = CALLER()    // ADDRESS>
+	<0x410: %259 = EQ(%256, %248)>
+	<0x416: JUMPI(#41b, %259)>
+] fallthrough:0x417 jumps:[0x41b]>
+<SSABasicBlock offset:0x417 num_insns:1 in: [0x3c0] insns:[
+	<0x41a: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x41b num_insns:2 in: [0x3c0] insns:[
+	<0x41c: %264 = CALLER()    // ADDRESS>
+	<0x433: SELFDESTRUCT(%264)>
+] fallthrough:None jumps:None>>
+
 <SSAFunction name:forceReseed() hash:0x80ca7aec offset:0x145 num_blocks:5 blocks:<SSABasicBlock offset:0x145 num_insns:3 in: [] insns:[
 	<0x146: %76 = CALLVALUE()>
 	<0x148: %77 = ISZERO(%76)>
@@ -55,41 +131,6 @@
 	<0x52a: JUMP(#52e)>
 ] fallthrough:None jumps:[0x52e]>>
 
-<SSAFunction name:kill() hash:0x41c0e1b5 offset:0x12e num_blocks:5 blocks:<SSABasicBlock offset:0x12e num_insns:3 in: [] insns:[
-	<0x12f: %70 = CALLVALUE()>
-	<0x131: %71 = ISZERO(%70)>
-	<0x135: JUMPI(#13a, %71)>
-] fallthrough:0x136 jumps:[0x3c0]>
-<SSABasicBlock offset:0x136 num_insns:1 in: [0x12e] insns:[
-	<0x139: REVERT(#0, #0)>
-] fallthrough:None jumps:None>
-<SSABasicBlock offset:0x3c0 num_insns:4 in: [0x12e] insns:[
-	<0x3c5: %248 = SLOAD(#0)    // ADDRESS>
-	<0x3f9: %256 = CALLER()    // ADDRESS>
-	<0x410: %259 = EQ(%256, %248)>
-	<0x416: JUMPI(#41b, %259)>
-] fallthrough:0x417 jumps:[0x41b]>
-<SSABasicBlock offset:0x417 num_insns:1 in: [0x3c0] insns:[
-	<0x41a: REVERT(#0, #0)>
-] fallthrough:None jumps:None>
-<SSABasicBlock offset:0x41b num_insns:2 in: [0x3c0] insns:[
-	<0x41c: %264 = CALLER()    // ADDRESS>
-	<0x433: SELFDESTRUCT(%264)>
-] fallthrough:None jumps:None>>
-
-<SSAFunction name:luckyNumberOfAddress(address) hash:0x37354a68 offset:0xd7 num_blocks:3 blocks:<SSABasicBlock offset:0xd7 num_insns:3 in: [] insns:[
-	<0xd8: %48 = CALLVALUE()>
-	<0xda: %49 = ISZERO(%48)>
-	<0xde: JUMPI(#e3, %49)>
-] fallthrough:0xdf jumps:[0xe3]>
-<SSABasicBlock offset:0xdf num_insns:1 in: [0xd7] insns:[
-	<0xe2: REVERT(#0, #0)>
-] fallthrough:None jumps:None>
-<SSABasicBlock offset:0xe3 num_insns:2 in: [0xd7] insns:[
-	<0xf2: %57 = CALLDATALOAD(#4)    // ADDRESS>
-	<0x117: JUMP(#321)>
-] fallthrough:None jumps:[0x321]>>
-
 <SSAFunction name:participate() hash:0xd11711a2 offset:0x166 num_blocks:23 blocks:<SSABasicBlock offset:0x118 num_insns:6 in: [0x3b8] insns:[
 	<0x11b: %64 = MLOAD(#40)>
 	<0x11f: MSTORE(%64, %246)>
@@ -105,7 +146,7 @@
 	<0x165: STOP()>
 ] fallthrough:None jumps:None>
 <SSABasicBlock offset:0x166 num_insns:5 in: [] insns:[
-	<0x166: %369 = PHI(#164, #d4)>
+	<0x166: %369 = PHI(#d4, #164)>
 	<0x172: %86 = CALLVALUE()>
 	<0x173: %87 = LT(%86, #16345785d8a0000)>
 	<0x174: %88 = ISZERO(%87)>
@@ -218,7 +259,7 @@
 <SSABasicBlock offset:0x321 num_insns:15 in: [0xe3,0x1dc] insns:[
 	<0x321: %367 = PHI(%11, %122)>
 	<0x321: %373 = PHI(%57, %124)>
-	<0x321: %374 = PHI(#1e8, #118)>
+	<0x321: %374 = PHI(#118, #1e8)>
 	<0x33c: %219 = AND(#ffffffffffffffffffffffffffffffffffffffff, %373)>
 	<0x33f: %221 = SLOAD(#1)>
 	<0x342: %223 = MLOAD(#40)>
@@ -282,55 +323,14 @@
 	<0x57f: JUMP(%376)>
 ] fallthrough:None jumps:[0x31d,0x52b]>>
 
-<SSAFunction name:_fallthrough hash:0x0 offset:0xd num_blocks:8 blocks:<SSABasicBlock offset:0xd num_insns:5 in: [] insns:[
-	<0xf: %7 = CALLDATALOAD(#0)>
-	<0x2f: %9 = DIV(%7, #100000000000000000000000000000000000000000000000000000000)>
-	<0x35: %11 = AND(#ffffffff, %9)>
-	<0x3c: %13 = EQ(#37354a68, %11)>
-	<0x0: ICONDCALL(luckyNumberOfAddress(address), %13)>
-] fallthrough:0x41 jumps:None>
-<SSABasicBlock offset:0x41 num_insns:2 in: [0xd] insns:[
-	<0x47: %16 = EQ(#41c0e1b5, %11)>
-	<0x0: ICONDCALL(kill(), %16)>
-] fallthrough:0x4c jumps:None>
-<SSABasicBlock offset:0x4c num_insns:2 in: [0x41] insns:[
-	<0x52: %19 = EQ(#80ca7aec, %11)>
-	<0x0: ICONDCALL(forceReseed(), %19)>
-] fallthrough:0x57 jumps:None>
-<SSABasicBlock offset:0x57 num_insns:2 in: [0x4c] insns:[
-	<0x5d: %22 = EQ(#d11711a2, %11)>
-	<0x0: ICONDCALL(participate(), %22)>
-] fallthrough:0x62 jumps:None>
-<SSABasicBlock offset:0x62 num_insns:4 in: [0x0,0x57] insns:[
-	<0x6c: %25 = CALLVALUE()>
-	<0x6d: %26 = LT(%25, #16345785d8a0000)>
-	<0x6e: %27 = ISZERO(%26)>
-	<0x74: JUMPI(#c7, %26)>
-] fallthrough:0x75 jumps:[0xc7]>
-<SSABasicBlock offset:0x75 num_insns:4 in: [0x62] insns:[
-	<0x7a: %31 = SLOAD(#0)    // ADDRESS>
-	<0xae: %39 = CALLER()    // ADDRESS>
-	<0xc5: %42 = EQ(%39, %31)>
-	<0xc6: %43 = ISZERO(%42)>
-] fallthrough:0xc7 jumps:None>
-<SSABasicBlock offset:0xc7 num_insns:4 in: [0x62,0x75] insns:[
-	<0xc7: %366 = PHI(%27, %43)>
-	<0xc8: %44 = ISZERO(%366)>
-	<0xcc: JUMPI(#d5, %44)>
-	<0xcc: ICALL(participate())>
-] fallthrough:None jumps:[0xd5]>
-<SSABasicBlock offset:0xd5 num_insns:1 in: [0xc7,0x31e,0x52b] insns:[
-	<0xd6: STOP()>
-] fallthrough:None jumps:None>>
-
 
 Identified Functions:
 	_dispatch argument offsets:[]
-	forceReseed() argument offsets:[]
-	kill() argument offsets:[]
-	luckyNumberOfAddress(address) argument offsets:[(4, 36)]
-	participate() argument offsets:[]
 	_fallthrough argument offsets:[(0, 32)]
+	luckyNumberOfAddress(address) argument offsets:[(4, 36)]
+	kill() argument offsets:[]
+	forceReseed() argument offsets:[]
+	participate() argument offsets:[]
 
 Storage Locations: [0, 1, 2, 3]
 Memory Locations: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
@@ -554,8 +554,6 @@ Analyzing Memory Location: 63
 Analyzing Memory Location: 64
 
 	0x4: MSTORE(#40, #80)
-	0x4f7: %313 = MLOAD(#40)
-	0x4fd: MSTORE(#40, %314)
 	0x11b: %64 = MLOAD(#40)
 	0x128: %68 = MLOAD(#40)
 	0x2a9: %176 = MLOAD(#40)
@@ -564,79 +562,81 @@ Analyzing Memory Location: 64
 	0x2ea: MSTORE(#40, %201)
 	0x342: %223 = MLOAD(#40)
 	0x356: %229 = MLOAD(#40)
+	0x4f7: %313 = MLOAD(#40)
+	0x4fd: MSTORE(#40, %314)
 	0x545: %348 = MLOAD(#40)
 	0x567: %358 = MLOAD(#40)
 
 
 
 Function _dispatch storage:
-Function forceReseed() storage:
+Function _fallthrough storage:
 	Analyzing Storage Location: 0
+		0x7a: %31 = SLOAD(#0)    // ADDRESS
+		0x3c5: %248 = SLOAD(#0)    // ADDRESS
 		0x43b: %269 = SLOAD(#0)    // ADDRESS
 		0x4af: SSTORE(#0, %285)
 		0x504: %318 = SLOAD(#0)
-		0x3c5: %248 = SLOAD(#0)    // ADDRESS
-		0x7a: %31 = SLOAD(#0)    // ADDRESS
-
-
-	Analyzing Storage Location: 1
-		0x4c0: SSTORE(#1, %293)
-		0x50e: %323 = SLOAD(#1)
-		0x33f: %221 = SLOAD(#1)
-		0x575: SSTORE(#1, %360)
-
-
-	Analyzing Storage Location: 2
-		0x4e1: SSTORE(#2, %302)
-		0x518: %328 = SLOAD(#2)
-		0x2d4: %191 = SLOAD(#2)
-		0x57c: SSTORE(#2, %364)
-
-
-	Analyzing Storage Location: 3
-		0x4ed: SSTORE(#3, %307)
-		0x522: %333 = SLOAD(#3)
-		0x1df: %122 = SLOAD(#3)
-
-
-Function kill() storage:
-	Analyzing Storage Location: 0
-		0x43b: %269 = SLOAD(#0)    // ADDRESS
-		0x4af: SSTORE(#0, %285)
-		0x504: %318 = SLOAD(#0)
-		0x3c5: %248 = SLOAD(#0)    // ADDRESS
-		0x7a: %31 = SLOAD(#0)    // ADDRESS
 
 
 Function luckyNumberOfAddress(address) storage:
-Function participate() storage:
+Function kill() storage:
+	Analyzing Storage Location: 0
+		0x7a: %31 = SLOAD(#0)    // ADDRESS
+		0x3c5: %248 = SLOAD(#0)    // ADDRESS
+		0x43b: %269 = SLOAD(#0)    // ADDRESS
+		0x4af: SSTORE(#0, %285)
+		0x504: %318 = SLOAD(#0)
+
+
+Function forceReseed() storage:
+	Analyzing Storage Location: 0
+		0x7a: %31 = SLOAD(#0)    // ADDRESS
+		0x3c5: %248 = SLOAD(#0)    // ADDRESS
+		0x43b: %269 = SLOAD(#0)    // ADDRESS
+		0x4af: SSTORE(#0, %285)
+		0x504: %318 = SLOAD(#0)
+
+
 	Analyzing Storage Location: 1
+		0x33f: %221 = SLOAD(#1)
 		0x4c0: SSTORE(#1, %293)
 		0x50e: %323 = SLOAD(#1)
-		0x33f: %221 = SLOAD(#1)
 		0x575: SSTORE(#1, %360)
 
 
 	Analyzing Storage Location: 2
+		0x2d4: %191 = SLOAD(#2)
 		0x4e1: SSTORE(#2, %302)
 		0x518: %328 = SLOAD(#2)
-		0x2d4: %191 = SLOAD(#2)
 		0x57c: SSTORE(#2, %364)
 
 
 	Analyzing Storage Location: 3
+		0x1df: %122 = SLOAD(#3)
 		0x4ed: SSTORE(#3, %307)
 		0x522: %333 = SLOAD(#3)
+
+
+Function participate() storage:
+	Analyzing Storage Location: 1
+		0x33f: %221 = SLOAD(#1)
+		0x4c0: SSTORE(#1, %293)
+		0x50e: %323 = SLOAD(#1)
+		0x575: SSTORE(#1, %360)
+
+
+	Analyzing Storage Location: 2
+		0x2d4: %191 = SLOAD(#2)
+		0x4e1: SSTORE(#2, %302)
+		0x518: %328 = SLOAD(#2)
+		0x57c: SSTORE(#2, %364)
+
+
+	Analyzing Storage Location: 3
 		0x1df: %122 = SLOAD(#3)
-
-
-Function _fallthrough storage:
-	Analyzing Storage Location: 0
-		0x43b: %269 = SLOAD(#0)    // ADDRESS
-		0x4af: SSTORE(#0, %285)
-		0x504: %318 = SLOAD(#0)
-		0x3c5: %248 = SLOAD(#0)    // ADDRESS
-		0x7a: %31 = SLOAD(#0)    // ADDRESS
+		0x4ed: SSTORE(#3, %307)
+		0x522: %333 = SLOAD(#3)
 
 
 [+] Contract can send ether from following functions:

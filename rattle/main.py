@@ -68,15 +68,15 @@ def main(argv: Sequence[str] = tuple(sys.argv)) -> None:  # run me with python3,
 
     for location in [x for x in ssa.memory if x > 0x20]:
         print(f"Analyzing Memory Location: {location}\n")
-        for insn in ssa.memory_at(location):
+        for insn in sorted(ssa.memory_at(location), key=lambda i: i.offset):
             print(f'\t{insn.offset:#x}: {insn}')
         print('\n\n')
 
-    for function in ssa.functions:
+    for function in sorted(ssa.functions, key=lambda f: f.offset):
         print(f"Function {function.desc()} storage:")
         for location in function.storage:
             print(f"\tAnalyzing Storage Location: {location}")
-            for insn in ssa.storage_at(location):
+            for insn in sorted(ssa.storage_at(location), key=lambda i: i.offset):
                 print(f'\t\t{insn.offset:#x}: {insn}')
             print('\n')
 
@@ -177,7 +177,7 @@ def main(argv: Sequence[str] = tuple(sys.argv)) -> None:  # run me with python3,
 
         print("")
 
-    for function in ssa.functions:
+    for function in sorted(ssa.functions, key=lambda f: f.offset):
         g = rattle.ControlFlowGraph(function)
         t = tempfile.NamedTemporaryFile(suffix='.dot', mode='w')
         t.write(g.dot())

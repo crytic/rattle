@@ -3,7 +3,7 @@
 
 import functools
 import logging
-from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable
+from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable, Any
 
 from rattle.evmasm import EVMAsm
 from .hashes import hashes
@@ -248,13 +248,17 @@ class SSAInstruction(object):
         self.parent_block = parent_block
 
     def __repr__(self) -> str:
+        def key_for_PHI_arguments(sv: StackValue):
+            return sv.concrete_value if isinstance(sv, ConcreteStackValue) else sv.value
+        # <def
+
         rv: str = ''
         if self.return_value:
             rv += f"{self.return_value} = "
 
         # PHI arguments have no stable order and this causes trouble for the regression tests (SSA listing compare).
         # Checking here for PHI and sorting the arguments solves it. Not nice, but good for now.
-        arguments = sorted(self.arguments, key=lambda s: s.value) if self.insn.name == 'PHI' else self.arguments
+        arguments = sorted(self.arguments, key=key_for_PHI_arguments) if self.insn.name == 'PHI' else self.arguments
 
         rv += f"{self.insn.name}("
         rv += ', '.join([f"{x}" for x in arguments])
