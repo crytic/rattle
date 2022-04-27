@@ -1,0 +1,195 @@
+contract Contract {
+    function main() {
+        memory[0x40:0x60] = 0x80;
+
+        if (msg.data.length < 0x04) {
+        label_0062:
+            var var0 = msg.value >= 0x016345785d8a0000;
+
+            if (!var0) {
+                if (!var0) { stop(); }
+
+            label_00CD:
+                var0 = 0x00d4;
+                participate();
+                stop();
+            } else if (msg.sender == storage[0x00] & 0xffffffffffffffffffffffffffffffffffffffff) { stop(); }
+            else { goto label_00CD; }
+        } else {
+            var0 = msg.data[0x00:0x20] / 0x0100000000000000000000000000000000000000000000000000000000 & 0xffffffff;
+
+            if (var0 == 0x37354a68) {
+                // Dispatch table entry for luckyNumberOfAddress(address)
+                var var1 = msg.value;
+
+                if (var1) { revert(memory[0x00:0x00]); }
+
+                var1 = 0x0118;
+                var var2 = msg.data[0x04:0x24] & 0xffffffffffffffffffffffffffffffffffffffff;
+                var1 = luckyNumberOfAddress(var2);
+                var temp0 = memory[0x40:0x60];
+                memory[temp0:temp0 + 0x20] = var1;
+                var temp1 = memory[0x40:0x60];
+                return memory[temp1:temp1 + (temp0 + 0x20) - temp1];
+            } else if (var0 == 0x41c0e1b5) {
+                // Dispatch table entry for kill()
+                var1 = msg.value;
+
+                if (var1) { revert(memory[0x00:0x00]); }
+
+                var1 = 0x0143;
+
+                if (msg.sender == storage[0x00] & 0xffffffffffffffffffffffffffffffffffffffff) { selfdestruct(msg.sender); }
+                else { revert(memory[0x00:0x00]); }
+            } else if (var0 == 0x80ca7aec) {
+                // Dispatch table entry for forceReseed()
+                var1 = msg.value;
+
+                if (var1) { revert(memory[0x00:0x00]); }
+
+                var1 = 0x015a;
+                forceReseed();
+                stop();
+            } else if (var0 == 0xd11711a2) {
+                // Dispatch table entry for participate()
+                var1 = 0x0164;
+                participate();
+                stop();
+            } else { goto label_0062; }
+        }
+    }
+
+    function participate() {
+        var var0 = 0x00;
+
+        if (msg.value < 0x016345785d8a0000) { goto label_031E; }
+
+        memory[0x00:0x20] = msg.sender;
+        memory[0x20:0x40] = 0x04;
+
+        if (!!(storage[keccak256(memory[0x00:0x40])] & 0xff) != !!0x00) { revert(memory[0x00:0x00]); }
+
+        var var1 = storage[0x03];
+        var var2 = 0x01e8;
+        var var3 = msg.sender;
+        var2 = luckyNumberOfAddress(var3);
+
+        if (var2 != var1) {
+        label_02CE:
+
+            if (block.number - storage[0x02] <= 0x03e8) {
+            label_031D:
+
+            label_031E:
+                return;
+            } else {
+                var1 = 0x031c;
+                var temp0 = memory[0x40:0x60];
+                var2 = temp0;
+                memory[0x40:0x60] = var2 + 0x80;
+                memory[var2:var2 + 0x20] = block.coinbase & 0xffffffffffffffffffffffffffffffffffffffff;
+                var temp1 = var2 + 0x20;
+                memory[temp1:temp1 + 0x20] = block.difficulty;
+                var temp2 = temp1 + 0x20;
+                memory[temp2:temp2 + 0x20] = block.gaslimit;
+                memory[temp2 + 0x20:temp2 + 0x20 + 0x20] = block.timestamp;
+                func_052E(var2);
+                goto label_031D;
+            }
+        } else {
+            memory[0x00:0x20] = msg.sender;
+            memory[0x20:0x40] = 0x04;
+            var temp3 = keccak256(memory[0x00:0x40]);
+            storage[temp3] = (storage[temp3] & ~0xff) | 0x01;
+            var0 = msg.value * 0x07;
+
+            if (var0 <= address(this).balance) {
+                var temp4 = var0;
+                var temp5 = memory[0x40:0x60];
+                var temp6;
+                temp6, memory[temp5:temp5 + 0x00] = address(msg.sender).call.gas(!temp4 * 0x08fc).value(temp4)(memory[temp5:temp5 + memory[0x40:0x60] - temp5]);
+                var1 = !temp6;
+
+                if (!var1) {
+                label_02CC:
+                    goto label_02CE;
+                } else {
+                label_02C3:
+                    var temp7 = returndata.length;
+                    memory[0x00:0x00 + temp7] = returndata[0x00:0x00 + temp7];
+                    revert(memory[0x00:0x00 + returndata.length]);
+                }
+            } else {
+                var temp8 = address(this).balance;
+                var0 = temp8;
+                var temp9 = memory[0x40:0x60];
+                var temp10;
+                temp10, memory[temp9:temp9 + 0x00] = address(msg.sender).call.gas(!var0 * 0x08fc).value(var0)(memory[temp9:temp9 + memory[0x40:0x60] - temp9]);
+                var1 = !temp10;
+
+                if (!var1) { goto label_02CC; }
+                else { goto label_02C3; }
+            }
+        }
+    }
+
+    function luckyNumberOfAddress(var arg0) returns (var r0) {
+        var var0 = 0x00;
+        var var1 = 0x08;
+        var temp0 = memory[0x40:0x60];
+        memory[temp0:temp0 + 0x20] = arg0 & 0xffffffffffffffffffffffffffffffffffffffff;
+        var temp1 = temp0 + 0x20;
+        memory[temp1:temp1 + 0x20] = storage[0x01];
+        var temp2 = memory[0x40:0x60];
+        var var2 = keccak256(memory[temp2:temp2 + (temp1 + 0x20) - temp2]);
+        var var3 = 0x00;
+
+        if (var3 >= 0x20) { assert(); }
+
+        var2 = (byte(var2, var3) * 0x0100000000000000000000000000000000000000000000000000000000000000) / 0x0100000000000000000000000000000000000000000000000000000000000000;
+
+        if (var1) { return var2 % var1; }
+        else { assert(); }
+    }
+
+    function forceReseed() {
+        var var0 = 0x00;
+
+        if (msg.sender != storage[var0] & 0xffffffffffffffffffffffffffffffffffffffff) { revert(memory[0x00:0x00]); }
+
+        var temp0 = var0;
+        storage[temp0] = msg.sender;
+        storage[temp0 + 0x01] = block.blockHash(block.number - 0x01);
+        storage[temp0 + 0x02] = block.difficulty * (block.coinbase & 0xffffffffffffffffffffffffffffffffffffffff);
+        storage[temp0 + 0x03] = tx.gasprice * 0x07;
+        var var1 = 0x052b;
+        var temp1 = memory[0x40:0x60];
+        memory[0x40:0x60] = temp1 + 0x80;
+        var var2 = temp1;
+        memory[var2:var2 + 0x20] = storage[temp0];
+        var temp2 = var2 + 0x20;
+        memory[temp2:temp2 + 0x20] = storage[temp0 + 0x01];
+        var temp3 = temp2 + 0x20;
+        memory[temp3:temp3 + 0x20] = storage[temp0 + 0x02];
+        memory[temp3 + 0x20:temp3 + 0x20 + 0x20] = storage[temp0 + 0x03];
+        func_052E(var2);
+    }
+
+    function func_052E(var arg0) {
+        var temp0 = arg0;
+        var temp1 = memory[temp0 + 0x20:temp0 + 0x20 + 0x20];
+        var temp2 = memory[temp0 + 0x40:temp0 + 0x40 + 0x20];
+        var temp3 = memory[temp0 + 0x60:temp0 + 0x60 + 0x20];
+        var temp4 = memory[0x40:0x60];
+        memory[temp4:temp4 + 0x20] = memory[temp0:temp0 + 0x20];
+        var temp5 = temp4 + 0x20;
+        memory[temp5:temp5 + 0x20] = temp1;
+        var temp6 = temp5 + 0x20;
+        memory[temp6:temp6 + 0x20] = temp2;
+        var temp7 = temp6 + 0x20;
+        memory[temp7:temp7 + 0x20] = temp3;
+        var temp8 = memory[0x40:0x60];
+        storage[0x01] = keccak256(memory[temp8:temp8 + (temp7 + 0x20) - temp8]);
+        storage[0x02] = block.number;
+    }
+}

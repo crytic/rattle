@@ -1,0 +1,1205 @@
+label_0000:
+	// Inputs[1] { @0007  msg.data.length }
+	0000    60  PUSH1 0x80
+	0002    60  PUSH1 0x40
+	0004    52  MSTORE
+	0005    60  PUSH1 0x04
+	0007    36  CALLDATASIZE
+	0008    10  LT
+	0009    61  PUSH2 0x0062
+	000C    57  *JUMPI
+	// Stack delta = +0
+	// Outputs[1] { @0004  memory[0x40:0x60] = 0x80 }
+	// Block ends with conditional jump to 0x0062, if msg.data.length < 0x04
+
+label_000D:
+	// Incoming jump from 0x000C, if not msg.data.length < 0x04
+	// Inputs[1] { @000F  msg.data[0x00:0x20] }
+	000D    60  PUSH1 0x00
+	000F    35  CALLDATALOAD
+	0010    7C  PUSH29 0x0100000000000000000000000000000000000000000000000000000000
+	002E    90  SWAP1
+	002F    04  DIV
+	0030    63  PUSH4 0xffffffff
+	0035    16  AND
+	0036    80  DUP1
+	0037    63  PUSH4 0x37354a68
+	003C    14  EQ
+	003D    61  PUSH2 0x00d7
+	0040    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @0035  stack[0] = 0xffffffff & msg.data[0x00:0x20] / 0x0100000000000000000000000000000000000000000000000000000000 }
+	// Block ends with conditional jump to 0x00d7, if 0x37354a68 == 0xffffffff & msg.data[0x00:0x20] / 0x0100000000000000000000000000000000000000000000000000000000
+
+label_0041:
+	// Incoming jump from 0x0040, if not 0x37354a68 == 0xffffffff & msg.data[0x00:0x20] / 0x0100000000000000000000000000000000000000000000000000000000
+	// Inputs[1] { @0041  stack[-1] }
+	0041    80  DUP1
+	0042    63  PUSH4 0x41c0e1b5
+	0047    14  EQ
+	0048    61  PUSH2 0x012e
+	004B    57  *JUMPI
+	// Stack delta = +0
+	// Block ends with conditional jump to 0x012e, if 0x41c0e1b5 == stack[-1]
+
+label_004C:
+	// Incoming jump from 0x004B, if not 0x41c0e1b5 == stack[-1]
+	// Inputs[1] { @004C  stack[-1] }
+	004C    80  DUP1
+	004D    63  PUSH4 0x80ca7aec
+	0052    14  EQ
+	0053    61  PUSH2 0x0145
+	0056    57  *JUMPI
+	// Stack delta = +0
+	// Block ends with conditional jump to 0x0145, if 0x80ca7aec == stack[-1]
+
+label_0057:
+	// Incoming jump from 0x0056, if not 0x80ca7aec == stack[-1]
+	// Inputs[1] { @0057  stack[-1] }
+	0057    80  DUP1
+	0058    63  PUSH4 0xd11711a2
+	005D    14  EQ
+	005E    61  PUSH2 0x015c
+	0061    57  *JUMPI
+	// Stack delta = +0
+	// Block ends with conditional jump to 0x015c, if 0xd11711a2 == stack[-1]
+
+label_0062:
+	// Incoming jump from 0x000C, if msg.data.length < 0x04
+	// Incoming jump from 0x0061, if not 0xd11711a2 == stack[-1]
+	// Inputs[1] { @006C  msg.value }
+	0062    5B  JUMPDEST
+	0063    67  PUSH8 0x016345785d8a0000
+	006C    34  CALLVALUE
+	006D    10  LT
+	006E    15  ISZERO
+	006F    80  DUP1
+	0070    15  ISZERO
+	0071    61  PUSH2 0x00c7
+	0074    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @006E  stack[0] = !(msg.value < 0x016345785d8a0000) }
+	// Block ends with conditional jump to 0x00c7, if !!(msg.value < 0x016345785d8a0000)
+
+label_0075:
+	// Incoming jump from 0x0074, if not !!(msg.value < 0x016345785d8a0000)
+	// Inputs[2]
+	// {
+	//     @007A  storage[0x00]
+	//     @00AE  msg.sender
+	// }
+	0075    50  POP
+	0076    60  PUSH1 0x00
+	0078    80  DUP1
+	0079    90  SWAP1
+	007A    54  SLOAD
+	007B    90  SWAP1
+	007C    61  PUSH2 0x0100
+	007F    0A  EXP
+	0080    90  SWAP1
+	0081    04  DIV
+	0082    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0097    16  AND
+	0098    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	00AD    16  AND
+	00AE    33  CALLER
+	00AF    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	00C4    16  AND
+	00C5    14  EQ
+	00C6    15  ISZERO
+	00C7    5B  JUMPDEST
+	00C8    15  ISZERO
+	00C9    61  PUSH2 0x00d5
+	00CC    57  *JUMPI
+	// Stack delta = -1
+	// Block ends with conditional jump to 0x00d5, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+
+label_00CD:
+	// Incoming jump from 0x00CC, if not !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Incoming jump from 0x00CC, if not !stack[-1]
+	00CD    61  PUSH2 0x00d4
+	00D0    61  PUSH2 0x0166
+	00D3    56  *JUMP
+	// Stack delta = +1
+	// Outputs[1] { @00CD  stack[0] = 0x00d4 }
+	// Block ends with call to 0x0166, returns to 0x00D4
+
+label_00D4:
+	// Incoming return from call to 0x0166 at 0x00D3
+	00D4    5B  JUMPDEST
+	// Stack delta = +0
+	// Block continues
+
+label_00D5:
+	// Incoming jump from 0x00CC, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Incoming jump from 0x00D4
+	// Incoming jump from 0x00CC, if !stack[-1]
+	00D5    5B  JUMPDEST
+	00D6    00  *STOP
+	// Stack delta = +0
+	// Outputs[1] { @00D6  stop(); }
+	// Block terminates
+
+label_00D7:
+	// Incoming jump from 0x0040, if 0x37354a68 == 0xffffffff & msg.data[0x00:0x20] / 0x0100000000000000000000000000000000000000000000000000000000
+	// Inputs[1] { @00D8  msg.value }
+	00D7    5B  JUMPDEST
+	00D8    34  CALLVALUE
+	00D9    80  DUP1
+	00DA    15  ISZERO
+	00DB    61  PUSH2 0x00e3
+	00DE    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @00D8  stack[0] = msg.value }
+	// Block ends with conditional jump to 0x00e3, if !msg.value
+
+label_00DF:
+	// Incoming jump from 0x00DE, if not !msg.value
+	// Inputs[1] { @00E2  memory[0x00:0x00] }
+	00DF    60  PUSH1 0x00
+	00E1    80  DUP1
+	00E2    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @00E2  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_00E3:
+	// Incoming jump from 0x00DE, if !msg.value
+	// Inputs[2]
+	// {
+	//     @00EB  msg.data.length
+	//     @00F2  msg.data[0x04:0x24]
+	// }
+	00E3    5B  JUMPDEST
+	00E4    50  POP
+	00E5    61  PUSH2 0x0118
+	00E8    60  PUSH1 0x04
+	00EA    80  DUP1
+	00EB    36  CALLDATASIZE
+	00EC    03  SUB
+	00ED    81  DUP2
+	00EE    01  ADD
+	00EF    90  SWAP1
+	00F0    80  DUP1
+	00F1    80  DUP1
+	00F2    35  CALLDATALOAD
+	00F3    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0108    16  AND
+	0109    90  SWAP1
+	010A    60  PUSH1 0x20
+	010C    01  ADD
+	010D    90  SWAP1
+	010E    92  SWAP3
+	010F    91  SWAP2
+	0110    90  SWAP1
+	0111    50  POP
+	0112    50  POP
+	0113    50  POP
+	0114    61  PUSH2 0x0321
+	0117    56  *JUMP
+	// Stack delta = +1
+	// Outputs[2]
+	// {
+	//     @00E5  stack[-1] = 0x0118
+	//     @010E  stack[0] = 0xffffffffffffffffffffffffffffffffffffffff & msg.data[0x04:0x24]
+	// }
+	// Block ends with call to 0x0321, returns to 0x0118
+
+label_0118:
+	// Incoming return from call to 0x0321 at 0x0117
+	// Inputs[4]
+	// {
+	//     @011B  memory[0x40:0x60]
+	//     @011D  stack[-1]
+	//     @0128  memory[0x40:0x60]
+	//     @012D  memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + memory[0x40:0x60]) - memory[0x40:0x60]]
+	// }
+	0118    5B  JUMPDEST
+	0119    60  PUSH1 0x40
+	011B    51  MLOAD
+	011C    80  DUP1
+	011D    82  DUP3
+	011E    81  DUP2
+	011F    52  MSTORE
+	0120    60  PUSH1 0x20
+	0122    01  ADD
+	0123    91  SWAP2
+	0124    50  POP
+	0125    50  POP
+	0126    60  PUSH1 0x40
+	0128    51  MLOAD
+	0129    80  DUP1
+	012A    91  SWAP2
+	012B    03  SUB
+	012C    90  SWAP1
+	012D    F3  *RETURN
+	// Stack delta = -1
+	// Outputs[2]
+	// {
+	//     @011F  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x20] = stack[-1]
+	//     @012D  return memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + memory[0x40:0x60]) - memory[0x40:0x60]];
+	// }
+	// Block terminates
+
+label_012E:
+	// Incoming jump from 0x004B, if 0x41c0e1b5 == stack[-1]
+	// Inputs[1] { @012F  msg.value }
+	012E    5B  JUMPDEST
+	012F    34  CALLVALUE
+	0130    80  DUP1
+	0131    15  ISZERO
+	0132    61  PUSH2 0x013a
+	0135    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @012F  stack[0] = msg.value }
+	// Block ends with conditional jump to 0x013a, if !msg.value
+
+label_0136:
+	// Incoming jump from 0x0135, if not !msg.value
+	// Inputs[1] { @0139  memory[0x00:0x00] }
+	0136    60  PUSH1 0x00
+	0138    80  DUP1
+	0139    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @0139  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_013A:
+	// Incoming jump from 0x0135, if !msg.value
+	013A    5B  JUMPDEST
+	013B    50  POP
+	013C    61  PUSH2 0x0143
+	013F    61  PUSH2 0x03c0
+	0142    56  *JUMP
+	// Stack delta = +0
+	// Outputs[1] { @013C  stack[-1] = 0x0143 }
+	// Block ends with unconditional jump to 0x03c0
+
+	0143    5B    JUMPDEST
+	0144    00    *STOP
+label_0145:
+	// Incoming jump from 0x0056, if 0x80ca7aec == stack[-1]
+	// Inputs[1] { @0146  msg.value }
+	0145    5B  JUMPDEST
+	0146    34  CALLVALUE
+	0147    80  DUP1
+	0148    15  ISZERO
+	0149    61  PUSH2 0x0151
+	014C    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @0146  stack[0] = msg.value }
+	// Block ends with conditional jump to 0x0151, if !msg.value
+
+label_014D:
+	// Incoming jump from 0x014C, if not !msg.value
+	// Inputs[1] { @0150  memory[0x00:0x00] }
+	014D    60  PUSH1 0x00
+	014F    80  DUP1
+	0150    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @0150  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_0151:
+	// Incoming jump from 0x014C, if !msg.value
+	0151    5B  JUMPDEST
+	0152    50  POP
+	0153    61  PUSH2 0x015a
+	0156    61  PUSH2 0x0434
+	0159    56  *JUMP
+	// Stack delta = +0
+	// Outputs[1] { @0153  stack[-1] = 0x015a }
+	// Block ends with call to 0x0434, returns to 0x015A
+
+label_015A:
+	// Incoming return from call to 0x0434 at 0x0159
+	015A    5B  JUMPDEST
+	015B    00  *STOP
+	// Stack delta = +0
+	// Outputs[1] { @015B  stop(); }
+	// Block terminates
+
+label_015C:
+	// Incoming jump from 0x0061, if 0xd11711a2 == stack[-1]
+	015C    5B  JUMPDEST
+	015D    61  PUSH2 0x0164
+	0160    61  PUSH2 0x0166
+	0163    56  *JUMP
+	// Stack delta = +1
+	// Outputs[1] { @015D  stack[0] = 0x0164 }
+	// Block ends with call to 0x0166, returns to 0x0164
+
+label_0164:
+	// Incoming return from call to 0x0166 at 0x0163
+	0164    5B  JUMPDEST
+	0165    00  *STOP
+	// Stack delta = +0
+	// Outputs[1] { @0165  stop(); }
+	// Block terminates
+
+label_0166:
+	// Incoming call from 0x00D3, returns to 0x00D4
+	// Incoming call from 0x0163, returns to 0x0164
+	// Inputs[1] { @0172  msg.value }
+	0166    5B  JUMPDEST
+	0167    60  PUSH1 0x00
+	0169    67  PUSH8 0x016345785d8a0000
+	0172    34  CALLVALUE
+	0173    10  LT
+	0174    15  ISZERO
+	0175    61  PUSH2 0x017d
+	0178    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @0167  stack[0] = 0x00 }
+	// Block ends with conditional jump to 0x017d, if !(msg.value < 0x016345785d8a0000)
+
+label_0179:
+	// Incoming jump from 0x0178, if not !(msg.value < 0x016345785d8a0000)
+	0179    61  PUSH2 0x031e
+	017C    56  *JUMP
+	// Stack delta = +0
+	// Block ends with unconditional jump to 0x031e
+
+label_017D:
+	// Incoming jump from 0x0178, if !(msg.value < 0x016345785d8a0000)
+	// Inputs[3]
+	// {
+	//     @0186  msg.sender
+	//     @01C0  memory[0x00:0x40]
+	//     @01C4  storage[keccak256(memory[0x00:0x40])]
+	// }
+	017D    5B  JUMPDEST
+	017E    60  PUSH1 0x00
+	0180    15  ISZERO
+	0181    15  ISZERO
+	0182    60  PUSH1 0x04
+	0184    60  PUSH1 0x00
+	0186    33  CALLER
+	0187    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	019C    16  AND
+	019D    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	01B2    16  AND
+	01B3    81  DUP2
+	01B4    52  MSTORE
+	01B5    60  PUSH1 0x20
+	01B7    01  ADD
+	01B8    90  SWAP1
+	01B9    81  DUP2
+	01BA    52  MSTORE
+	01BB    60  PUSH1 0x20
+	01BD    01  ADD
+	01BE    60  PUSH1 0x00
+	01C0    20  SHA3
+	01C1    60  PUSH1 0x00
+	01C3    90  SWAP1
+	01C4    54  SLOAD
+	01C5    90  SWAP1
+	01C6    61  PUSH2 0x0100
+	01C9    0A  EXP
+	01CA    90  SWAP1
+	01CB    04  DIV
+	01CC    60  PUSH1 0xff
+	01CE    16  AND
+	01CF    15  ISZERO
+	01D0    15  ISZERO
+	01D1    14  EQ
+	01D2    15  ISZERO
+	01D3    15  ISZERO
+	01D4    61  PUSH2 0x01dc
+	01D7    57  *JUMPI
+	// Stack delta = +0
+	// Outputs[2]
+	// {
+	//     @01B4  memory[0x00:0x20] = 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & msg.sender
+	//     @01BA  memory[0x20:0x40] = 0x04
+	// }
+	// Block ends with conditional jump to 0x01dc, if !!(!!(0xff & storage[keccak256(memory[0x00:0x40])] / 0x0100 ** 0x00) == !!0x00)
+
+label_01D8:
+	// Incoming jump from 0x01D7, if not !!(!!(0xff & storage[keccak256(memory[0x00:0x40])] / 0x0100 ** 0x00) == !!0x00)
+	// Inputs[1] { @01DB  memory[0x00:0x00] }
+	01D8    60  PUSH1 0x00
+	01DA    80  DUP1
+	01DB    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @01DB  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_01DC:
+	// Incoming jump from 0x01D7, if !!(!!(0xff & storage[keccak256(memory[0x00:0x40])] / 0x0100 ** 0x00) == !!0x00)
+	// Inputs[2]
+	// {
+	//     @01DF  storage[0x03]
+	//     @01E3  msg.sender
+	// }
+	01DC    5B  JUMPDEST
+	01DD    60  PUSH1 0x03
+	01DF    54  SLOAD
+	01E0    61  PUSH2 0x01e8
+	01E3    33  CALLER
+	01E4    61  PUSH2 0x0321
+	01E7    56  *JUMP
+	// Stack delta = +3
+	// Outputs[3]
+	// {
+	//     @01DF  stack[0] = storage[0x03]
+	//     @01E0  stack[1] = 0x01e8
+	//     @01E3  stack[2] = msg.sender
+	// }
+	// Block ends with call to 0x0321, returns to 0x01E8
+
+label_01E8:
+	// Incoming return from call to 0x0321 at 0x01E7
+	// Inputs[2]
+	// {
+	//     @01E9  stack[-2]
+	//     @01E9  stack[-1]
+	// }
+	01E8    5B  JUMPDEST
+	01E9    14  EQ
+	01EA    15  ISZERO
+	01EB    61  PUSH2 0x02ce
+	01EE    57  *JUMPI
+	// Stack delta = -2
+	// Block ends with conditional jump to 0x02ce, if !(stack[-1] == stack[-2])
+
+label_01EF:
+	// Incoming jump from 0x01EE, if not !(stack[-1] == stack[-2])
+	// Inputs[7]
+	// {
+	//     @01F5  msg.sender
+	//     @022F  memory[0x00:0x40]
+	//     @0237  storage[keccak256(memory[0x00:0x40])]
+	//     @0249  msg.value
+	//     @024B  stack[-1]
+	//     @024D  address(this)
+	//     @0264  address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance
+	// }
+	01EF    60  PUSH1 0x01
+	01F1    60  PUSH1 0x04
+	01F3    60  PUSH1 0x00
+	01F5    33  CALLER
+	01F6    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	020B    16  AND
+	020C    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0221    16  AND
+	0222    81  DUP2
+	0223    52  MSTORE
+	0224    60  PUSH1 0x20
+	0226    01  ADD
+	0227    90  SWAP1
+	0228    81  DUP2
+	0229    52  MSTORE
+	022A    60  PUSH1 0x20
+	022C    01  ADD
+	022D    60  PUSH1 0x00
+	022F    20  SHA3
+	0230    60  PUSH1 0x00
+	0232    61  PUSH2 0x0100
+	0235    0A  EXP
+	0236    81  DUP2
+	0237    54  SLOAD
+	0238    81  DUP2
+	0239    60  PUSH1 0xff
+	023B    02  MUL
+	023C    19  NOT
+	023D    16  AND
+	023E    90  SWAP1
+	023F    83  DUP4
+	0240    15  ISZERO
+	0241    15  ISZERO
+	0242    02  MUL
+	0243    17  OR
+	0244    90  SWAP1
+	0245    55  SSTORE
+	0246    50  POP
+	0247    60  PUSH1 0x07
+	0249    34  CALLVALUE
+	024A    02  MUL
+	024B    90  SWAP1
+	024C    50  POP
+	024D    30  ADDRESS
+	024E    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0263    16  AND
+	0264    31  BALANCE
+	0265    81  DUP2
+	0266    11  GT
+	0267    15  ISZERO
+	0268    61  PUSH2 0x0286
+	026B    57  *JUMPI
+	// Stack delta = +0
+	// Outputs[4]
+	// {
+	//     @0223  memory[0x00:0x20] = 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & msg.sender
+	//     @0229  memory[0x20:0x40] = 0x04
+	//     @0245  storage[keccak256(memory[0x00:0x40])] = !!0x01 * 0x0100 ** 0x00 | (~(0xff * 0x0100 ** 0x00) & storage[keccak256(memory[0x00:0x40])])
+	//     @024B  stack[-1] = msg.value * 0x07
+	// }
+	// Block ends with conditional jump to 0x0286, if !(msg.value * 0x07 > address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)
+
+label_026C:
+	// Incoming jump from 0x026B, if not !(msg.value * 0x07 > address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)
+	// Inputs[8]
+	// {
+	//     @026C  address(this)
+	//     @0283  address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance
+	//     @0284  stack[-1]
+	//     @0287  msg.sender
+	//     @02A9  memory[0x40:0x60]
+	//     @02AE  memory[0x40:0x60]
+	//     @02B6  address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	//     @02B6  memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]]
+	// }
+	026C    30  ADDRESS
+	026D    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0282    16  AND
+	0283    31  BALANCE
+	0284    90  SWAP1
+	0285    50  POP
+	0286    5B  JUMPDEST
+	0287    33  CALLER
+	0288    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	029D    16  AND
+	029E    61  PUSH2 0x08fc
+	02A1    82  DUP3
+	02A2    90  SWAP1
+	02A3    81  DUP2
+	02A4    15  ISZERO
+	02A5    02  MUL
+	02A6    90  SWAP1
+	02A7    60  PUSH1 0x40
+	02A9    51  MLOAD
+	02AA    60  PUSH1 0x00
+	02AC    60  PUSH1 0x40
+	02AE    51  MLOAD
+	02AF    80  DUP1
+	02B0    83  DUP4
+	02B1    03  SUB
+	02B2    81  DUP2
+	02B3    85  DUP6
+	02B4    88  DUP9
+	02B5    88  DUP9
+	02B6    F1  CALL
+	02B7    93  SWAP4
+	02B8    50  POP
+	02B9    50  POP
+	02BA    50  POP
+	02BB    50  POP
+	02BC    15  ISZERO
+	02BD    80  DUP1
+	02BE    15  ISZERO
+	02BF    61  PUSH2 0x02cc
+	02C2    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[3]
+	// {
+	//     @0284  stack[-1] = address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance
+	//     @02B6  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x00] = address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	//     @02BC  stack[0] = !address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	// }
+	// Block ends with conditional jump to 0x02cc, if !!address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+
+label_02C3:
+	// Incoming jump from 0x02C2, if not !!address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!stack[-1] * 0x08fc).value(stack[-1])(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	// Incoming jump from 0x02C2, if not !!address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	// Inputs[4]
+	// {
+	//     @02C3  returndata.length
+	//     @02C7  returndata[0x00:0x00 + returndata.length]
+	//     @02C8  returndata.length
+	//     @02CB  memory[0x00:0x00 + returndata.length]
+	// }
+	02C3    3D  RETURNDATASIZE
+	02C4    60  PUSH1 0x00
+	02C6    80  DUP1
+	02C7    3E  RETURNDATACOPY
+	02C8    3D  RETURNDATASIZE
+	02C9    60  PUSH1 0x00
+	02CB    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[2]
+	// {
+	//     @02C7  memory[0x00:0x00 + returndata.length] = returndata[0x00:0x00 + returndata.length]
+	//     @02CB  revert(memory[0x00:0x00 + returndata.length]);
+	// }
+	// Block terminates
+
+label_02CC:
+	// Incoming jump from 0x02C2, if !!address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!stack[-1] * 0x08fc).value(stack[-1])(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	// Incoming jump from 0x02C2, if !!address(0xffffffffffffffffffffffffffffffffffffffff & msg.sender).call.gas(!address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance * 0x08fc).value(address(0xffffffffffffffffffffffffffffffffffffffff & address(this)).balance)(memory[memory[0x40:0x60]:memory[0x40:0x60] + memory[0x40:0x60] - memory[0x40:0x60]])
+	02CC    5B  JUMPDEST
+	02CD    50  POP
+	// Stack delta = -1
+	// Block continues
+
+label_02CE:
+	// Incoming jump from 0x02CD
+	// Incoming jump from 0x01EE, if !(stack[-1] == stack[-2])
+	// Inputs[2]
+	// {
+	//     @02D4  storage[0x02]
+	//     @02D5  block.number
+	// }
+	02CE    5B  JUMPDEST
+	02CF    61  PUSH2 0x03e8
+	02D2    60  PUSH1 0x02
+	02D4    54  SLOAD
+	02D5    43  NUMBER
+	02D6    03  SUB
+	02D7    11  GT
+	02D8    15  ISZERO
+	02D9    61  PUSH2 0x031d
+	02DC    57  *JUMPI
+	// Stack delta = +0
+	// Block ends with conditional jump to 0x031d, if !(block.number - storage[0x02] > 0x03e8)
+
+label_02DD:
+	// Incoming jump from 0x02DC, if not !(block.number - storage[0x02] > 0x03e8)
+	// Inputs[5]
+	// {
+	//     @02E4  memory[0x40:0x60]
+	//     @02EC  block.coinbase
+	//     @0308  block.difficulty
+	//     @030E  block.gaslimit
+	//     @0314  block.timestamp
+	// }
+	02DD    61  PUSH2 0x031c
+	02E0    60  PUSH1 0x80
+	02E2    60  PUSH1 0x40
+	02E4    51  MLOAD
+	02E5    90  SWAP1
+	02E6    81  DUP2
+	02E7    01  ADD
+	02E8    60  PUSH1 0x40
+	02EA    52  MSTORE
+	02EB    80  DUP1
+	02EC    41  COINBASE
+	02ED    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0302    16  AND
+	0303    81  DUP2
+	0304    52  MSTORE
+	0305    60  PUSH1 0x20
+	0307    01  ADD
+	0308    44  DIFFICULTY
+	0309    81  DUP2
+	030A    52  MSTORE
+	030B    60  PUSH1 0x20
+	030D    01  ADD
+	030E    45  GASLIMIT
+	030F    81  DUP2
+	0310    52  MSTORE
+	0311    60  PUSH1 0x20
+	0313    01  ADD
+	0314    42  TIMESTAMP
+	0315    81  DUP2
+	0316    52  MSTORE
+	0317    50  POP
+	0318    61  PUSH2 0x052e
+	031B    56  *JUMP
+	// Stack delta = +2
+	// Outputs[7]
+	// {
+	//     @02DD  stack[0] = 0x031c
+	//     @02E5  stack[1] = memory[0x40:0x60]
+	//     @02EA  memory[0x40:0x60] = memory[0x40:0x60] + 0x80
+	//     @0304  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x20] = 0xffffffffffffffffffffffffffffffffffffffff & block.coinbase
+	//     @030A  memory[0x20 + memory[0x40:0x60]:0x20 + memory[0x40:0x60] + 0x20] = block.difficulty
+	//     @0310  memory[0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + memory[0x40:0x60] + 0x20] = block.gaslimit
+	//     @0316  memory[0x20 + 0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + 0x20 + memory[0x40:0x60] + 0x20] = block.timestamp
+	// }
+	// Block ends with call to 0x052e, returns to 0x031C
+
+label_031C:
+	// Incoming return from call to 0x052E at 0x031B
+	031C    5B  JUMPDEST
+	// Stack delta = +0
+	// Block continues
+
+label_031D:
+	// Incoming jump from 0x02DC, if !(block.number - storage[0x02] > 0x03e8)
+	// Incoming jump from 0x031C
+	031D    5B  JUMPDEST
+	// Stack delta = +0
+	// Block continues
+
+label_031E:
+	// Incoming jump from 0x017C
+	// Incoming jump from 0x031D
+	// Inputs[1] { @0320  stack[-2] }
+	031E    5B  JUMPDEST
+	031F    50  POP
+	0320    56  *JUMP
+	// Stack delta = -2
+	// Block ends with unconditional jump to stack[-2]
+
+label_0321:
+	// Incoming call from 0x0117, returns to 0x0118
+	// Incoming call from 0x01E7, returns to 0x01E8
+	// Inputs[5]
+	// {
+	//     @0326  stack[-1]
+	//     @033F  storage[0x01]
+	//     @0342  memory[0x40:0x60]
+	//     @0356  memory[0x40:0x60]
+	//     @035B  memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + 0x20 + memory[0x40:0x60]) - memory[0x40:0x60]]
+	// }
+	0321    5B  JUMPDEST
+	0322    60  PUSH1 0x00
+	0324    60  PUSH1 0x08
+	0326    82  DUP3
+	0327    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	033C    16  AND
+	033D    60  PUSH1 0x01
+	033F    54  SLOAD
+	0340    60  PUSH1 0x40
+	0342    51  MLOAD
+	0343    80  DUP1
+	0344    83  DUP4
+	0345    81  DUP2
+	0346    52  MSTORE
+	0347    60  PUSH1 0x20
+	0349    01  ADD
+	034A    82  DUP3
+	034B    81  DUP2
+	034C    52  MSTORE
+	034D    60  PUSH1 0x20
+	034F    01  ADD
+	0350    92  SWAP3
+	0351    50  POP
+	0352    50  POP
+	0353    50  POP
+	0354    60  PUSH1 0x40
+	0356    51  MLOAD
+	0357    80  DUP1
+	0358    91  SWAP2
+	0359    03  SUB
+	035A    90  SWAP1
+	035B    20  SHA3
+	035C    60  PUSH1 0x00
+	035E    60  PUSH1 0x20
+	0360    81  DUP2
+	0361    10  LT
+	0362    15  ISZERO
+	0363    15  ISZERO
+	0364    61  PUSH2 0x0369
+	0367    57  *JUMPI
+	// Stack delta = +4
+	// Outputs[6]
+	// {
+	//     @0322  stack[0] = 0x00
+	//     @0324  stack[1] = 0x08
+	//     @0346  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x20] = 0xffffffffffffffffffffffffffffffffffffffff & stack[-1]
+	//     @034C  memory[0x20 + memory[0x40:0x60]:0x20 + memory[0x40:0x60] + 0x20] = storage[0x01]
+	//     @035B  stack[2] = keccak256(memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + 0x20 + memory[0x40:0x60]) - memory[0x40:0x60]])
+	//     @035C  stack[3] = 0x00
+	// }
+	// Block ends with conditional jump to 0x0369, if !!(0x00 < 0x20)
+
+label_0368:
+	// Incoming jump from 0x0367, if not !!(0x00 < 0x20)
+	0368    FE  *ASSERT
+	// Stack delta = +0
+	// Outputs[1] { @0368  assert(); }
+	// Block terminates
+
+label_0369:
+	// Incoming jump from 0x0367, if !!(0x00 < 0x20)
+	// Inputs[3]
+	// {
+	//     @036A  stack[-2]
+	//     @036A  stack[-1]
+	//     @03B0  stack[-3]
+	// }
+	0369    5B  JUMPDEST
+	036A    1A  BYTE
+	036B    7F  PUSH32 0x0100000000000000000000000000000000000000000000000000000000000000
+	038C    02  MUL
+	038D    7F  PUSH32 0x0100000000000000000000000000000000000000000000000000000000000000
+	03AE    90  SWAP1
+	03AF    04  DIV
+	03B0    81  DUP2
+	03B1    15  ISZERO
+	03B2    15  ISZERO
+	03B3    61  PUSH2 0x03b8
+	03B6    57  *JUMPI
+	// Stack delta = -1
+	// Outputs[1] { @03AF  stack[-2] = (0x0100000000000000000000000000000000000000000000000000000000000000 * byte(stack[-2], stack[-1])) / 0x0100000000000000000000000000000000000000000000000000000000000000 }
+	// Block ends with conditional jump to 0x03b8, if !!stack[-3]
+
+label_03B7:
+	// Incoming jump from 0x03B6, if not !!stack[-3]
+	03B7    FE  *ASSERT
+	// Stack delta = +0
+	// Outputs[1] { @03B7  assert(); }
+	// Block terminates
+
+label_03B8:
+	// Incoming jump from 0x03B6, if !!stack[-3]
+	// Inputs[5]
+	// {
+	//     @03B9  stack[-1]
+	//     @03B9  stack[-2]
+	//     @03BA  stack[-3]
+	//     @03BC  stack[-5]
+	//     @03BD  stack[-4]
+	// }
+	03B8    5B  JUMPDEST
+	03B9    06  MOD
+	03BA    90  SWAP1
+	03BB    50  POP
+	03BC    91  SWAP2
+	03BD    90  SWAP1
+	03BE    50  POP
+	03BF    56  *JUMP
+	// Stack delta = -4
+	// Outputs[1] { @03BC  stack[-5] = stack[-1] % stack[-2] }
+	// Block ends with unconditional jump to stack[-5]
+
+label_03C0:
+	// Incoming jump from 0x0142
+	// Inputs[2]
+	// {
+	//     @03C5  storage[0x00]
+	//     @03F9  msg.sender
+	// }
+	03C0    5B  JUMPDEST
+	03C1    60  PUSH1 0x00
+	03C3    80  DUP1
+	03C4    90  SWAP1
+	03C5    54  SLOAD
+	03C6    90  SWAP1
+	03C7    61  PUSH2 0x0100
+	03CA    0A  EXP
+	03CB    90  SWAP1
+	03CC    04  DIV
+	03CD    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	03E2    16  AND
+	03E3    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	03F8    16  AND
+	03F9    33  CALLER
+	03FA    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	040F    16  AND
+	0410    14  EQ
+	0411    15  ISZERO
+	0412    15  ISZERO
+	0413    61  PUSH2 0x041b
+	0416    57  *JUMPI
+	// Stack delta = +0
+	// Block ends with conditional jump to 0x041b, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+
+label_0417:
+	// Incoming jump from 0x0416, if not !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Inputs[1] { @041A  memory[0x00:0x00] }
+	0417    60  PUSH1 0x00
+	0419    80  DUP1
+	041A    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @041A  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_041B:
+	// Incoming jump from 0x0416, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Inputs[1] { @041C  msg.sender }
+	041B    5B  JUMPDEST
+	041C    33  CALLER
+	041D    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0432    16  AND
+	0433    FF  *SELFDESTRUCT
+	// Stack delta = +0
+	// Outputs[1] { @0433  selfdestruct(0xffffffffffffffffffffffffffffffffffffffff & msg.sender); }
+	// Block terminates
+
+label_0434:
+	// Incoming call from 0x0159, returns to 0x015A
+	// Inputs[2]
+	// {
+	//     @043B  storage[0x00]
+	//     @046F  msg.sender
+	// }
+	0434    5B  JUMPDEST
+	0435    60  PUSH1 0x00
+	0437    80  DUP1
+	0438    60  PUSH1 0x00
+	043A    90  SWAP1
+	043B    54  SLOAD
+	043C    90  SWAP1
+	043D    61  PUSH2 0x0100
+	0440    0A  EXP
+	0441    90  SWAP1
+	0442    04  DIV
+	0443    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0458    16  AND
+	0459    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	046E    16  AND
+	046F    33  CALLER
+	0470    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	0485    16  AND
+	0486    14  EQ
+	0487    15  ISZERO
+	0488    15  ISZERO
+	0489    61  PUSH2 0x0491
+	048C    57  *JUMPI
+	// Stack delta = +1
+	// Outputs[1] { @0435  stack[0] = 0x00 }
+	// Block ends with conditional jump to 0x0491, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+
+label_048D:
+	// Incoming jump from 0x048C, if not !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Inputs[1] { @0490  memory[0x00:0x00] }
+	048D    60  PUSH1 0x00
+	048F    80  DUP1
+	0490    FD  *REVERT
+	// Stack delta = +0
+	// Outputs[1] { @0490  revert(memory[0x00:0x00]); }
+	// Block terminates
+
+label_0491:
+	// Incoming jump from 0x048C, if !!(0xffffffffffffffffffffffffffffffffffffffff & msg.sender == 0xffffffffffffffffffffffffffffffffffffffff & 0xffffffffffffffffffffffffffffffffffffffff & storage[0x00] / 0x0100 ** 0x00)
+	// Inputs[12]
+	// {
+	//     @0492  msg.sender
+	//     @04A9  stack[-1]
+	//     @04B3  block.number
+	//     @04B5  block.blockHash(block.number - 0x01)
+	//     @04C2  block.coinbase
+	//     @04D9  block.difficulty
+	//     @04E5  tx.gasprice
+	//     @04F7  memory[0x40:0x60]
+	//     @0504  storage[stack[-1] + 0x00]
+	//     @050E  storage[stack[-1] + 0x01]
+	//     @0518  storage[stack[-1] + 0x02]
+	//     @0522  storage[stack[-1] + 0x03]
+	// }
+	0491    5B  JUMPDEST
+	0492    33  CALLER
+	0493    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	04A8    16  AND
+	04A9    81  DUP2
+	04AA    60  PUSH1 0x00
+	04AC    01  ADD
+	04AD    81  DUP2
+	04AE    90  SWAP1
+	04AF    55  SSTORE
+	04B0    50  POP
+	04B1    60  PUSH1 0x01
+	04B3    43  NUMBER
+	04B4    03  SUB
+	04B5    40  BLOCKHASH
+	04B6    60  PUSH1 0x01
+	04B8    90  SWAP1
+	04B9    04  DIV
+	04BA    81  DUP2
+	04BB    60  PUSH1 0x01
+	04BD    01  ADD
+	04BE    81  DUP2
+	04BF    90  SWAP1
+	04C0    55  SSTORE
+	04C1    50  POP
+	04C2    41  COINBASE
+	04C3    73  PUSH20 0xffffffffffffffffffffffffffffffffffffffff
+	04D8    16  AND
+	04D9    44  DIFFICULTY
+	04DA    02  MUL
+	04DB    81  DUP2
+	04DC    60  PUSH1 0x02
+	04DE    01  ADD
+	04DF    81  DUP2
+	04E0    90  SWAP1
+	04E1    55  SSTORE
+	04E2    50  POP
+	04E3    60  PUSH1 0x07
+	04E5    3A  GASPRICE
+	04E6    02  MUL
+	04E7    81  DUP2
+	04E8    60  PUSH1 0x03
+	04EA    01  ADD
+	04EB    81  DUP2
+	04EC    90  SWAP1
+	04ED    55  SSTORE
+	04EE    50  POP
+	04EF    61  PUSH2 0x052b
+	04F2    81  DUP2
+	04F3    60  PUSH1 0x80
+	04F5    60  PUSH1 0x40
+	04F7    51  MLOAD
+	04F8    90  SWAP1
+	04F9    81  DUP2
+	04FA    01  ADD
+	04FB    60  PUSH1 0x40
+	04FD    52  MSTORE
+	04FE    90  SWAP1
+	04FF    81  DUP2
+	0500    60  PUSH1 0x00
+	0502    82  DUP3
+	0503    01  ADD
+	0504    54  SLOAD
+	0505    81  DUP2
+	0506    52  MSTORE
+	0507    60  PUSH1 0x20
+	0509    01  ADD
+	050A    60  PUSH1 0x01
+	050C    82  DUP3
+	050D    01  ADD
+	050E    54  SLOAD
+	050F    81  DUP2
+	0510    52  MSTORE
+	0511    60  PUSH1 0x20
+	0513    01  ADD
+	0514    60  PUSH1 0x02
+	0516    82  DUP3
+	0517    01  ADD
+	0518    54  SLOAD
+	0519    81  DUP2
+	051A    52  MSTORE
+	051B    60  PUSH1 0x20
+	051D    01  ADD
+	051E    60  PUSH1 0x03
+	0520    82  DUP3
+	0521    01  ADD
+	0522    54  SLOAD
+	0523    81  DUP2
+	0524    52  MSTORE
+	0525    50  POP
+	0526    50  POP
+	0527    61  PUSH2 0x052e
+	052A    56  *JUMP
+	// Stack delta = +2
+	// Outputs[11]
+	// {
+	//     @04AF  storage[0x00 + stack[-1]] = 0xffffffffffffffffffffffffffffffffffffffff & msg.sender
+	//     @04C0  storage[0x01 + stack[-1]] = block.blockHash(block.number - 0x01) / 0x01
+	//     @04E1  storage[0x02 + stack[-1]] = block.difficulty * (0xffffffffffffffffffffffffffffffffffffffff & block.coinbase)
+	//     @04ED  storage[0x03 + stack[-1]] = tx.gasprice * 0x07
+	//     @04EF  stack[0] = 0x052b
+	//     @04FD  memory[0x40:0x60] = memory[0x40:0x60] + 0x80
+	//     @04FE  stack[1] = memory[0x40:0x60]
+	//     @0506  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x20] = storage[stack[-1] + 0x00]
+	//     @0510  memory[0x20 + memory[0x40:0x60]:0x20 + memory[0x40:0x60] + 0x20] = storage[stack[-1] + 0x01]
+	//     @051A  memory[0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + memory[0x40:0x60] + 0x20] = storage[stack[-1] + 0x02]
+	//     @0524  memory[0x20 + 0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + 0x20 + memory[0x40:0x60] + 0x20] = storage[stack[-1] + 0x03]
+	// }
+	// Block ends with call to 0x052e, returns to 0x052B
+
+label_052B:
+	// Incoming return from call to 0x052E at 0x052A
+	// Inputs[1] { @052D  stack[-2] }
+	052B    5B  JUMPDEST
+	052C    50  POP
+	052D    56  *JUMP
+	// Stack delta = -2
+	// Block ends with unconditional jump to stack[-2]
+
+label_052E:
+	// Incoming call from 0x052A, returns to 0x052B
+	// Incoming call from 0x031B, returns to 0x031C
+	// Inputs[10]
+	// {
+	//     @052F  stack[-1]
+	//     @0533  memory[0x00 + stack[-1]:0x00 + stack[-1] + 0x20]
+	//     @0538  memory[0x20 + stack[-1]:0x20 + stack[-1] + 0x20]
+	//     @053D  memory[0x40 + stack[-1]:0x40 + stack[-1] + 0x20]
+	//     @0542  memory[0x60 + stack[-1]:0x60 + stack[-1] + 0x20]
+	//     @0545  memory[0x40:0x60]
+	//     @0567  memory[0x40:0x60]
+	//     @056C  memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + 0x20 + 0x20 + 0x20 + memory[0x40:0x60]) - memory[0x40:0x60]]
+	//     @0577  block.number
+	//     @057F  stack[-2]
+	// }
+	052E    5B  JUMPDEST
+	052F    80  DUP1
+	0530    60  PUSH1 0x00
+	0532    01  ADD
+	0533    51  MLOAD
+	0534    81  DUP2
+	0535    60  PUSH1 0x20
+	0537    01  ADD
+	0538    51  MLOAD
+	0539    82  DUP3
+	053A    60  PUSH1 0x40
+	053C    01  ADD
+	053D    51  MLOAD
+	053E    83  DUP4
+	053F    60  PUSH1 0x60
+	0541    01  ADD
+	0542    51  MLOAD
+	0543    60  PUSH1 0x40
+	0545    51  MLOAD
+	0546    80  DUP1
+	0547    85  DUP6
+	0548    81  DUP2
+	0549    52  MSTORE
+	054A    60  PUSH1 0x20
+	054C    01  ADD
+	054D    84  DUP5
+	054E    81  DUP2
+	054F    52  MSTORE
+	0550    60  PUSH1 0x20
+	0552    01  ADD
+	0553    83  DUP4
+	0554    81  DUP2
+	0555    52  MSTORE
+	0556    60  PUSH1 0x20
+	0558    01  ADD
+	0559    82  DUP3
+	055A    81  DUP2
+	055B    52  MSTORE
+	055C    60  PUSH1 0x20
+	055E    01  ADD
+	055F    94  SWAP5
+	0560    50  POP
+	0561    50  POP
+	0562    50  POP
+	0563    50  POP
+	0564    50  POP
+	0565    60  PUSH1 0x40
+	0567    51  MLOAD
+	0568    80  DUP1
+	0569    91  SWAP2
+	056A    03  SUB
+	056B    90  SWAP1
+	056C    20  SHA3
+	056D    60  PUSH1 0x01
+	056F    90  SWAP1
+	0570    04  DIV
+	0571    60  PUSH1 0x01
+	0573    81  DUP2
+	0574    90  SWAP1
+	0575    55  SSTORE
+	0576    50  POP
+	0577    43  NUMBER
+	0578    60  PUSH1 0x02
+	057A    81  DUP2
+	057B    90  SWAP1
+	057C    55  SSTORE
+	057D    50  POP
+	057E    50  POP
+	057F    56  *JUMP
+	// Stack delta = -2
+	// Outputs[6]
+	// {
+	//     @0549  memory[memory[0x40:0x60]:memory[0x40:0x60] + 0x20] = memory[0x00 + stack[-1]:0x00 + stack[-1] + 0x20]
+	//     @054F  memory[0x20 + memory[0x40:0x60]:0x20 + memory[0x40:0x60] + 0x20] = memory[0x20 + stack[-1]:0x20 + stack[-1] + 0x20]
+	//     @0555  memory[0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + memory[0x40:0x60] + 0x20] = memory[0x40 + stack[-1]:0x40 + stack[-1] + 0x20]
+	//     @055B  memory[0x20 + 0x20 + 0x20 + memory[0x40:0x60]:0x20 + 0x20 + 0x20 + memory[0x40:0x60] + 0x20] = memory[0x60 + stack[-1]:0x60 + stack[-1] + 0x20]
+	//     @0575  storage[0x01] = keccak256(memory[memory[0x40:0x60]:memory[0x40:0x60] + (0x20 + 0x20 + 0x20 + 0x20 + memory[0x40:0x60]) - memory[0x40:0x60]]) / 0x01
+	//     @057C  storage[0x02] = block.number
+	// }
+	// Block ends with unconditional jump to stack[-2]
+
+	0580    00    *STOP
+	0581    A1    LOG1
+	0582    65    PUSH6 0x627a7a723058
+	0589    20    SHA3
+	058A    A2    LOG2
+	058B    D5    D5
+	058C    27    27
+	058D    58    PC
+	058E    64    PUSH5 0x48b5d15589
+	0594    64    PUSH5 0x98284d1ed7
+	059A    25    25
+	059B    8A    DUP11
+	059C    34    CALLVALUE
+	059D    EA    EA
+	059E    5A    GAS
+	059F    A9    A9
+	05A0    7A    PUSH27 0x6954fc26f87ec9eb910029

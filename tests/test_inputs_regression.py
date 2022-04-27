@@ -26,12 +26,12 @@ class TestInputRegression(unittest.TestCase):
         self.expected_path = self.tests_path / self.EXPECTED_DIR_RELATIVE_TO_THIS
         self.maxDiff = 10000
 
-    @unittest.skip
-    def test_examples_subset(self):
+    # @unittest.skip
+    def test_debug_examples_subset(self):
         """ run only selected tests and write actual output to file for debugging
             - usually skipped
         """
-        test_files = ['0x37eb3cb268a0dd1bc2c383296fe34f58c5b5db8b.bin']     # .bin file names w/o path
+        test_files = ['Lottery.bin'] # ['0x37eb3cb268a0dd1bc2c383296fe34f58c5b5db8b.bin']     # .bin file names w/o path
 
         self._test_example_group(file_path_filter=lambda path: any(t == path.name for t in test_files),
                                  save_actual_output=True)
