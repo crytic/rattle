@@ -12,7 +12,7 @@ class UseDefGraph(object):
     def __init__(self, value: StackValue) -> None:
         self.value = value
 
-    def dot(self) -> str:
+    def dot(self) -> None:
         rv = ''
         rv += 'digraph G {\n'
 
@@ -121,7 +121,7 @@ class ControlFlowGraph(object):
         edges = []
 
         for block in self.function:
-            block_id = f'block_{block.offset}'
+            block_id = f'block_{block.offset:#x}'
             block_body = '\\l'.join([f'{insn.offset:#x}: {insn}' for insn in block])
             block_body = block_body.replace('<', '\\<').replace('>', '\\>')
             block_dot = f'{block_id} [label="{block_body}\\l", shape="record"];'
@@ -133,11 +133,11 @@ class ControlFlowGraph(object):
                 jump_label = ' [label=" t", color="darkgreen"]'
 
             if block.fallthrough_edge:
-                target_block_id = f'block_{block.fallthrough_edge.offset}'
+                target_block_id = f'block_{block.fallthrough_edge.offset:#x}'
                 edges.append(f'{block_id} -> {target_block_id}{fallthrough_label};')
 
             for edge in block.jump_edges:
-                target_block_id = f'block_{edge.offset}'
+                target_block_id = f'block_{edge.offset:#x}'
                 edges.append(f'{block_id} -> {target_block_id}{jump_label};')
 
             rv += block_dot + '\n'
