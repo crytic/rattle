@@ -1031,15 +1031,15 @@ Function PURCHASE_AMOUNT_UNIT() storage:
 			To:	%65 = CALLER()    // ADDRESS
 			Value:	%357 = SUB(%356, #17b7883c06916600000)
 
-	- withdrawAll()
-		%709 = CALL(%702, %688, %700, %707, %708, %707, #0)
-			To:	%688 = SLOAD(#0)    // ADDRESS
-			Value:	%700 = BALANCE(%699)
-
 	- withdraw(uint256)
 		%565 = CALL(%558, %548, %126, %563, %564, %563, #0)
 			To:	%548 = SLOAD(#0)    // ADDRESS
 			Value:	%126 = CALLDATALOAD(#4)
+
+	- withdrawAll()
+		%709 = CALL(%702, %688, %700, %707, %708, %707, #0)
+			To:	%688 = SLOAD(#0)    // ADDRESS
+			Value:	%700 = BALANCE(%699)
 
 [+] Contract calls:
 	%366 = CALL(%359, %65, %357, %364, %365, %364, #0)
@@ -1051,15 +1051,6 @@ Function PURCHASE_AMOUNT_UNIT() storage:
 		Out Data Offset: %364		%364 = MLOAD(#40)
 		Out Data Size: #0
 
-	%709 = CALL(%702, %688, %700, %707, %708, %707, #0)
-		Gas: %702			%702 = MUL(%701, #8fc)
-		To: %688 			%688 = SLOAD(#0)    // ADDRESS
-		Value: %700			%700 = BALANCE(%699)
-		In Data Offset: %707		%707 = MLOAD(#40)
-		In Data Size: %708		%708 = SUB(%704, %707)
-		Out Data Offset: %707		%707 = MLOAD(#40)
-		Out Data Size: #0
-
 	%565 = CALL(%558, %548, %126, %563, %564, %563, #0)
 		Gas: %558			%558 = MUL(%557, #8fc)
 		To: %548 			%548 = SLOAD(#0)    // ADDRESS
@@ -1067,6 +1058,15 @@ Function PURCHASE_AMOUNT_UNIT() storage:
 		In Data Offset: %563		%563 = MLOAD(#40)
 		In Data Size: %564		%564 = SUB(%560, %563)
 		Out Data Offset: %563		%563 = MLOAD(#40)
+		Out Data Size: #0
+
+	%709 = CALL(%702, %688, %700, %707, %708, %707, #0)
+		Gas: %702			%702 = MUL(%701, #8fc)
+		To: %688 			%688 = SLOAD(#0)    // ADDRESS
+		Value: %700			%700 = BALANCE(%699)
+		In Data Offset: %707		%707 = MLOAD(#40)
+		In Data Size: %708		%708 = SUB(%704, %707)
+		Out Data Offset: %707		%707 = MLOAD(#40)
 		Out Data Size: #0
 
 [+] Wrote _dispatch to output/_dispatch.png

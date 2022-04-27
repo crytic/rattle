@@ -447,7 +447,7 @@ class InternalRecover(object):
                         fallthrough.name = '_fallthrough'
                         self.functions.append(fallthrough)
 
-    def split_inline_functions(self, function: SSAFunction) -> List[SSAFunction]:
+    def split_inline_functions(self, function: SSAFunction) -> None:
         # Find inline function calls
         for block in function:
             for insn in block:

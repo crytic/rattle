@@ -3,7 +3,7 @@
 
 import functools
 import logging
-from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable, Any
+from typing import List, Dict, Tuple, Optional, Set, cast, Iterator, Callable, Iterable
 
 from rattle.evmasm import EVMAsm
 from .hashes import hashes
@@ -192,7 +192,7 @@ class PlaceholderStackValue(StackValue):
                 return self.block.function.phis[self].return_value, True
 
             args = set()
-            for edge in self.block.in_edges:
+            for edge in sorted(self.block.in_edges, key=lambda bb: bb.offset):
                 edge_stack: List[StackValue] = edge.stack
                 try:
                     new_slot = edge_stack[self.sp]
