@@ -1,0 +1,109 @@
+<SSAFunction name:_dispatch hash:0x0 offset:0x0 num_blocks:4 blocks:<SSABasicBlock offset:0x0 num_insns:4 in: [] insns:[
+	<0x4: MSTORE(#40, #80)>
+	<0x5: %2 = CALLVALUE()>
+	<0x7: %3 = ISZERO(%2)>
+	<0xa: JUMPI(#f, %3)>
+] fallthrough:0xb jumps:[0xf]>
+<SSABasicBlock offset:0xb num_insns:1 in: [0x0] insns:[
+	<0xe: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xf num_insns:4 in: [0x0] insns:[
+	<0x13: %7 = CALLDATASIZE()>
+	<0x14: %8 = LT(%7, #4)>
+	<0x17: JUMPI(#28, %8)>
+	<0x17: ICALL(_fallthrough)>
+] fallthrough:None jumps:[0x28]>
+<SSABasicBlock offset:0xc1 num_insns:1 in: [] insns:[
+	<0xc1: INVALID()>
+] fallthrough:None jumps:None>>
+
+<SSAFunction name:_fallthrough hash:0x0 offset:0x18 num_blocks:2 blocks:<SSABasicBlock offset:0x18 num_insns:4 in: [] insns:[
+	<0x1a: %11 = CALLDATALOAD(#0)>
+	<0x1d: %13 = SHR(#e0, %11)>
+	<0x24: %15 = EQ(#4cd13d28, %13)>
+	<0x0: ICONDCALL(_unknown_0x4cd13d28(), %15)>
+] fallthrough:0x28 jumps:None>
+<SSABasicBlock offset:0x28 num_insns:1 in: [0xf,0x18] insns:[
+	<0x2c: REVERT(#0, #0)>
+] fallthrough:None jumps:None>>
+
+<SSAFunction name: hash:0x4cd13d28 offset:0x2d num_blocks:11 blocks:<SSABasicBlock offset:0x2d num_insns:2 in: [] insns:[
+	<0x32: %20 = CALLDATASIZE()>
+	<0x37: JUMP(#83)>
+] fallthrough:None jumps:[0x83]>
+<SSABasicBlock offset:0x3c num_insns:6 in: [0x53] insns:[
+	<0x3f: %25 = MLOAD(#40)>
+	<0x42: MSTORE(%25, %67)>
+	<0x45: %27 = ADD(#20, %25)>
+	<0x48: %29 = MLOAD(#40)>
+	<0x4b: %30 = SUB(%27, %29)>
+	<0x4d: RETURN(%29, %30)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x53 num_insns:5 in: [0x94,0xba] insns:[
+	<0x53: %67 = PHI(#0, %66)>
+	<0x53: %65 = PHI(#0, %64)>
+	<0x56: %32 = LT(%65, %50)>
+	<0x57: %33 = ISZERO(%32)>
+	<0x5a: JUMPI(#7c, %33)>
+] fallthrough:0x5b jumps:[0x3c]>
+<SSABasicBlock offset:0x5b num_insns:3 in: [0x53] insns:[
+	<0x5d: %35 = GT(%67, %65)>
+	<0x5e: %36 = ISZERO(%35)>
+	<0x61: JUMPI(#68, %36)>
+] fallthrough:0x6d jumps:[0x6d]>
+<SSABasicBlock offset:0x6d num_insns:2 in: [0x5b] insns:[
+	<0x6d: %66 = PHI(#3, %65)>
+	<0x74: JUMP(#9b)>
+] fallthrough:None jumps:[0x9b]>
+<SSABasicBlock offset:0x83 num_insns:4 in: [0x2d] insns:[
+	<0x8a: %45 = SUB(%20, #4)>
+	<0x8b: %46 = SLT(%45, #20)>
+	<0x8c: %47 = ISZERO(%46)>
+	<0x8f: JUMPI(#94, %47)>
+] fallthrough:0x90 jumps:[0x94]>
+<SSABasicBlock offset:0x90 num_insns:1 in: [0x83] insns:[
+	<0x93: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x94 num_insns:2 in: [0x83] insns:[
+	<0x96: %50 = CALLDATALOAD(#4)>
+	<0x9a: JUMP(#38)>
+] fallthrough:None jumps:[0x53]>
+<SSABasicBlock offset:0x9b num_insns:2 in: [0x6d] insns:[
+	<0xa1: %53 = ADD(%65, #1)>
+	<0xa4: JUMPI(#ba, %53)>
+] fallthrough:0xa5 jumps:[0xba]>
+<SSABasicBlock offset:0xa5 num_insns:4 in: [0x9b] insns:[
+	<0xac: %57 = SHL(#e0, #4e487b71)>
+	<0xaf: MSTORE(#0, %57)>
+	<0xb4: MSTORE(#4, #11)>
+	<0xb9: REVERT(#0, #24)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xba num_insns:2 in: [0x9b] insns:[
+	<0xbe: %64 = ADD(#1, %65)>
+	<0xc0: JUMP(#75)>
+] fallthrough:None jumps:[0x53]>>
+
+
+Identified Functions:
+	_dispatch argument offsets:[]
+	_fallthrough argument offsets:[(0, 32)]
+	_unknown_0x4cd13d28() argument offsets:[(4, 36)]
+
+Storage Locations: []
+Memory Locations: [64, 0, 4]
+Analyzing Memory Location: 64
+
+	0x4: MSTORE(#40, #80)
+	0x3f: %25 = MLOAD(#40)
+	0x48: %29 = MLOAD(#40)
+
+
+
+Function _dispatch storage:
+Function _fallthrough storage:
+Function _unknown_0x4cd13d28() storage:
+[+] Contract can not send ether.
+[+] Contract calls:
+[+] Wrote _dispatch to output/_dispatch.png
+[+] Wrote _fallthrough to output/_fallthrough.png
+[+] Wrote _unknown_0x4cd13d28() to output/_unknown_0x4cd13d28().png

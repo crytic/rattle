@@ -1,0 +1,40 @@
+<SSAFunction name:_dispatch hash:0x0 offset:0x0 num_blocks:6 blocks:<SSABasicBlock offset:0x0 num_insns:4 in: [] insns:[
+	<0x4: MSTORE(#40, #80)>
+	<0x5: %2 = CALLVALUE()>
+	<0x7: %3 = ISZERO(%2)>
+	<0xa: JUMPI(#f, %3)>
+] fallthrough:0xb jumps:[0x26]>
+<SSABasicBlock offset:0xb num_insns:1 in: [0x0] insns:[
+	<0xe: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x16 num_insns:1 in: [0x24,0x2e] insns:[
+	<0x17: STOP()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x24 num_insns:1 in: [0x24,0x2e] insns:[
+	<0x25: JUMP(%15)>
+] fallthrough:None jumps:[0x16,0x24]>
+<SSABasicBlock offset:0x26 num_insns:3 in: [0x0,0x26] insns:[
+	<0x26: %15 = PHI(#16, #24)>
+	<0x26: %46 = PHI(#1e, #2e)>
+	<0x27: JUMP(%46)>
+] fallthrough:None jumps:[0x26,0x2e]>
+<SSABasicBlock offset:0x2e num_insns:1 in: [0x26] insns:[
+	<0x2f: JUMP(%15)>
+] fallthrough:None jumps:[0x16,0x24]>>
+
+
+Identified Functions:
+	_dispatch argument offsets:[]
+
+Storage Locations: []
+Memory Locations: [64]
+Analyzing Memory Location: 64
+
+	0x4: MSTORE(#40, #80)
+
+
+
+Function _dispatch storage:
+[+] Contract can not send ether.
+[+] Contract calls:
+[+] Wrote _dispatch to output/_dispatch.png

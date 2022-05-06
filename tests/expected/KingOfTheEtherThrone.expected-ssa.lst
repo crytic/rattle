@@ -1,0 +1,1193 @@
+<SSAFunction name:_dispatch hash:0x0 offset:0x0 num_blocks:1 blocks:<SSABasicBlock offset:0x0 num_insns:5 in: [] insns:[
+	<0x4: MSTORE(#40, #80)>
+	<0x7: %3 = CALLDATASIZE()>
+	<0x8: %4 = LT(%3, #4)>
+	<0xc: JUMPI(#83, %4)>
+	<0xc: ICALL(_fallthrough)>
+] fallthrough:None jumps:[0x83]>>
+
+<SSAFunction name:_fallthrough hash:0x0 offset:0xd num_blocks:79 blocks:<SSABasicBlock offset:0xd num_insns:5 in: [] insns:[
+	<0xf: %7 = CALLDATALOAD(#0)>
+	<0x2f: %9 = DIV(%7, #100000000000000000000000000000000000000000000000000000000)>
+	<0x35: %11 = AND(#ffffffff, %9)>
+	<0x3c: %13 = EQ(#eb3f5a0, %11)>
+	<0x0: ICONDCALL(sweepCommission(uint256), %13)>
+] fallthrough:0x41 jumps:None>
+<SSABasicBlock offset:0x41 num_insns:2 in: [0xd] insns:[
+	<0x47: %16 = EQ(#64325ddb, %11)>
+	<0x0: ICONDCALL(currentClaimPrice(), %16)>
+] fallthrough:0x4c jumps:None>
+<SSABasicBlock offset:0x4c num_insns:2 in: [0x41] insns:[
+	<0x52: %19 = EQ(#7842c52d, %11)>
+	<0x0: ICONDCALL(_unknown_0x7842c52d(), %19)>
+] fallthrough:0x57 jumps:None>
+<SSABasicBlock offset:0x57 num_insns:2 in: [0x4c] insns:[
+	<0x5d: %22 = EQ(#b66a323c, %11)>
+	<0x0: ICONDCALL(claimThrone(string), %22)>
+] fallthrough:0x62 jumps:None>
+<SSABasicBlock offset:0x62 num_insns:2 in: [0x57] insns:[
+	<0x68: %25 = EQ(#c8fdc891, %11)>
+	<0x0: ICONDCALL(numberOfMonarchs(), %25)>
+] fallthrough:0x6d jumps:None>
+<SSABasicBlock offset:0x6d num_insns:2 in: [0x62] insns:[
+	<0x73: %28 = EQ(#e40d0ac3, %11)>
+	<0x0: ICONDCALL(_unknown_0xe40d0ac3(), %28)>
+] fallthrough:0x78 jumps:None>
+<SSABasicBlock offset:0x78 num_insns:2 in: [0x6d] insns:[
+	<0x7e: %31 = EQ(#f2fde38b, %11)>
+	<0x0: ICONDCALL(transferOwnership(address), %31)>
+] fallthrough:0x83 jumps:None>
+<SSABasicBlock offset:0x83 num_insns:3 in: [0x0,0x78] insns:[
+	<0x84: %33 = CALLVALUE()>
+	<0x86: %34 = ISZERO(%33)>
+	<0x8a: JUMPI(#8f, %34)>
+] fallthrough:0x8b jumps:[0x8f]>
+<SSABasicBlock offset:0x8b num_insns:1 in: [0x83] insns:[
+	<0x8e: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x8f num_insns:12 in: [0x83] insns:[
+	<0x96: %39 = CALLDATASIZE()>
+	<0x9b: %41 = ADD(#1f, %39)>
+	<0xa0: %43 = DIV(%41, #20)>
+	<0xa1: %44 = MUL(%43, #20)>
+	<0xa4: %46 = ADD(#20, %44)>
+	<0xa7: %48 = MLOAD(#40)>
+	<0xaa: %49 = ADD(%48, %46)>
+	<0xad: MSTORE(#40, %49)>
+	<0xb5: MSTORE(%48, %39)>
+	<0xb8: %52 = ADD(#20, %48)>
+	<0xbe: CALLDATACOPY(%52, #0, %39)>
+	<0xcb: JUMP(#3b5)>
+] fallthrough:None jumps:[0x3b5]>
+<SSABasicBlock offset:0xcc num_insns:1 in: [0x97f] insns:[
+	<0xcd: STOP()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x274 num_insns:1 in: [0x97f] insns:[
+	<0x275: STOP()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x3b5 num_insns:7 in: [0x8f,0x219] insns:[
+	<0x3b5: %1012 = PHI(%48, %169)>
+	<0x3b5: %1013 = PHI(#cc, #274)>
+	<0x3be: %264 = CALLVALUE()>
+	<0x3c3: %266 = SLOAD(#1)>
+	<0x3c5: %267 = LT(%264, %266)>
+	<0x3c6: %268 = ISZERO(%267)>
+	<0x3ca: JUMPI(#405, %268)>
+] fallthrough:0x3cb jumps:[0x405]>
+<SSABasicBlock offset:0x3cb num_insns:8 in: [0x3b5] insns:[
+	<0x3cb: %270 = CALLER()    // ADDRESS>
+	<0x3e8: %274 = ISZERO(%264)>
+	<0x3e9: %275 = MUL(%274, #8fc)>
+	<0x3ed: %277 = MLOAD(#40)>
+	<0x3f2: %280 = MLOAD(#40)>
+	<0x3f5: %281 = SUB(%277, %280)>
+	<0x3fa: %282 = CALL(%275, %270, %264, %280, %281, %280, #0)>
+	<0x404: JUMP(#97f)>
+] fallthrough:None jumps:[0x97f]>
+<SSABasicBlock offset:0x405 num_insns:4 in: [0x3b5] insns:[
+	<0x408: %285 = SLOAD(#1)>
+	<0x40a: %286 = GT(%264, %285)>
+	<0x40b: %287 = ISZERO(%286)>
+	<0x40f: JUMPI(#452, %287)>
+] fallthrough:0x410 jumps:[0x452]>
+<SSABasicBlock offset:0x410 num_insns:10 in: [0x405] insns:[
+	<0x412: %290 = SLOAD(#1)>
+	<0x414: %291 = SUB(%264, %290)>
+	<0x417: %292 = CALLER()    // ADDRESS>
+	<0x434: %296 = ISZERO(%291)>
+	<0x435: %297 = MUL(%296, #8fc)>
+	<0x439: %299 = MLOAD(#40)>
+	<0x43e: %302 = MLOAD(#40)>
+	<0x441: %303 = SUB(%299, %302)>
+	<0x446: %304 = CALL(%297, %292, %291, %302, %303, %302, #0)>
+	<0x44f: %305 = SUB(%264, %291)>
+] fallthrough:0x452 jumps:None>
+<SSABasicBlock offset:0x452 num_insns:4 in: [0x405,0x410] insns:[
+	<0x452: %1009 = PHI(%264, %305)>
+	<0x45a: %309 = ISZERO(#64)>
+	<0x45b: %310 = ISZERO(%309)>
+	<0x45f: JUMPI(#461, %310)>
+] fallthrough:0x460 jumps:[0x461]>
+<SSABasicBlock offset:0x460 num_insns:1 in: [0x452] insns:[
+	<0x460: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x461 num_insns:6 in: [0x452] insns:[
+	<0x462: %312 = DIV(%1009, #64)>
+	<0x467: %313 = SUB(%1009, %312)>
+	<0x46e: %315 = SLOAD(#0)    // ADDRESS>
+	<0x4aa: %327 = SLOAD(#2)    // ADDRESS>
+	<0x4de: %335 = EQ(%327, %315)>
+	<0x4e4: JUMPI(#544, %335)>
+] fallthrough:0x4e5 jumps:[0x545]>
+<SSABasicBlock offset:0x4e5 num_insns:8 in: [0x461] insns:[
+	<0x4ed: %343 = SLOAD(#2)    // ADDRESS>
+	<0x527: %352 = ISZERO(%313)>
+	<0x528: %353 = MUL(%352, #8fc)>
+	<0x52c: %355 = MLOAD(#40)>
+	<0x531: %358 = MLOAD(#40)>
+	<0x534: %359 = SUB(%355, %358)>
+	<0x539: %360 = CALL(%353, %343, %313, %358, %359, %358, #0)>
+	<0x543: JUMP(#545)>
+] fallthrough:None jumps:[0x545]>
+<SSABasicBlock offset:0x545 num_insns:22 in: [0x461,0x4e5] insns:[
+	<0x54f: %365 = SLOAD(#6)>
+	<0x550: %366 = ADD(%365, #1)>
+	<0x553: SSTORE(#6, %366)>
+	<0x55c: %368 = SUB(%366, #1)>
+	<0x560: MSTORE(#0, #6)>
+	<0x565: %372 = SHA3(#0, #20)>
+	<0x569: %374 = MUL(#4, %368)>
+	<0x56a: %375 = ADD(%374, %372)>
+	<0x57c: %380 = SLOAD(#2)    // ADDRESS>
+	<0x5a5: %391 = SLOAD(%375)>
+	<0x5be: %395 = AND(#ffffffffffffffffffffffff0000000000000000000000000000000000000000, %391)>
+	<0x5d8: %399 = OR(%380, %395)>
+	<0x5da: SSTORE(%375, %399)>
+	<0x5e3: %403 = ADD(#1, %375)>
+	<0x5e6: %404 = SLOAD(#3)>
+	<0x5ec: %407 = AND(#1, %404)>
+	<0x5ed: %408 = ISZERO(%407)>
+	<0x5f1: %410 = MUL(#100, %408)>
+	<0x5f2: %411 = SUB(%410, #1)>
+	<0x5f3: %412 = AND(%411, %404)>
+	<0x5f7: %414 = DIV(%412, #2)>
+	<0x601: JUMP(#cb0)>
+] fallthrough:None jumps:[0xcb0]>
+<SSABasicBlock offset:0x602 num_insns:30 in: [0xd33,0xdb3] insns:[
+	<0x607: %418 = ADD(%1010, #2)>
+	<0x608: %419 = SLOAD(%418)>
+	<0x60c: %421 = ADD(#2, %1011)>
+	<0x60d: SSTORE(%421, %419)>
+	<0x611: %423 = ADD(%1010, #3)>
+	<0x612: %424 = SLOAD(%423)>
+	<0x616: %426 = ADD(#3, %1011)>
+	<0x617: SSTORE(%426, %424)>
+	<0x61f: %429 = MLOAD(#40)>
+	<0x622: %430 = ADD(%429, #80)>
+	<0x625: MSTORE(#40, %430)>
+	<0x627: %432 = CALLER()    // ADDRESS>
+	<0x63f: MSTORE(%429, %432)>
+	<0x642: %436 = ADD(#20, %429)>
+	<0x645: MSTORE(%436, %1047)>
+	<0x648: %438 = ADD(#20, %436)>
+	<0x64b: MSTORE(%438, %1048)>
+	<0x64e: %440 = ADD(#20, %438)>
+	<0x64f: %441 = TIMESTAMP()>
+	<0x651: MSTORE(%440, %441)>
+	<0x659: %445 = MLOAD(%429)    // ADDRESS>
+	<0x665: %451 = SLOAD(#2)>
+	<0x67e: %455 = AND(#ffffffffffffffffffffffff0000000000000000000000000000000000000000, %451)>
+	<0x698: %459 = OR(%445, %455)>
+	<0x69a: SSTORE(#2, %459)>
+	<0x69f: %461 = ADD(%429, #20)>
+	<0x6a0: %462 = MLOAD(%461)>
+	<0x6a7: %465 = MLOAD(%462)>
+	<0x6ab: %467 = ADD(#20, %462)>
+	<0x6b6: JUMP(#d37)>
+] fallthrough:None jumps:[0xd37]>
+<SSABasicBlock offset:0x6b7 num_insns:13 in: [0xd33,0xdb3] insns:[
+	<0x6bc: %471 = ADD(%1010, #40)>
+	<0x6bd: %472 = MLOAD(%471)>
+	<0x6c1: %474 = ADD(#2, %1011)>
+	<0x6c2: SSTORE(%474, %472)>
+	<0x6c6: %476 = ADD(%1010, #60)>
+	<0x6c7: %477 = MLOAD(%476)>
+	<0x6cb: %479 = ADD(#3, %1011)>
+	<0x6cc: SSTORE(%479, %477)>
+	<0x6d6: %483 = SLOAD(#1)>
+	<0x6d7: %484 = MUL(%483, #3)>
+	<0x6d9: %485 = ISZERO(#2)>
+	<0x6da: %486 = ISZERO(%485)>
+	<0x6de: JUMPI(#6e0, %486)>
+] fallthrough:0x6df jumps:[0x6e0]>
+<SSABasicBlock offset:0x6df num_insns:1 in: [0x6b7] insns:[
+	<0x6df: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x6e0 num_insns:4 in: [0x6b7] insns:[
+	<0x6e1: %488 = DIV(%484, #2)>
+	<0x6ed: %490 = LT(%488, #2386f26fc10000)>
+	<0x6ee: %491 = ISZERO(%490)>
+	<0x6f2: JUMPI(#6fe, %491)>
+] fallthrough:0x6f3 jumps:[0x6fe]>
+<SSABasicBlock offset:0x6f3 num_insns:2 in: [0x6e0] insns:[
+	<0x6f8: SSTORE(#1, %488)>
+	<0x6fd: JUMP(#85e)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x6fe num_insns:3 in: [0x6e0] insns:[
+	<0x709: %496 = LT(%488, #16345785d8a0000)>
+	<0x70a: %497 = ISZERO(%496)>
+	<0x70e: JUMPI(#733, %497)>
+] fallthrough:0x70f jumps:[0x733]>
+<SSABasicBlock offset:0x70f num_insns:3 in: [0x6fe] insns:[
+	<0x718: %500 = ISZERO(#5af3107a4000)>
+	<0x719: %501 = ISZERO(%500)>
+	<0x71d: JUMPI(#71f, %501)>
+] fallthrough:0x71e jumps:[0x71f]>
+<SSABasicBlock offset:0x71e num_insns:1 in: [0x70f] insns:[
+	<0x71e: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x71f num_insns:4 in: [0x70f] insns:[
+	<0x720: %503 = DIV(%488, #5af3107a4000)>
+	<0x728: %505 = MUL(#5af3107a4000, %503)>
+	<0x72d: SSTORE(#1, %505)>
+	<0x732: JUMP(#85d)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x733 num_insns:3 in: [0x6fe] insns:[
+	<0x73e: %509 = LT(%488, #de0b6b3a7640000)>
+	<0x73f: %510 = ISZERO(%509)>
+	<0x743: JUMPI(#76a, %510)>
+] fallthrough:0x744 jumps:[0x76a]>
+<SSABasicBlock offset:0x744 num_insns:3 in: [0x733] insns:[
+	<0x74e: %513 = ISZERO(#38d7ea4c68000)>
+	<0x74f: %514 = ISZERO(%513)>
+	<0x753: JUMPI(#755, %514)>
+] fallthrough:0x754 jumps:[0x755]>
+<SSABasicBlock offset:0x754 num_insns:1 in: [0x744] insns:[
+	<0x754: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x755 num_insns:4 in: [0x744] insns:[
+	<0x756: %516 = DIV(%488, #38d7ea4c68000)>
+	<0x75f: %518 = MUL(#38d7ea4c68000, %516)>
+	<0x764: SSTORE(#1, %518)>
+	<0x769: JUMP(#85c)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x76a num_insns:3 in: [0x733] insns:[
+	<0x775: %522 = LT(%488, #8ac7230489e80000)>
+	<0x776: %523 = ISZERO(%522)>
+	<0x77a: JUMPI(#7a1, %523)>
+] fallthrough:0x77b jumps:[0x7a1]>
+<SSABasicBlock offset:0x77b num_insns:3 in: [0x76a] insns:[
+	<0x785: %526 = ISZERO(#2386f26fc10000)>
+	<0x786: %527 = ISZERO(%526)>
+	<0x78a: JUMPI(#78c, %527)>
+] fallthrough:0x78b jumps:[0x78c]>
+<SSABasicBlock offset:0x78b num_insns:1 in: [0x77b] insns:[
+	<0x78b: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x78c num_insns:4 in: [0x77b] insns:[
+	<0x78d: %529 = DIV(%488, #2386f26fc10000)>
+	<0x796: %531 = MUL(#2386f26fc10000, %529)>
+	<0x79b: SSTORE(#1, %531)>
+	<0x7a0: JUMP(#85b)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x7a1 num_insns:3 in: [0x76a] insns:[
+	<0x7ad: %535 = LT(%488, #56bc75e2d63100000)>
+	<0x7ae: %536 = ISZERO(%535)>
+	<0x7b2: JUMPI(#7db, %536)>
+] fallthrough:0x7b3 jumps:[0x7db]>
+<SSABasicBlock offset:0x7b3 num_insns:3 in: [0x7a1] insns:[
+	<0x7be: %539 = ISZERO(#16345785d8a0000)>
+	<0x7bf: %540 = ISZERO(%539)>
+	<0x7c3: JUMPI(#7c5, %540)>
+] fallthrough:0x7c4 jumps:[0x7c5]>
+<SSABasicBlock offset:0x7c4 num_insns:1 in: [0x7b3] insns:[
+	<0x7c4: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x7c5 num_insns:4 in: [0x7b3] insns:[
+	<0x7c6: %542 = DIV(%488, #16345785d8a0000)>
+	<0x7d0: %544 = MUL(#16345785d8a0000, %542)>
+	<0x7d5: SSTORE(#1, %544)>
+	<0x7da: JUMP(#85a)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x7db num_insns:3 in: [0x7a1] insns:[
+	<0x7e7: %548 = LT(%488, #3635c9adc5dea00000)>
+	<0x7e8: %549 = ISZERO(%548)>
+	<0x7ec: JUMPI(#815, %549)>
+] fallthrough:0x7ed jumps:[0x815]>
+<SSABasicBlock offset:0x7ed num_insns:3 in: [0x7db] insns:[
+	<0x7f8: %552 = ISZERO(#de0b6b3a7640000)>
+	<0x7f9: %553 = ISZERO(%552)>
+	<0x7fd: JUMPI(#7ff, %553)>
+] fallthrough:0x7fe jumps:[0x7ff]>
+<SSABasicBlock offset:0x7fe num_insns:1 in: [0x7ed] insns:[
+	<0x7fe: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x7ff num_insns:4 in: [0x7ed] insns:[
+	<0x800: %555 = DIV(%488, #de0b6b3a7640000)>
+	<0x80a: %557 = MUL(#de0b6b3a7640000, %555)>
+	<0x80f: SSTORE(#1, %557)>
+	<0x814: JUMP(#859)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x815 num_insns:3 in: [0x7db] insns:[
+	<0x822: %561 = LT(%488, #21e19e0c9bab2400000)>
+	<0x823: %562 = ISZERO(%561)>
+	<0x827: JUMPI(#850, %562)>
+] fallthrough:0x828 jumps:[0x850]>
+<SSABasicBlock offset:0x828 num_insns:3 in: [0x815] insns:[
+	<0x833: %565 = ISZERO(#8ac7230489e80000)>
+	<0x834: %566 = ISZERO(%565)>
+	<0x838: JUMPI(#83a, %566)>
+] fallthrough:0x839 jumps:[0x83a]>
+<SSABasicBlock offset:0x839 num_insns:1 in: [0x828] insns:[
+	<0x839: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x83a num_insns:4 in: [0x828] insns:[
+	<0x83b: %568 = DIV(%488, #8ac7230489e80000)>
+	<0x845: %570 = MUL(#8ac7230489e80000, %568)>
+	<0x84a: SSTORE(#1, %570)>
+	<0x84f: JUMP(#858)>
+] fallthrough:None jumps:[0x85e]>
+<SSABasicBlock offset:0x850 num_insns:1 in: [0x815] insns:[
+	<0x856: SSTORE(#1, %488)>
+] fallthrough:0x85e jumps:None>
+<SSABasicBlock offset:0x85e num_insns:28 in: [0x6f3,0x71f,0x755,0x78c,0x7c5,0x7ff,0x83a,0x850] insns:[
+	<0x888: %579 = SLOAD(#2)    // ADDRESS>
+	<0x8ad: %589 = SLOAD(#1)>
+	<0x8b0: %591 = MLOAD(#40)>
+	<0x8e0: MSTORE(%591, %579)>
+	<0x8e3: %597 = ADD(#20, %591)>
+	<0x8e7: %599 = ADD(#20, %597)>
+	<0x8ea: MSTORE(%599, %589)>
+	<0x8ed: %601 = ADD(#20, %599)>
+	<0x8f0: %602 = SUB(%601, %591)>
+	<0x8f2: MSTORE(%597, %602)>
+	<0x8f6: %603 = SLOAD(#3)>
+	<0x8fc: %606 = AND(#1, %603)>
+	<0x8fd: %607 = ISZERO(%606)>
+	<0x901: %609 = MUL(#100, %607)>
+	<0x902: %610 = SUB(%609, #1)>
+	<0x903: %611 = AND(%610, %603)>
+	<0x907: %613 = DIV(%611, #2)>
+	<0x909: MSTORE(%601, %613)>
+	<0x90c: %615 = ADD(#20, %601)>
+	<0x910: %616 = SLOAD(#3)>
+	<0x916: %619 = AND(#1, %616)>
+	<0x917: %620 = ISZERO(%619)>
+	<0x91b: %622 = MUL(#100, %620)>
+	<0x91c: %623 = SUB(%622, #1)>
+	<0x91d: %624 = AND(%623, %616)>
+	<0x921: %626 = DIV(%624, #2)>
+	<0x923: %627 = ISZERO(%626)>
+	<0x927: JUMPI(#96e, %627)>
+] fallthrough:0x928 jumps:[0x96e]>
+<SSABasicBlock offset:0x928 num_insns:2 in: [0x85e] insns:[
+	<0x92b: %630 = LT(#1f, %626)>
+	<0x92f: JUMPI(#943, %630)>
+] fallthrough:0x930 jumps:[0x943]>
+<SSABasicBlock offset:0x930 num_insns:6 in: [0x928] insns:[
+	<0x935: %633 = SLOAD(#3)>
+	<0x936: %634 = DIV(%633, #100)>
+	<0x937: %635 = MUL(%634, #100)>
+	<0x939: MSTORE(%615, %635)>
+	<0x93d: %637 = ADD(#20, %615)>
+	<0x942: JUMP(#96e)>
+] fallthrough:None jumps:[0x96e]>
+<SSABasicBlock offset:0x943 num_insns:3 in: [0x928] insns:[
+	<0x945: %639 = ADD(%615, %626)>
+	<0x94a: MSTORE(#0, #3)>
+	<0x94f: %643 = SHA3(#0, #20)>
+] fallthrough:0x951 jumps:None>
+<SSABasicBlock offset:0x951 num_insns:8 in: [0x943,0x951] insns:[
+	<0x951: %1049 = PHI(%643, %646)>
+	<0x951: %1050 = PHI(%615, %648)>
+	<0x953: %644 = SLOAD(%1049)>
+	<0x955: MSTORE(%1050, %644)>
+	<0x959: %646 = ADD(#1, %1049)>
+	<0x95d: %648 = ADD(#20, %1050)>
+	<0x960: %649 = GT(%639, %648)>
+	<0x964: JUMPI(#951, %649)>
+] fallthrough:0x965 jumps:[0x951]>
+<SSABasicBlock offset:0x965 num_insns:3 in: [0x951] insns:[
+	<0x967: %651 = SUB(%648, %639)>
+	<0x96a: %653 = AND(#1f, %651)>
+	<0x96c: %654 = ADD(%639, %653)>
+] fallthrough:0x96e jumps:None>
+<SSABasicBlock offset:0x96e num_insns:4 in: [0x85e,0x930,0x965] insns:[
+	<0x96e: %1051 = PHI(%615, %637, %654)>
+	<0x979: %656 = MLOAD(#40)>
+	<0x97c: %657 = SUB(%1051, %656)>
+	<0x97e: LOG1(%656, %657, #66dd2fa17295ffce5da0fb78b9a7146bc2c19cfbab9752e98fd016cfde14e0de)>
+] fallthrough:0x97f jumps:None>
+<SSABasicBlock offset:0x97f num_insns:2 in: [0x3cb,0x96e] insns:[
+	<0x97f: %1052 = PHI(%1013, %1047)>
+	<0x986: JUMP(%1052)>
+] fallthrough:None jumps:[0x274,0xcc]>
+<SSABasicBlock offset:0xcb0 num_insns:14 in: [0x545] insns:[
+	<0xcb3: %899 = SLOAD(%403)>
+	<0xcb9: %902 = AND(#1, %899)>
+	<0xcba: %903 = ISZERO(%902)>
+	<0xcbe: %905 = MUL(#100, %903)>
+	<0xcbf: %906 = SUB(%905, #1)>
+	<0xcc0: %907 = AND(%906, %899)>
+	<0xcc4: %909 = DIV(%907, #2)>
+	<0xcc8: MSTORE(#0, %403)>
+	<0xccd: %913 = SHA3(#0, #20)>
+	<0xcd1: %915 = ADD(#1f, %909)>
+	<0xcd5: %917 = DIV(%915, #20)>
+	<0xcd7: %918 = ADD(%913, %917)>
+	<0xcdc: %920 = LT(#1f, %414)>
+	<0xce0: JUMPI(#ce9, %920)>
+] fallthrough:0xce1 jumps:[0xce9]>
+<SSABasicBlock offset:0xce1 num_insns:3 in: [0xcb0] insns:[
+	<0xce2: %922 = SLOAD(#3)>
+	<0xce4: SSTORE(%403, %922)>
+	<0xce8: JUMP(#d26)>
+] fallthrough:None jumps:[0xd26]>
+<SSABasicBlock offset:0xce9 num_insns:5 in: [0xcb0] insns:[
+	<0xcec: %924 = ADD(%414, %414)>
+	<0xcef: %926 = ADD(#1, %924)>
+	<0xcf1: SSTORE(%403, %926)>
+	<0xcf3: %927 = ISZERO(%414)>
+	<0xcf7: JUMPI(#d26, %927)>
+] fallthrough:0xcf8 jumps:[0xd26]>
+<SSABasicBlock offset:0xcf8 num_insns:5 in: [0xce9] insns:[
+	<0xcfa: MSTORE(#0, #3)>
+	<0xcff: %932 = SHA3(#0, #20)>
+	<0xd03: %934 = ADD(#1f, %414)>
+	<0xd07: %936 = DIV(%934, #20)>
+	<0xd09: %937 = ADD(%932, %936)>
+] fallthrough:0xd0a jumps:None>
+<SSABasicBlock offset:0xd0a num_insns:5 in: [0xcf8,0xd13] insns:[
+	<0xd0a: %1057 = PHI(%932, %943)>
+	<0xd0a: %1058 = PHI(%913, %945)>
+	<0xd0d: %938 = GT(%937, %1057)>
+	<0xd0e: %939 = ISZERO(%938)>
+	<0xd12: JUMPI(#d25, %939)>
+] fallthrough:0xd13 jumps:[0xd26]>
+<SSABasicBlock offset:0xd13 num_insns:5 in: [0xd0a] insns:[
+	<0xd14: %941 = SLOAD(%1057)>
+	<0xd16: SSTORE(%1058, %941)>
+	<0xd1a: %943 = ADD(#1, %1057)>
+	<0xd1f: %945 = ADD(#1, %1058)>
+	<0xd24: JUMP(#d0a)>
+] fallthrough:None jumps:[0xd0a]>
+<SSABasicBlock offset:0xd26 num_insns:2 in: [0xce1,0xce9,0xd0a] insns:[
+	<0xd26: %1063 = PHI(%913, %1058)>
+	<0xd32: JUMP(#db7)>
+] fallthrough:None jumps:[0xdb7]>
+<SSABasicBlock offset:0xd33 num_insns:1 in: [0xdd9] insns:[
+	<0xd36: JUMP(%1059)>
+] fallthrough:None jumps:[0x602,0x6b7]>
+<SSABasicBlock offset:0xd37 num_insns:14 in: [0x602] insns:[
+	<0xd3a: %949 = SLOAD(#3)>
+	<0xd40: %952 = AND(#1, %949)>
+	<0xd41: %953 = ISZERO(%952)>
+	<0xd45: %955 = MUL(#100, %953)>
+	<0xd46: %956 = SUB(%955, #1)>
+	<0xd47: %957 = AND(%956, %949)>
+	<0xd4b: %959 = DIV(%957, #2)>
+	<0xd4f: MSTORE(#0, #3)>
+	<0xd54: %963 = SHA3(#0, #20)>
+	<0xd58: %965 = ADD(#1f, %959)>
+	<0xd5c: %967 = DIV(%965, #20)>
+	<0xd5e: %968 = ADD(%963, %967)>
+	<0xd63: %970 = LT(#1f, %465)>
+	<0xd67: JUMPI(#d78, %970)>
+] fallthrough:0xd68 jumps:[0xd78]>
+<SSABasicBlock offset:0xd68 num_insns:6 in: [0xd37] insns:[
+	<0xd69: %972 = MLOAD(%467)>
+	<0xd6d: %975 = AND(#ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00, %972)>
+	<0xd70: %976 = ADD(%465, %465)>
+	<0xd71: %977 = OR(%976, %975)>
+	<0xd73: SSTORE(#3, %977)>
+	<0xd77: JUMP(#da6)>
+] fallthrough:None jumps:[0xda6]>
+<SSABasicBlock offset:0xd78 num_insns:5 in: [0xd37] insns:[
+	<0xd7b: %979 = ADD(%465, %465)>
+	<0xd7e: %981 = ADD(#1, %979)>
+	<0xd80: SSTORE(#3, %981)>
+	<0xd82: %982 = ISZERO(%465)>
+	<0xd86: JUMPI(#da6, %982)>
+] fallthrough:0xd87 jumps:[0xda6]>
+<SSABasicBlock offset:0xd87 num_insns:1 in: [0xd78] insns:[
+	<0xd89: %984 = ADD(%467, %465)>
+] fallthrough:0xd8a jumps:None>
+<SSABasicBlock offset:0xd8a num_insns:5 in: [0xd87,0xd93] insns:[
+	<0xd8a: %1060 = PHI(%467, %990)>
+	<0xd8a: %1061 = PHI(%963, %992)>
+	<0xd8d: %985 = GT(%984, %1060)>
+	<0xd8e: %986 = ISZERO(%985)>
+	<0xd92: JUMPI(#da5, %986)>
+] fallthrough:0xd93 jumps:[0xda6]>
+<SSABasicBlock offset:0xd93 num_insns:5 in: [0xd8a] insns:[
+	<0xd94: %988 = MLOAD(%1060)>
+	<0xd96: SSTORE(%1061, %988)>
+	<0xd9a: %990 = ADD(#20, %1060)>
+	<0xd9f: %992 = ADD(#1, %1061)>
+	<0xda4: JUMP(#d8a)>
+] fallthrough:None jumps:[0xd8a]>
+<SSABasicBlock offset:0xda6 num_insns:2 in: [0xd68,0xd78,0xd8a] insns:[
+	<0xda6: %1064 = PHI(%963, %1061)>
+	<0xdb2: JUMP(#db7)>
+] fallthrough:None jumps:[0xdb7]>
+<SSABasicBlock offset:0xdb3 num_insns:1 in: [0xdd9] insns:[
+	<0xdb6: JUMP(%1059)>
+] fallthrough:None jumps:[0x602,0x6b7]>
+<SSABasicBlock offset:0xdb7 num_insns:9 in: [0xd26,0xda6] insns:[
+	<0xdb7: %1010 = PHI(#2, %429)>
+	<0xdb7: %1011 = PHI(#2, %375)>
+	<0xdb7: %1047 = PHI(%1012, %1046)>
+	<0xdb7: %1046 = PHI(%11, %1013)>
+	<0xdb7: %1048 = PHI(%1009, %1047)>
+	<0xdb7: %1059 = PHI(#602, #6b7)>
+	<0xdb7: %1062 = PHI(%918, %968)>
+	<0xdb7: %1065 = PHI(%1063, %1064)>
+	<0xdb7: %1067 = PHI(#d33, #db3)>
+] fallthrough:0xdbd jumps:None>
+<SSABasicBlock offset:0xdbd num_insns:4 in: [0xdb7,0xdc6] insns:[
+	<0xdbd: %1066 = PHI(%1003, %1065)>
+	<0xdc0: %997 = GT(%1062, %1066)>
+	<0xdc1: %998 = ISZERO(%997)>
+	<0xdc5: JUMPI(#dd5, %998)>
+] fallthrough:0xdc6 jumps:[0xdd9]>
+<SSABasicBlock offset:0xdc6 num_insns:3 in: [0xdbd] insns:[
+	<0xdcc: SSTORE(%1066, #0)>
+	<0xdd0: %1003 = ADD(#1, %1066)>
+	<0xdd4: JUMP(#dbd)>
+] fallthrough:None jumps:[0xdbd]>
+<SSABasicBlock offset:0xdd9 num_insns:1 in: [0xdbd] insns:[
+	<0xddb: JUMP(%1067)>
+] fallthrough:None jumps:[0xd33,0xdb3]>>
+
+<SSAFunction name:sweepCommission(uint256) hash:0xeb3f5a0 offset:0xce num_blocks:6 blocks:<SSABasicBlock offset:0xce num_insns:3 in: [] insns:[
+	<0xcf: %55 = CALLVALUE()>
+	<0xd1: %56 = ISZERO(%55)>
+	<0xd5: JUMPI(#da, %56)>
+] fallthrough:0xd6 jumps:[0xda]>
+<SSABasicBlock offset:0xd6 num_insns:1 in: [0xce] insns:[
+	<0xd9: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xda num_insns:2 in: [0xce] insns:[
+	<0xe9: %64 = CALLDATALOAD(#4)>
+	<0xf8: JUMP(#987)>
+] fallthrough:None jumps:[0x987]>
+<SSABasicBlock offset:0xf9 num_insns:1 in: [0x987,0x9dd] insns:[
+	<0xfa: STOP()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x987 num_insns:5 in: [0xda] insns:[
+	<0x98c: %659 = SLOAD(#0)    // ADDRESS>
+	<0x9c0: %667 = CALLER()    // ADDRESS>
+	<0x9d7: %670 = EQ(%667, %659)>
+	<0x9d8: %671 = ISZERO(%670)>
+	<0x9dc: JUMPI(#a34, %671)>
+] fallthrough:0x9dd jumps:[0xf9]>
+<SSABasicBlock offset:0x9dd num_insns:7 in: [0x987] insns:[
+	<0x9e1: %674 = SLOAD(#0)    // ADDRESS>
+	<0xa1b: %683 = ISZERO(%64)>
+	<0xa1c: %684 = MUL(%683, #8fc)>
+	<0xa20: %686 = MLOAD(#40)>
+	<0xa25: %689 = MLOAD(#40)>
+	<0xa28: %690 = SUB(%686, %689)>
+	<0xa2d: %691 = CALL(%684, %674, %64, %689, %690, %689, #0)>
+] fallthrough:0xf9 jumps:None>>
+
+<SSAFunction name:currentClaimPrice() hash:0x64325ddb offset:0xfb num_blocks:4 blocks:<SSABasicBlock offset:0xfb num_insns:3 in: [] insns:[
+	<0xfc: %68 = CALLVALUE()>
+	<0xfe: %69 = ISZERO(%68)>
+	<0x102: JUMPI(#107, %69)>
+] fallthrough:0x103 jumps:[0xa37]>
+<SSABasicBlock offset:0x103 num_insns:1 in: [0xfb] insns:[
+	<0x106: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x110 num_insns:6 in: [0xa37] insns:[
+	<0x113: %75 = MLOAD(#40)>
+	<0x117: MSTORE(%75, %693)>
+	<0x11a: %77 = ADD(#20, %75)>
+	<0x120: %79 = MLOAD(#40)>
+	<0x123: %80 = SUB(%77, %79)>
+	<0x125: RETURN(%79, %80)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xa37 num_insns:2 in: [0xfb] insns:[
+	<0xa3a: %693 = SLOAD(#1)>
+	<0xa3c: JUMP(#110)>
+] fallthrough:None jumps:[0x110]>>
+
+<SSAFunction name: hash:0x7842c52d offset:0x126 num_blocks:17 blocks:<SSABasicBlock offset:0x126 num_insns:3 in: [] insns:[
+	<0x127: %81 = CALLVALUE()>
+	<0x129: %82 = ISZERO(%81)>
+	<0x12d: JUMPI(#132, %82)>
+] fallthrough:0x12e jumps:[0x132]>
+<SSABasicBlock offset:0x12e num_insns:1 in: [0x126] insns:[
+	<0x131: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x132 num_insns:2 in: [0x126] insns:[
+	<0x141: %90 = CALLDATALOAD(#4)>
+	<0x150: JUMP(#a3d)>
+] fallthrough:None jumps:[0xa3d]>
+<SSABasicBlock offset:0x151 num_insns:15 in: [0xb1e] insns:[
+	<0x154: %95 = MLOAD(#40)>
+	<0x184: MSTORE(%95, %711)>
+	<0x187: %101 = ADD(#20, %95)>
+	<0x18b: %103 = ADD(#20, %101)>
+	<0x18e: MSTORE(%103, %784)>
+	<0x191: %105 = ADD(#20, %103)>
+	<0x194: MSTORE(%105, %787)>
+	<0x197: %107 = ADD(#20, %105)>
+	<0x19a: %108 = SUB(%107, %95)>
+	<0x19c: MSTORE(%101, %108)>
+	<0x1a0: %109 = MLOAD(%738)>
+	<0x1a2: MSTORE(%107, %109)>
+	<0x1a5: %111 = ADD(#20, %107)>
+	<0x1a9: %112 = MLOAD(%738)>
+	<0x1ad: %114 = ADD(#20, %738)>
+] fallthrough:0x1b4 jumps:None>
+<SSABasicBlock offset:0x1b4 num_insns:4 in: [0x151,0x1bd] insns:[
+	<0x1b4: %1005 = PHI(#0, %123)>
+	<0x1b7: %116 = LT(%1005, %112)>
+	<0x1b8: %117 = ISZERO(%116)>
+	<0x1bc: JUMPI(#1cf, %117)>
+] fallthrough:0x1bd jumps:[0x1cf]>
+<SSABasicBlock offset:0x1bd num_insns:6 in: [0x1b4] insns:[
+	<0x1bf: %119 = ADD(%114, %1005)>
+	<0x1c0: %120 = MLOAD(%119)>
+	<0x1c3: %121 = ADD(%111, %1005)>
+	<0x1c4: MSTORE(%121, %120)>
+	<0x1c8: %123 = ADD(%1005, #20)>
+	<0x1ce: JUMP(#1b4)>
+] fallthrough:None jumps:[0x1b4]>
+<SSABasicBlock offset:0x1cf num_insns:4 in: [0x1b4] insns:[
+	<0x1d8: %125 = ADD(%112, %111)>
+	<0x1dc: %127 = AND(#1f, %112)>
+	<0x1de: %128 = ISZERO(%127)>
+	<0x1e2: JUMPI(#1fc, %128)>
+] fallthrough:0x1e3 jumps:[0x1fc]>
+<SSABasicBlock offset:0x1e3 num_insns:9 in: [0x1cf] insns:[
+	<0x1e5: %130 = SUB(%125, %127)>
+	<0x1e7: %131 = MLOAD(%130)>
+	<0x1ed: %134 = SUB(#20, %127)>
+	<0x1f1: %136 = EXP(#100, %134)>
+	<0x1f2: %137 = SUB(%136, #1)>
+	<0x1f3: %138 = NOT(%137)>
+	<0x1f4: %139 = AND(%138, %131)>
+	<0x1f6: MSTORE(%130, %139)>
+	<0x1f9: %141 = ADD(#20, %130)>
+] fallthrough:0x1fc jumps:None>
+<SSABasicBlock offset:0x1fc num_insns:4 in: [0x1cf,0x1e3] insns:[
+	<0x1fc: %1006 = PHI(%125, %141)>
+	<0x207: %143 = MLOAD(#40)>
+	<0x20a: %144 = SUB(%1006, %143)>
+	<0x20c: RETURN(%143, %144)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xa3d num_insns:3 in: [0x132] insns:[
+	<0xa42: %695 = SLOAD(#6)>
+	<0xa44: %696 = LT(%90, %695)>
+	<0xa4a: JUMPI(#a4c, %696)>
+] fallthrough:0xa4b jumps:[0xa4c]>
+<SSABasicBlock offset:0xa4b num_insns:1 in: [0xa3d] insns:[
+	<0xa4b: INVALID()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xa4c num_insns:31 in: [0xa3d] insns:[
+	<0xa50: MSTORE(#0, #6)>
+	<0xa55: %703 = SHA3(#0, #20)>
+	<0xa59: %705 = MUL(#4, %90)>
+	<0xa5a: %706 = ADD(%705, %703)>
+	<0xa68: %711 = SLOAD(%706)    // ADDRESS>
+	<0xa8a: %718 = ADD(#1, %706)>
+	<0xa8c: %719 = SLOAD(%718)>
+	<0xa92: %722 = AND(#1, %719)>
+	<0xa93: %723 = ISZERO(%722)>
+	<0xa97: %725 = MUL(#100, %723)>
+	<0xa98: %726 = SUB(%725, #1)>
+	<0xa99: %727 = AND(%726, %719)>
+	<0xa9d: %729 = DIV(%727, #2)>
+	<0xaa1: %731 = ADD(#1f, %729)>
+	<0xaa6: %733 = DIV(%731, #20)>
+	<0xaa7: %734 = MUL(%733, #20)>
+	<0xaaa: %736 = ADD(#20, %734)>
+	<0xaad: %738 = MLOAD(#40)>
+	<0xab0: %739 = ADD(%738, %736)>
+	<0xab3: MSTORE(#40, %739)>
+	<0xaba: MSTORE(%738, %729)>
+	<0xabd: %742 = ADD(#20, %738)>
+	<0xac0: %743 = SLOAD(%718)>
+	<0xac6: %746 = AND(#1, %743)>
+	<0xac7: %747 = ISZERO(%746)>
+	<0xacb: %749 = MUL(#100, %747)>
+	<0xacc: %750 = SUB(%749, #1)>
+	<0xacd: %751 = AND(%750, %743)>
+	<0xad1: %753 = DIV(%751, #2)>
+	<0xad3: %754 = ISZERO(%753)>
+	<0xad7: JUMPI(#b1e, %754)>
+] fallthrough:0xad8 jumps:[0xb1e]>
+<SSABasicBlock offset:0xad8 num_insns:2 in: [0xa4c] insns:[
+	<0xadb: %757 = LT(#1f, %753)>
+	<0xadf: JUMPI(#af3, %757)>
+] fallthrough:0xae0 jumps:[0xaf3]>
+<SSABasicBlock offset:0xae0 num_insns:5 in: [0xad8] insns:[
+	<0xae5: %760 = SLOAD(%718)>
+	<0xae6: %761 = DIV(%760, #100)>
+	<0xae7: %762 = MUL(%761, #100)>
+	<0xae9: MSTORE(%742, %762)>
+	<0xaf2: JUMP(#b1e)>
+] fallthrough:None jumps:[0xb1e]>
+<SSABasicBlock offset:0xaf3 num_insns:3 in: [0xad8] insns:[
+	<0xaf5: %766 = ADD(%742, %753)>
+	<0xafa: MSTORE(#0, %718)>
+	<0xaff: %770 = SHA3(#0, #20)>
+] fallthrough:0xb01 jumps:None>
+<SSABasicBlock offset:0xb01 num_insns:8 in: [0xaf3,0xb01] insns:[
+	<0xb01: %1053 = PHI(%770, %773)>
+	<0xb01: %1054 = PHI(%742, %775)>
+	<0xb03: %771 = SLOAD(%1053)>
+	<0xb05: MSTORE(%1054, %771)>
+	<0xb09: %773 = ADD(#1, %1053)>
+	<0xb0d: %775 = ADD(#20, %1054)>
+	<0xb10: %776 = GT(%766, %775)>
+	<0xb14: JUMPI(#b01, %776)>
+] fallthrough:0xb1e jumps:[0xb01]>
+<SSABasicBlock offset:0xb1e num_insns:5 in: [0xa4c,0xae0,0xb01] insns:[
+	<0xb28: %783 = ADD(#2, %706)>
+	<0xb29: %784 = SLOAD(%783)>
+	<0xb2e: %786 = ADD(#3, %706)>
+	<0xb2f: %787 = SLOAD(%786)>
+	<0xb33: JUMP(#151)>
+] fallthrough:None jumps:[0x151]>>
+
+<SSAFunction name:claimThrone(string) hash:0xb66a323c offset:0x20d num_blocks:3 blocks:<SSABasicBlock offset:0x20d num_insns:3 in: [] insns:[
+	<0x20e: %145 = CALLVALUE()>
+	<0x210: %146 = ISZERO(%145)>
+	<0x214: JUMPI(#219, %146)>
+] fallthrough:0x215 jumps:[0x219]>
+<SSABasicBlock offset:0x215 num_insns:1 in: [0x20d] insns:[
+	<0x218: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x219 num_insns:15 in: [0x20d] insns:[
+	<0x228: %154 = CALLDATALOAD(#4)>
+	<0x22f: %157 = ADD(#4, %154)>
+	<0x231: %158 = CALLDATALOAD(%157)>
+	<0x235: %160 = ADD(#20, %157)>
+	<0x23b: %162 = ADD(#1f, %158)>
+	<0x240: %164 = DIV(%162, #20)>
+	<0x241: %165 = MUL(%164, #20)>
+	<0x244: %167 = ADD(#20, %165)>
+	<0x247: %169 = MLOAD(#40)>
+	<0x24a: %170 = ADD(%169, %167)>
+	<0x24d: MSTORE(#40, %170)>
+	<0x255: MSTORE(%169, %158)>
+	<0x258: %173 = ADD(#20, %169)>
+	<0x25e: CALLDATACOPY(%173, %160, %158)>
+	<0x273: JUMP(#3b5)>
+] fallthrough:None jumps:[0x3b5]>>
+
+<SSAFunction name:numberOfMonarchs() hash:0xc8fdc891 offset:0x276 num_blocks:4 blocks:<SSABasicBlock offset:0x276 num_insns:3 in: [] insns:[
+	<0x277: %176 = CALLVALUE()>
+	<0x279: %177 = ISZERO(%176)>
+	<0x27d: JUMPI(#282, %177)>
+] fallthrough:0x27e jumps:[0xb34]>
+<SSABasicBlock offset:0x27e num_insns:1 in: [0x276] insns:[
+	<0x281: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x28b num_insns:6 in: [0xb34] insns:[
+	<0x28e: %183 = MLOAD(#40)>
+	<0x292: MSTORE(%183, %790)>
+	<0x295: %185 = ADD(#20, %183)>
+	<0x29b: %187 = MLOAD(#40)>
+	<0x29e: %188 = SUB(%185, %187)>
+	<0x2a0: RETURN(%187, %188)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xb34 num_insns:2 in: [0x276] insns:[
+	<0xb3a: %790 = SLOAD(#6)>
+	<0xb40: JUMP(#28b)>
+] fallthrough:None jumps:[0x28b]>>
+
+<SSAFunction name: hash:0xe40d0ac3 offset:0x2a1 num_blocks:14 blocks:<SSABasicBlock offset:0x2a1 num_insns:3 in: [] insns:[
+	<0x2a2: %189 = CALLVALUE()>
+	<0x2a4: %190 = ISZERO(%189)>
+	<0x2a8: JUMPI(#2ad, %190)>
+] fallthrough:0x2a9 jumps:[0xb41]>
+<SSABasicBlock offset:0x2a9 num_insns:1 in: [0x2a1] insns:[
+	<0x2ac: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x2b6 num_insns:15 in: [0xc01] insns:[
+	<0x2b9: %196 = MLOAD(#40)>
+	<0x2e9: MSTORE(%196, %795)>
+	<0x2ec: %202 = ADD(#20, %196)>
+	<0x2f0: %204 = ADD(#20, %202)>
+	<0x2f3: MSTORE(%204, %868)>
+	<0x2f6: %206 = ADD(#20, %204)>
+	<0x2f9: MSTORE(%206, %871)>
+	<0x2fc: %208 = ADD(#20, %206)>
+	<0x2ff: %209 = SUB(%208, %196)>
+	<0x301: MSTORE(%202, %209)>
+	<0x305: %210 = MLOAD(%822)>
+	<0x307: MSTORE(%208, %210)>
+	<0x30a: %212 = ADD(#20, %208)>
+	<0x30e: %213 = MLOAD(%822)>
+	<0x312: %215 = ADD(#20, %822)>
+] fallthrough:0x319 jumps:None>
+<SSABasicBlock offset:0x319 num_insns:4 in: [0x2b6,0x322] insns:[
+	<0x319: %1007 = PHI(#0, %224)>
+	<0x31c: %217 = LT(%1007, %213)>
+	<0x31d: %218 = ISZERO(%217)>
+	<0x321: JUMPI(#334, %218)>
+] fallthrough:0x322 jumps:[0x334]>
+<SSABasicBlock offset:0x322 num_insns:6 in: [0x319] insns:[
+	<0x324: %220 = ADD(%215, %1007)>
+	<0x325: %221 = MLOAD(%220)>
+	<0x328: %222 = ADD(%212, %1007)>
+	<0x329: MSTORE(%222, %221)>
+	<0x32d: %224 = ADD(%1007, #20)>
+	<0x333: JUMP(#319)>
+] fallthrough:None jumps:[0x319]>
+<SSABasicBlock offset:0x334 num_insns:4 in: [0x319] insns:[
+	<0x33d: %226 = ADD(%213, %212)>
+	<0x341: %228 = AND(#1f, %213)>
+	<0x343: %229 = ISZERO(%228)>
+	<0x347: JUMPI(#361, %229)>
+] fallthrough:0x348 jumps:[0x361]>
+<SSABasicBlock offset:0x348 num_insns:9 in: [0x334] insns:[
+	<0x34a: %231 = SUB(%226, %228)>
+	<0x34c: %232 = MLOAD(%231)>
+	<0x352: %235 = SUB(#20, %228)>
+	<0x356: %237 = EXP(#100, %235)>
+	<0x357: %238 = SUB(%237, #1)>
+	<0x358: %239 = NOT(%238)>
+	<0x359: %240 = AND(%239, %232)>
+	<0x35b: MSTORE(%231, %240)>
+	<0x35e: %242 = ADD(#20, %231)>
+] fallthrough:0x361 jumps:None>
+<SSABasicBlock offset:0x361 num_insns:4 in: [0x334,0x348] insns:[
+	<0x361: %1008 = PHI(%226, %242)>
+	<0x36c: %244 = MLOAD(#40)>
+	<0x36f: %245 = SUB(%1008, %244)>
+	<0x371: RETURN(%244, %245)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xb41 num_insns:26 in: [0x2a1] insns:[
+	<0xb4b: %795 = SLOAD(#2)    // ADDRESS>
+	<0xb6f: %803 = SLOAD(#3)>
+	<0xb75: %806 = AND(#1, %803)>
+	<0xb76: %807 = ISZERO(%806)>
+	<0xb7a: %809 = MUL(#100, %807)>
+	<0xb7b: %810 = SUB(%809, #1)>
+	<0xb7c: %811 = AND(%810, %803)>
+	<0xb80: %813 = DIV(%811, #2)>
+	<0xb84: %815 = ADD(#1f, %813)>
+	<0xb89: %817 = DIV(%815, #20)>
+	<0xb8a: %818 = MUL(%817, #20)>
+	<0xb8d: %820 = ADD(#20, %818)>
+	<0xb90: %822 = MLOAD(#40)>
+	<0xb93: %823 = ADD(%822, %820)>
+	<0xb96: MSTORE(#40, %823)>
+	<0xb9d: MSTORE(%822, %813)>
+	<0xba0: %826 = ADD(#20, %822)>
+	<0xba3: %827 = SLOAD(#3)>
+	<0xba9: %830 = AND(#1, %827)>
+	<0xbaa: %831 = ISZERO(%830)>
+	<0xbae: %833 = MUL(#100, %831)>
+	<0xbaf: %834 = SUB(%833, #1)>
+	<0xbb0: %835 = AND(%834, %827)>
+	<0xbb4: %837 = DIV(%835, #2)>
+	<0xbb6: %838 = ISZERO(%837)>
+	<0xbba: JUMPI(#c01, %838)>
+] fallthrough:0xbbb jumps:[0xc01]>
+<SSABasicBlock offset:0xbbb num_insns:2 in: [0xb41] insns:[
+	<0xbbe: %841 = LT(#1f, %837)>
+	<0xbc2: JUMPI(#bd6, %841)>
+] fallthrough:0xbc3 jumps:[0xbd6]>
+<SSABasicBlock offset:0xbc3 num_insns:5 in: [0xbbb] insns:[
+	<0xbc8: %844 = SLOAD(#3)>
+	<0xbc9: %845 = DIV(%844, #100)>
+	<0xbca: %846 = MUL(%845, #100)>
+	<0xbcc: MSTORE(%826, %846)>
+	<0xbd5: JUMP(#c01)>
+] fallthrough:None jumps:[0xc01]>
+<SSABasicBlock offset:0xbd6 num_insns:3 in: [0xbbb] insns:[
+	<0xbd8: %850 = ADD(%826, %837)>
+	<0xbdd: MSTORE(#0, #3)>
+	<0xbe2: %854 = SHA3(#0, #20)>
+] fallthrough:0xbe4 jumps:None>
+<SSABasicBlock offset:0xbe4 num_insns:8 in: [0xbd6,0xbe4] insns:[
+	<0xbe4: %1055 = PHI(%854, %857)>
+	<0xbe4: %1056 = PHI(%826, %859)>
+	<0xbe6: %855 = SLOAD(%1055)>
+	<0xbe8: MSTORE(%1056, %855)>
+	<0xbec: %857 = ADD(#1, %1055)>
+	<0xbf0: %859 = ADD(#20, %1056)>
+	<0xbf3: %860 = GT(%850, %859)>
+	<0xbf7: JUMPI(#be4, %860)>
+] fallthrough:0xc01 jumps:[0xbe4]>
+<SSABasicBlock offset:0xc01 num_insns:3 in: [0xb41,0xbc3,0xbe4] insns:[
+	<0xc0c: %868 = SLOAD(#4)>
+	<0xc12: %871 = SLOAD(#5)>
+	<0xc16: JUMP(#2b6)>
+] fallthrough:None jumps:[0x2b6]>>
+
+<SSAFunction name:transferOwnership(address) hash:0xf2fde38b offset:0x372 num_blocks:6 blocks:<SSABasicBlock offset:0x372 num_insns:3 in: [] insns:[
+	<0x373: %246 = CALLVALUE()>
+	<0x375: %247 = ISZERO(%246)>
+	<0x379: JUMPI(#37e, %247)>
+] fallthrough:0x37a jumps:[0x37e]>
+<SSABasicBlock offset:0x37a num_insns:1 in: [0x372] insns:[
+	<0x37d: REVERT(#0, #0)>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0x37e num_insns:2 in: [0x372] insns:[
+	<0x38d: %255 = CALLDATALOAD(#4)    // ADDRESS>
+	<0x3b2: JUMP(#c17)>
+] fallthrough:None jumps:[0xc17]>
+<SSABasicBlock offset:0x3b3 num_insns:1 in: [0xc17,0xc6d] insns:[
+	<0x3b4: STOP()>
+] fallthrough:None jumps:None>
+<SSABasicBlock offset:0xc17 num_insns:5 in: [0x37e] insns:[
+	<0xc1c: %873 = SLOAD(#0)    // ADDRESS>
+	<0xc50: %881 = CALLER()    // ADDRESS>
+	<0xc67: %884 = EQ(%881, %873)>
+	<0xc68: %885 = ISZERO(%884)>
+	<0xc6c: JUMPI(#cad, %885)>
+] fallthrough:0xc6d jumps:[0x3b3]>
+<SSABasicBlock offset:0xc6d num_insns:4 in: [0xc17] insns:[
+	<0xc76: %890 = SLOAD(#0)>
+	<0xc8f: %894 = AND(#ffffffffffffffffffffffff0000000000000000000000000000000000000000, %890)>
+	<0xca9: %898 = OR(%255, %894)>
+	<0xcab: SSTORE(#0, %898)>
+] fallthrough:0x3b3 jumps:None>>
+
+
+Identified Functions:
+	_dispatch argument offsets:[]
+	_fallthrough argument offsets:[(0, 32)]
+	sweepCommission(uint256) argument offsets:[(4, 36)]
+	currentClaimPrice() argument offsets:[]
+	_unknown_0x7842c52d() argument offsets:[(4, 36)]
+	claimThrone(string) argument offsets:[(4, 36)]
+	numberOfMonarchs() argument offsets:[]
+	_unknown_0xe40d0ac3() argument offsets:[]
+	transferOwnership(address) argument offsets:[(4, 36)]
+
+Storage Locations: [0, 1, 2, 3, 4, 5, 6]
+Memory Locations: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 64]
+Analyzing Memory Location: 64
+
+	0x4: MSTORE(#40, #80)
+	0xa7: %48 = MLOAD(#40)
+	0xad: MSTORE(#40, %49)
+	0x113: %75 = MLOAD(#40)
+	0x120: %79 = MLOAD(#40)
+	0x154: %95 = MLOAD(#40)
+	0x207: %143 = MLOAD(#40)
+	0x247: %169 = MLOAD(#40)
+	0x24d: MSTORE(#40, %170)
+	0x28e: %183 = MLOAD(#40)
+	0x29b: %187 = MLOAD(#40)
+	0x2b9: %196 = MLOAD(#40)
+	0x36c: %244 = MLOAD(#40)
+	0x3ed: %277 = MLOAD(#40)
+	0x3f2: %280 = MLOAD(#40)
+	0x439: %299 = MLOAD(#40)
+	0x43e: %302 = MLOAD(#40)
+	0x52c: %355 = MLOAD(#40)
+	0x531: %358 = MLOAD(#40)
+	0x61f: %429 = MLOAD(#40)
+	0x625: MSTORE(#40, %430)
+	0x8b0: %591 = MLOAD(#40)
+	0x979: %656 = MLOAD(#40)
+	0xa20: %686 = MLOAD(#40)
+	0xa25: %689 = MLOAD(#40)
+	0xaad: %738 = MLOAD(#40)
+	0xab3: MSTORE(#40, %739)
+	0xb90: %822 = MLOAD(#40)
+	0xb96: MSTORE(#40, %823)
+
+
+
+Function _dispatch storage:
+Function _fallthrough storage:
+	Analyzing Storage Location: 0
+		0x46e: %315 = SLOAD(#0)    // ADDRESS
+		0x98c: %659 = SLOAD(#0)    // ADDRESS
+		0x9e1: %674 = SLOAD(#0)    // ADDRESS
+		0xc1c: %873 = SLOAD(#0)    // ADDRESS
+		0xc76: %890 = SLOAD(#0)
+		0xcab: SSTORE(#0, %898)
+
+
+	Analyzing Storage Location: 1
+		0x3c3: %266 = SLOAD(#1)
+		0x408: %285 = SLOAD(#1)
+		0x412: %290 = SLOAD(#1)
+		0x6d6: %483 = SLOAD(#1)
+		0x6f8: SSTORE(#1, %488)
+		0x72d: SSTORE(#1, %505)
+		0x764: SSTORE(#1, %518)
+		0x79b: SSTORE(#1, %531)
+		0x7d5: SSTORE(#1, %544)
+		0x80f: SSTORE(#1, %557)
+		0x84a: SSTORE(#1, %570)
+		0x856: SSTORE(#1, %488)
+		0x8ad: %589 = SLOAD(#1)
+		0xa3a: %693 = SLOAD(#1)
+
+
+	Analyzing Storage Location: 2
+		0x4aa: %327 = SLOAD(#2)    // ADDRESS
+		0x4ed: %343 = SLOAD(#2)    // ADDRESS
+		0x57c: %380 = SLOAD(#2)    // ADDRESS
+		0x665: %451 = SLOAD(#2)
+		0x69a: SSTORE(#2, %459)
+		0x888: %579 = SLOAD(#2)    // ADDRESS
+		0xb4b: %795 = SLOAD(#2)    // ADDRESS
+
+
+	Analyzing Storage Location: 3
+		0x5e6: %404 = SLOAD(#3)
+		0x8f6: %603 = SLOAD(#3)
+		0x910: %616 = SLOAD(#3)
+		0x935: %633 = SLOAD(#3)
+		0xb6f: %803 = SLOAD(#3)
+		0xba3: %827 = SLOAD(#3)
+		0xbc8: %844 = SLOAD(#3)
+		0xce2: %922 = SLOAD(#3)
+		0xd3a: %949 = SLOAD(#3)
+		0xd73: SSTORE(#3, %977)
+		0xd80: SSTORE(#3, %981)
+
+
+	Analyzing Storage Location: 6
+		0x54f: %365 = SLOAD(#6)
+		0x553: SSTORE(#6, %366)
+		0xa42: %695 = SLOAD(#6)
+		0xb3a: %790 = SLOAD(#6)
+
+
+Function sweepCommission(uint256) storage:
+	Analyzing Storage Location: 0
+		0x46e: %315 = SLOAD(#0)    // ADDRESS
+		0x98c: %659 = SLOAD(#0)    // ADDRESS
+		0x9e1: %674 = SLOAD(#0)    // ADDRESS
+		0xc1c: %873 = SLOAD(#0)    // ADDRESS
+		0xc76: %890 = SLOAD(#0)
+		0xcab: SSTORE(#0, %898)
+
+
+Function currentClaimPrice() storage:
+	Analyzing Storage Location: 1
+		0x3c3: %266 = SLOAD(#1)
+		0x408: %285 = SLOAD(#1)
+		0x412: %290 = SLOAD(#1)
+		0x6d6: %483 = SLOAD(#1)
+		0x6f8: SSTORE(#1, %488)
+		0x72d: SSTORE(#1, %505)
+		0x764: SSTORE(#1, %518)
+		0x79b: SSTORE(#1, %531)
+		0x7d5: SSTORE(#1, %544)
+		0x80f: SSTORE(#1, %557)
+		0x84a: SSTORE(#1, %570)
+		0x856: SSTORE(#1, %488)
+		0x8ad: %589 = SLOAD(#1)
+		0xa3a: %693 = SLOAD(#1)
+
+
+Function _unknown_0x7842c52d() storage:
+	Analyzing Storage Location: 6
+		0x54f: %365 = SLOAD(#6)
+		0x553: SSTORE(#6, %366)
+		0xa42: %695 = SLOAD(#6)
+		0xb3a: %790 = SLOAD(#6)
+
+
+Function claimThrone(string) storage:
+Function numberOfMonarchs() storage:
+	Analyzing Storage Location: 6
+		0x54f: %365 = SLOAD(#6)
+		0x553: SSTORE(#6, %366)
+		0xa42: %695 = SLOAD(#6)
+		0xb3a: %790 = SLOAD(#6)
+
+
+Function _unknown_0xe40d0ac3() storage:
+	Analyzing Storage Location: 2
+		0x4aa: %327 = SLOAD(#2)    // ADDRESS
+		0x4ed: %343 = SLOAD(#2)    // ADDRESS
+		0x57c: %380 = SLOAD(#2)    // ADDRESS
+		0x665: %451 = SLOAD(#2)
+		0x69a: SSTORE(#2, %459)
+		0x888: %579 = SLOAD(#2)    // ADDRESS
+		0xb4b: %795 = SLOAD(#2)    // ADDRESS
+
+
+	Analyzing Storage Location: 3
+		0x5e6: %404 = SLOAD(#3)
+		0x8f6: %603 = SLOAD(#3)
+		0x910: %616 = SLOAD(#3)
+		0x935: %633 = SLOAD(#3)
+		0xb6f: %803 = SLOAD(#3)
+		0xba3: %827 = SLOAD(#3)
+		0xbc8: %844 = SLOAD(#3)
+		0xce2: %922 = SLOAD(#3)
+		0xd3a: %949 = SLOAD(#3)
+		0xd73: SSTORE(#3, %977)
+		0xd80: SSTORE(#3, %981)
+
+
+	Analyzing Storage Location: 4
+		0xc0c: %868 = SLOAD(#4)
+
+
+	Analyzing Storage Location: 5
+		0xc12: %871 = SLOAD(#5)
+
+
+Function transferOwnership(address) storage:
+	Analyzing Storage Location: 0
+		0x46e: %315 = SLOAD(#0)    // ADDRESS
+		0x98c: %659 = SLOAD(#0)    // ADDRESS
+		0x9e1: %674 = SLOAD(#0)    // ADDRESS
+		0xc1c: %873 = SLOAD(#0)    // ADDRESS
+		0xc76: %890 = SLOAD(#0)
+		0xcab: SSTORE(#0, %898)
+
+
+[+] Contract can send ether from following functions:
+	- sweepCommission(uint256)
+		%691 = CALL(%684, %674, %64, %689, %690, %689, #0)
+			To:	%674 = SLOAD(#0)    // ADDRESS
+			Value:	%64 = CALLDATALOAD(#4)
+
+	- _fallthrough
+		%282 = CALL(%275, %270, %264, %280, %281, %280, #0)
+			To:	%270 = CALLER()    // ADDRESS
+			Value:	%264 = CALLVALUE()
+
+		%304 = CALL(%297, %292, %291, %302, %303, %302, #0)
+			To:	%292 = CALLER()    // ADDRESS
+			Value:	%291 = SUB(%264, %290)
+
+		%360 = CALL(%353, %343, %313, %358, %359, %358, #0)
+			To:	%343 = SLOAD(#2)    // ADDRESS
+			Value:	%313 = SUB(%1009, %312)
+
+[+] Contract calls:
+	%691 = CALL(%684, %674, %64, %689, %690, %689, #0)
+		Gas: %684			%684 = MUL(%683, #8fc)
+		To: %674 			%674 = SLOAD(#0)    // ADDRESS
+		Value: %64			%64 = CALLDATALOAD(#4)
+		In Data Offset: %689		%689 = MLOAD(#40)
+		In Data Size: %690		%690 = SUB(%686, %689)
+		Out Data Offset: %689		%689 = MLOAD(#40)
+		Out Data Size: #0
+
+	%282 = CALL(%275, %270, %264, %280, %281, %280, #0)
+		Gas: %275			%275 = MUL(%274, #8fc)
+		To: %270 			%270 = CALLER()    // ADDRESS
+		Value: %264			%264 = CALLVALUE()
+		In Data Offset: %280		%280 = MLOAD(#40)
+		In Data Size: %281		%281 = SUB(%277, %280)
+		Out Data Offset: %280		%280 = MLOAD(#40)
+		Out Data Size: #0
+
+	%304 = CALL(%297, %292, %291, %302, %303, %302, #0)
+		Gas: %297			%297 = MUL(%296, #8fc)
+		To: %292 			%292 = CALLER()    // ADDRESS
+		Value: %291			%291 = SUB(%264, %290)
+		In Data Offset: %302		%302 = MLOAD(#40)
+		In Data Size: %303		%303 = SUB(%299, %302)
+		Out Data Offset: %302		%302 = MLOAD(#40)
+		Out Data Size: #0
+
+	%360 = CALL(%353, %343, %313, %358, %359, %358, #0)
+		Gas: %353			%353 = MUL(%352, #8fc)
+		To: %343 			%343 = SLOAD(#2)    // ADDRESS
+		Value: %313			%313 = SUB(%1009, %312)
+		In Data Offset: %358		%358 = MLOAD(#40)
+		In Data Size: %359		%359 = SUB(%355, %358)
+		Out Data Offset: %358		%358 = MLOAD(#40)
+		Out Data Size: #0
+
+[+] Wrote _dispatch to output/_dispatch.png
+[+] Wrote _fallthrough to output/_fallthrough.png
+[+] Wrote sweepCommission(uint256) to output/sweepCommission(uint256).png
+[+] Wrote currentClaimPrice() to output/currentClaimPrice().png
+[+] Wrote _unknown_0x7842c52d() to output/_unknown_0x7842c52d().png
+[+] Wrote claimThrone(string) to output/claimThrone(string).png
+[+] Wrote numberOfMonarchs() to output/numberOfMonarchs().png
+[+] Wrote _unknown_0xe40d0ac3() to output/_unknown_0xe40d0ac3().png
+[+] Wrote transferOwnership(address) to output/transferOwnership(address).png

@@ -192,7 +192,7 @@ class PlaceholderStackValue(StackValue):
                 return self.block.function.phis[self].return_value, True
 
             args = set()
-            for edge in self.block.in_edges:
+            for edge in sorted(self.block.in_edges, key=lambda bb: bb.offset):
                 edge_stack: List[StackValue] = edge.stack
                 try:
                     new_slot = edge_stack[self.sp]
@@ -248,12 +248,20 @@ class SSAInstruction(object):
         self.parent_block = parent_block
 
     def __repr__(self) -> str:
+        def key_for_PHI_arguments(sv: StackValue):
+            return sv.concrete_value if isinstance(sv, ConcreteStackValue) else sv.value
+        # <def
+
         rv: str = ''
         if self.return_value:
             rv += f"{self.return_value} = "
 
+        # PHI arguments have no stable order and this causes trouble for the regression tests (SSA listing compare).
+        # Checking here for PHI and sorting the arguments solves it. Not nice, but good for now.
+        arguments = sorted(self.arguments, key=key_for_PHI_arguments) if self.insn.name == 'PHI' else self.arguments
+
         rv += f"{self.insn.name}("
-        rv += ', '.join([f"{x}" for x in self.arguments])
+        rv += ', '.join([f"{x}" for x in arguments])
         rv += ")"
 
         if self.comment:
@@ -266,8 +274,8 @@ class SSAInstruction(object):
             yield arg
 
     def append_argument(self, v: StackValue) -> None:
-        assert (self.insn.pops > len(self.arguments) or \
-                self.insn.is_push or \
+        assert (self.insn.pops > len(self.arguments) or
+                self.insn.is_push or
                 isinstance(self.insn, PHIInstruction))
         self.arguments.append(v)
         v.add_reader(self)
@@ -446,11 +454,11 @@ class SSABasicBlock(object):
 
         if len(self.jump_edges) > 0:
             jump_targets = [f"{x.offset:#x}" for x in self.jump_edges]
-            out1: str = "[" + ','.join(jump_targets) + "]"
+            out1: str = "[" + ','.join(sorted(jump_targets)) + "]"
         else:
             out1 = "None"
 
-        in_edges = ','.join([f"{x.offset:#x}" for x in self.in_edges])
+        in_edges = ','.join([f"{x.offset:#x}" for x in sorted(self.in_edges, key=lambda b: b.offset)])
 
         return f"<SSABasicBlock offset:{self.offset:#x} " \
                f"num_insns:{len(self.insns)} " \
