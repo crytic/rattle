@@ -39,6 +39,17 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
+To install graphviz, run the following command:
+
+Linux:
+```console
+sudo apt-get graphvis
+```
+macOS:
+```console
+brew install graphviz
+```
+
 ## Troubleshooting
 
 If you get a syntax error like this:
