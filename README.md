@@ -8,7 +8,7 @@ Rattle is an EVM binary static analysis framework designed to work on deployed s
 ## Example
 
 ```bash
-$ python3 rattle-cli.py --input inputs/kingofether/KingOfTheEtherThrone.bin -O
+python3 rattle-cli.py --input inputs/kingofether/KingOfTheEtherThrone.bin -O
 ```
 
 Would produce a register machine output like this:
@@ -33,32 +33,38 @@ $ solc --bin-runtime KingOfTheEtherThrone.sol 2>/dev/null | tail -n1 > contract.
 * pyevmasm
 
 To install the python dependencies, run these commands:
-```console
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -r requirements.txt
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 To install graphviz, run the following command:
 
 Linux:
-```console
+
+```bash
 sudo apt-get graphvis
 ```
+
 macOS:
-```console
+
+```bash
 brew install graphviz
 ```
 
 ## Troubleshooting
 
 If you get a syntax error like this:
+
 ```python
   File "rattle-cli.py", line 16
     def main() -> None:
                ^
 SyntaxError: invalid syntax
 ```
+
 You likely ran rattle with python2 instead of python3.
 
 # Presentation
