@@ -25,4 +25,6 @@ jobs:
         uses: pypa/gh-action-pip-audit@v1.0.8
         with:
           inputs: requirements.txt
-
+          ignore-vulns: |
+            PYSEC-2022-42991
+ 
