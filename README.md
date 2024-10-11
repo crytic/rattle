@@ -45,7 +45,7 @@ To install graphviz, run the following command:
 Linux:
 
 ```bash
-sudo apt-get graphvis
+sudo apt install graphviz
 ```
 
 macOS:
