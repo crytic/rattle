@@ -24,6 +24,12 @@ If you're running rattle on a contract you can compile with solidity, use the `-
 ```console
 $ solc --bin-runtime KingOfTheEtherThrone.sol 2>/dev/null | tail -n1 > contract.bin
 ```
+## Export as JSON file
+To run an analysis that outputs both control flow graphs in PNG format and a detailed JSON file with the analysis results, use the following command:
+
+```bash
+python3 rattle-cli.py --input inputs/kingofether/KingOfTheEtherThrone.bin --output_json output_jsons/0x00b2c0d8ca00002ea0d4881b58500a0470a336cc.json -O
+```
 
 ## Dependencies
 
